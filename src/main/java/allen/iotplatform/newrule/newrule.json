@@ -1,0 +1,694 @@
+{
+  "logic_unit": [
+    {
+      "lg_name": "person",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__P11 == 0",
+        "con2": "__P11 == 1",
+        "con3": "__P12 == 1",
+        "con4": "__P15 == 1"
+      },
+      "logic": {
+        "con1": {
+          "inner_person_state": "__PEOPLE_FLAG"
+        },
+        "con2 && con3 && con4": {
+          "inner_person_state": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S101",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P381 == 1",
+        "con3": "inner_S101_start_time > 0",
+        "con4": "(__NOW - inner_S101_start_time) >= 10",
+        "con5": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4 && con5": {
+          "S101": 1
+        },
+        "con1 && con2 && !con3 && con5": {
+          "inner_S101_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S101_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S201",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P381 == 1",
+        "con3": "inner_S201_start_time > 0",
+        "con4": "(__NOW - inner_S201_start_time) >= 10"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4": {
+          "S201": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S201_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S201_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S102",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P386 == 1",
+        "con3": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && con2 && con3": {
+          "S102": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S202",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P386 == 1"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S202": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S103",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P387 == 1",
+        "con3": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && con2 && con3": {
+          "S103": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S203",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P387 == 1"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S203": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S104",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P382 == 1",
+        "con3": "__P386 == 1",
+        "con4": "inner_S104_start_time > 0",
+        "con5": "(__NOW - inner_S104_start_time) >= 15",
+        "con6": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && !con3 && con4 && con5 && con6": {
+          "S104": 1
+        },
+        "con1 && con2 && !con4 && con6": {
+          "inner_S104_start_time": "__NOW"
+        },
+        "con3": {
+          "inner_S104_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S204",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P382 == 1",
+        "con3": "__P386 == 1",
+        "con4": "inner_S204_start_time > 0",
+        "con5": "(__NOW - inner_S204_start_time) >= 15"
+      },
+      "logic": {
+        "con1 && !con3 && con4 && con5": {
+          "S204": 1
+        },
+        "con1 && con2 && !con4": {
+          "inner_S204_start_time": "__NOW"
+        },
+        "con3": {
+          "inner_S204_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S105",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P384 == 1",
+        "con3": "__P386 == 1",
+        "con4": "inner_S105_start_time > 0",
+        "con5": "(__NOW - inner_S105_start_time) >= 10",
+        "con6": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && !con3 && con4 && con5 && con6": {
+          "S105": 1
+        },
+        "con1 && con2 && !con4 && con6": {
+          "inner_S105_start_time": "__NOW"
+        },
+        "con3": {
+          "inner_S105_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S205",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P384 == 1",
+        "con3": "__P386 == 1",
+        "con4": "inner_S205_start_time > 0",
+        "con5": "(__NOW - inner_S205_start_time) >= 10"
+      },
+      "logic": {
+        "con1 && !con3 && con4 && con5": {
+          "S205": 1
+        },
+        "con1 && con2 && !con4": {
+          "inner_S205_start_time": "__NOW"
+        },
+        "con3": {
+          "inner_S205_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S106",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E107'",
+        "con3": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && con2 && con3": {
+          "S106": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S206",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E107'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S206": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S107",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P382 == 1",
+        "con3": "inner_S107_start_time > 0",
+        "con4": "(__NOW - inner_S107_start_time) >= 10",
+        "con5": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4 && con5": {
+          "S107": 1
+        },
+        "con1 && con2 && !con3 && con5": {
+          "inner_S107_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S107_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S207",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P382 == 1",
+        "con3": "inner_S207_start_time > 0",
+        "con4": "(__NOW - inner_S207_start_time) >= 10"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4": {
+          "S207": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S207_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S207_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S108",
+      "dep_logic": ["person"],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ROOMELECREIC == 0",
+        "con3": "__ERROR == 'E157'",
+        "con4": "inner_person_state == 1"
+      },
+      "logic": {
+        "con1 && con2 && !con3 && con4": {
+          "S108": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S208",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ROOMELECREIC == 0",
+        "con3": "__ERROR == 'E157'"
+      },
+      "logic": {
+        "con1 && con2 && !con3": {
+          "S208": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S109",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ALARM == 1",
+        "con3": "inner_S109_start_time > 0",
+        "con4": "(__NOW - inner_S109_start_time) >= 3"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4": {
+          "S109": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S109_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S109_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S109_2",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ALARM == 1",
+        "con3": "inner_S109_2_start_time > 0",
+        "con4": "(__NOW - inner_S109_2_start_time) <= 10",
+        "con5": "inner_S109_2_count > 3"
+      },
+      "logic": {
+        "con1 && con3 && con4 && con5": {
+          "S109": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S109_2_start_time": "__NOW",
+          "inner_S109_2_count": 1
+        },
+        "con1 && con2 && con3 && con4": {
+          "inner_S109_2_count": "inner_S109_2_count + 1"
+        },
+        "con3 && !con4": {
+          "inner_S109_2_start_time": 0,
+          "inner_S109_2_count": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S209",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E126'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S209": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S210",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E125'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S210": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S211",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E64'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S211": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S212",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E46'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S212": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S213",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E47'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S213": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S216",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P8 == 1"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S216": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S217",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P377 == 1",
+        "con3": "inner_S217_start_time > 0",
+        "con4": "(__NOW - inner_S217_start_time) >= 500"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4": {
+          "S217": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S217_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S217_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S218",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P378 == 1",
+        "con3": "inner_S218_start_time > 0",
+        "con4": "(__NOW - inner_S218_start_time) >= 500"
+      },
+      "logic": {
+        "con1 && con2 && con3 && con4": {
+          "S218": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S218_start_time": "__NOW"
+        },
+        "!con2": {
+          "inner_S218_start_time": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S219",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P137 == 0",
+        "con3": "inner_S219_start_time > 0",
+        "con4": "(__NOW - inner_S219_start_time) <= 7200",
+        "con5": "inner_S219_count > 3"
+      },
+      "logic": {
+        "con1 && con3 && con4 && con5": {
+          "S219": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S219_start_time": "__NOW",
+          "inner_S219_count": 1
+        },
+        "con1 && con2 && con3 && con4": {
+          "inner_S219_count": "inner_S219_count + 1"
+        },
+        "con3 && !con4": {
+          "inner_S219_start_time": 0,
+          "inner_S219_count": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S220",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E152'",
+        "con3": "inner_S220_start_time > 0",
+        "con4": "(__NOW - inner_S220_start_time) <= 86400",
+        "con5": "inner_S220_count > 5"
+      },
+      "logic": {
+        "con1 && con3 && con4 && con5": {
+          "S220": 1
+        },
+        "con1 && con2 && !con3": {
+          "inner_S220_start_time": "__NOW",
+          "inner_S220_count": 1
+        },
+        "con1 && con2 && con3 && con4": {
+          "inner_S220_count": "inner_S220_count + 1"
+        },
+        "con3 && !con4": {
+          "inner_S220_start_time": 0,
+          "inner_S220_count": 0
+        }
+      }
+    },
+    {
+      "lg_name": "S221",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E120'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S221": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S222",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E104'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S222": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S223",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__ERROR == 'E105'"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S223": 1
+        }
+      }
+    },
+    {
+      "lg_name": "S224",
+      "dep_logic": [],
+      "condition": {
+        "con1": "__ROOMMAINTAIN == 0",
+        "con2": "__P136 == 1"
+      },
+      "logic": {
+        "con1 && con2": {
+          "S224": 1
+        }
+      }
+    }
+  ],
+  "init_parameter": {
+    "__NOW": 0,
+    "__ERROR": "",
+    "__PEOPLE_FLAG": "",
+    "__ROOMMAINTAIN": "",
+    "__ROOMELECREIC": "",
+    "__ALARM": "",
+    "__P8": "",
+    "__P11": "",
+    "__P12": "",
+    "__P15": "",
+    "__P136": "",
+    "__P137": "",
+    "__P377": "",
+    "__P378": "",
+    "__P381": "",
+    "__P382": "",
+    "__P384": "",
+    "__P386": "",
+    "__P387": ""
+  },
+  "inner_state": {
+    "inner_maintance_state": 0,
+    "inner_person_state": 0,
+    "inner_S101_start_time": 0,
+    "inner_S104_start_time": 0,
+    "inner_S105_start_time": 0,
+    "inner_S107_start_time": 0,
+    "inner_S109_start_time": 0,
+    "inner_S109_2_start_time": 0,
+    "inner_S109_2_count": 0,
+    "inner_S201_start_time": 0,
+    "inner_S204_start_time": 0,
+    "inner_S205_start_time": 0,
+    "inner_S207_start_time": 0,
+    "inner_S217_start_time": 0,
+    "inner_S218_start_time": 0,
+    "inner_S219_start_time": 0,
+    "inner_S219_count": 0,
+    "inner_S220_start_time": 0,
+    "inner_S220_count": 0
+  },
+  "state": {
+    "S101": 0,
+    "S102": 0,
+    "S103": 0,
+    "S104": 0,
+    "S105": 0,
+    "S106": 0,
+    "S107": 0,
+    "S108": 0,
+    "S109": 0,
+    "S201": 0,
+    "S202": 0,
+    "S203": 0,
+    "S204": 0,
+    "S205": 0,
+    "S206": 0,
+    "S207": 0,
+    "S208": 0,
+    "S209": 0,
+    "S210": 0,
+    "S211": 0,
+    "S212": 0,
+    "S213": 0,
+    "S216": 0,
+    "S217": 0,
+    "S218": 0,
+    "S219": 0,
+    "S220": 0,
+    "S221": 0,
+    "S222": 0,
+    "S223": 0,
+    "S224": 0
+  },
+  "state_priority": {
+    "1": ["S101", "S102", "S103", "S104", "S105", "S106", "S107", "S108", "S109"],
+    "2": ["S201", "S202", "S203", "S204", "S205", "S206", "S207", "S208", "S209", "S210", "S211", "S212", "S213", "S216", "S217", "S218", "S219", "S220", "S221", "S222", "S223", "S224"]
+  },
+  "state_description": {
+    "S101": "门区外停车困人",
+    "S102": "冲顶困人",
+    "S103": "蹲底困人",
+    "S104": "运行中开门困人",
+    "S105": "超速困人",
+    "S106": "轿厢意外移动困人",
+    "S107": "门锁回路断路困人",
+    "S108": "停电困人",
+    "S109": "报警困人",
+    "S201": "门区外停车",
+    "S202": "电梯冲顶",
+    "S203": "电梯蹲底",
+    "S204": "运行中开门",
+    "S205": "电梯速度异常",
+    "S206": "轿厢意外移动",
+    "S207": "门锁回路断路",
+    "S208": "电梯停电",
+    "S209": "制动力检测警告",
+    "S210": "制动力检测故障",
+    "S211": "平层光电开关故障",
+    "S212": "1LV 光电故障",
+    "S213": "2LV 光电故障",
+    "S216": "综合故障",
+    "S217": "开门故障",
+    "S218": "关门故障",
+    "S219": "主机热敏开关动作",
+    "S220": "电梯频繁复位",
+    "S221": "门锁短接",
+    "S222": "强迫减速丢失",
+    "S223": "上下强减动作",
+    "S224": "安全开关动作"
+  }
+}
