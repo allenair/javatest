@@ -67,6 +67,84 @@ public class TestUtil {
 		buf.append("000"); // 152 ~ 154 
 		buf.append(getValueDefaultZero(bean.getRdoo())); // 155 <--> P156	
 		buf.append(getValueDefaultZero(bean.getRear_en())); // 156 <--> P155	
+		buf.append(getValueDefaultZero(bean.getRdcb())); // 157 <--> P154	
+		buf.append(getValueDefaultZero(bean.getRdob())); // 158 <--> P153
+		buf.append(getValueDefaultZero(bean.getRdcl())); // 159 <--> P152
+		
+		// 160~167
+		buf.append(getStringByInt(bean.getLogic_err(), 1)); // Logic_err 1byte
+		
+		// 168~175
+		buf.append(getStringByInt(bean.getShow_left(), 1)); // L 1byte
+		
+		// 176~183
+		buf.append(getStringByInt(bean.getShow_right(), 1)); // R 1byte
+		
+		// 184~191
+		buf.append(getStringByInt(bean.getBoard_type(), 1)); // Board_type 1byte
+		
+		// 192~223
+		buf.append(getStringByInt(bean.getLast_count(), 4)); // Last_count 4byte
+		
+		// 224~255
+		buf.append(getStringByInt(bean.getTotal_time(), 4)); // Total_time 4byte
+		
+		// 256~263
+		buf.append(getStringByInt(bean.getDriver_err(), 1)); // Driver_err 1byte
+		
+		// 264~271
+		buf.append(getStringByInt(bean.getLogic_lock(), 1)); // Logic_lock 1byte
+		
+		// 272~279
+		buf.append(getStringByInt(bean.getSys_model(), 1)); // Sys_model 1byte
+		
+		// 280~311
+		buf.append(getStringByInt(bean.getXh_time(), 4)); // Xh_time 4byte
+		
+		// 312~343
+		buf.append(getStringByInt(bean.getArm_code(), 4)); // Arm_code 4byte
+		
+		// 344~375
+		buf.append(getStringByInt(bean.getDsp_code(), 4)); // Dsp_code 4byte
+		
+		// 376~383
+		buf.append("0"); // 376 <--> 
+		buf.append(getValueDefaultZero(bean.getLock_broken())); // 377 <--> P382
+		buf.append(getValueDefaultZero(bean.getStop_fault())); // 378 <--> P381
+		buf.append(getValueDefaultZero(bean.getDown_switch())); // 379 <--> P380
+		buf.append(getValueDefaultZero(bean.getUp_switch())); // 380 <--> P379
+		buf.append(getValueDefaultZero(bean.getClose_fault())); // 381 <--> P378
+		buf.append(getValueDefaultZero(bean.getOpen_fault())); // 382 <--> P377
+		buf.append(getValueDefaultZero(bean.getSafe_circle())); // 383 <--> P376
+		
+		// 384~391
+		buf.append("0000"); // 384~387
+		buf.append(getValueDefaultZero(bean.getGo_down())); // 388 <--> P387
+		buf.append(getValueDefaultZero(bean.getGo_top())); // 389 <--> P386
+		buf.append("0"); // 390 <--> 
+		buf.append(getValueDefaultZero(bean.getSpeed_fault())); // 391 <--> P384
+		
+		// 392~407
+		for(int i=392; i<=407; i++) {
+			buf.append("0");
+		}
+		
+		// 408~415
+		buf.append(getStringByInt(bean.getDriver_fault(), 1)); // driver_fault 1byte
+		
+		// 416~423
+		buf.append(getStringByInt(bean.getLogic_fault(), 1)); // logic_fault 1byte
+		
+		// 424~431
+		buf.append(getStringByInt(bean.getLogic_status(), 1)); // logic_status 1byte
+		
+		// 432~503
+		for(int i=432; i<=503; i++) {
+			buf.append("0");
+		}
+		
+		// 504~511
+		buf.append(getStringByInt(bean.getVer_code(), 1)); // Ver_code 1byte
 		
 		return baseStr;
 	}

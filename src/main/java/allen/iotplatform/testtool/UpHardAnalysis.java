@@ -1,24 +1,12 @@
 package allen.iotplatform.testtool;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.io.Serializable;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
 /*
  * @version 2.0
  */
 
 public class UpHardAnalysis implements Serializable {
-	private Integer id;
-
-	private java.sql.Timestamp up_time;
-
-	private String elevator_code;
 
 	private String err;
 
@@ -114,27 +102,27 @@ public class UpHardAnalysis implements Serializable {
 
 	private String err_info;
 
-	private String board_type;
+	private Integer board_type;
 
 	private String rear_en;
 
 	private String rdoo;
 
-	private String logic_err;
+	private Integer logic_err;
 
-	private String show_left;
+	private Integer show_left;
 
-	private String show_right;
+	private Integer show_right;
 
 	private Integer last_count;
 
 	private Integer total_time;
 
-	private String driver_err;
+	private Integer driver_err;
 
-	private String logic_lock;
+	private Integer logic_lock;
 
-	private String sys_model;
+	private Integer sys_model;
 
 	private Integer xh_time;
 
@@ -142,7 +130,7 @@ public class UpHardAnalysis implements Serializable {
 
 	private Integer dsp_code;
 
-	private String ver_code;
+	private Integer ver_code;
 
 	private String safe_circle;
 
@@ -164,35 +152,11 @@ public class UpHardAnalysis implements Serializable {
 
 	private String go_down;
 
-	private String driver_fault;
+	private Integer driver_fault;
 
-	private String logic_fault;
+	private Integer logic_fault;
 
-	private String logic_status;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public java.sql.Timestamp getUp_time() {
-		return up_time;
-	}
-
-	public void setUp_time(java.sql.Timestamp up_time) {
-		this.up_time = up_time;
-	}
-
-	public String getElevator_code() {
-		return elevator_code;
-	}
-
-	public void setElevator_code(String elevator_code) {
-		this.elevator_code = elevator_code;
-	}
+	private Integer logic_status;
 
 	public String getErr() {
 		return err;
@@ -570,11 +534,11 @@ public class UpHardAnalysis implements Serializable {
 		this.err_info = err_info;
 	}
 
-	public String getBoard_type() {
+	public Integer getBoard_type() {
 		return board_type;
 	}
 
-	public void setBoard_type(String board_type) {
+	public void setBoard_type(Integer board_type) {
 		this.board_type = board_type;
 	}
 
@@ -594,27 +558,27 @@ public class UpHardAnalysis implements Serializable {
 		this.rdoo = rdoo;
 	}
 
-	public String getLogic_err() {
+	public Integer getLogic_err() {
 		return logic_err;
 	}
 
-	public void setLogic_err(String logic_err) {
+	public void setLogic_err(Integer logic_err) {
 		this.logic_err = logic_err;
 	}
 
-	public String getShow_left() {
+	public Integer getShow_left() {
 		return show_left;
 	}
 
-	public void setShow_left(String show_left) {
+	public void setShow_left(Integer show_left) {
 		this.show_left = show_left;
 	}
 
-	public String getShow_right() {
+	public Integer getShow_right() {
 		return show_right;
 	}
 
-	public void setShow_right(String show_right) {
+	public void setShow_right(Integer show_right) {
 		this.show_right = show_right;
 	}
 
@@ -634,27 +598,27 @@ public class UpHardAnalysis implements Serializable {
 		this.total_time = total_time;
 	}
 
-	public String getDriver_err() {
+	public Integer getDriver_err() {
 		return driver_err;
 	}
 
-	public void setDriver_err(String driver_err) {
+	public void setDriver_err(Integer driver_err) {
 		this.driver_err = driver_err;
 	}
 
-	public String getLogic_lock() {
+	public Integer getLogic_lock() {
 		return logic_lock;
 	}
 
-	public void setLogic_lock(String logic_lock) {
+	public void setLogic_lock(Integer logic_lock) {
 		this.logic_lock = logic_lock;
 	}
 
-	public String getSys_model() {
+	public Integer getSys_model() {
 		return sys_model;
 	}
 
-	public void setSys_model(String sys_model) {
+	public void setSys_model(Integer sys_model) {
 		this.sys_model = sys_model;
 	}
 
@@ -682,11 +646,11 @@ public class UpHardAnalysis implements Serializable {
 		this.dsp_code = dsp_code;
 	}
 
-	public String getVer_code() {
+	public Integer getVer_code() {
 		return ver_code;
 	}
 
-	public void setVer_code(String ver_code) {
+	public void setVer_code(Integer ver_code) {
 		this.ver_code = ver_code;
 	}
 
@@ -770,27 +734,27 @@ public class UpHardAnalysis implements Serializable {
 		this.go_down = go_down;
 	}
 
-	public String getDriver_fault() {
+	public Integer getDriver_fault() {
 		return driver_fault;
 	}
 
-	public void setDriver_fault(String driver_fault) {
+	public void setDriver_fault(Integer driver_fault) {
 		this.driver_fault = driver_fault;
 	}
 
-	public String getLogic_fault() {
+	public Integer getLogic_fault() {
 		return logic_fault;
 	}
 
-	public void setLogic_fault(String logic_fault) {
+	public void setLogic_fault(Integer logic_fault) {
 		this.logic_fault = logic_fault;
 	}
 
-	public String getLogic_status() {
+	public Integer getLogic_status() {
 		return logic_status;
 	}
 
-	public void setLogic_status(String logic_status) {
+	public void setLogic_status(Integer logic_status) {
 		this.logic_status = logic_status;
 	}
 
