@@ -17,8 +17,11 @@ import javax.script.ScriptException;
 
 import com.google.gson.Gson;
 
+/**
+ * ？？？？？？后续需要考虑并行化的问题，需要进行js脚本环境并行化问题的试验，需要改造缓存为独立缓存？？？？？？？？
+ * */
 public class ScriptTest {
-	private static ConcurrentHashMap<String, Integer> cache = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<>();
 	private static Map<String, ScriptBean> scriptBeanMap = new HashMap<>();
 	static{
 		try {
@@ -43,8 +46,8 @@ public class ScriptTest {
 	 * (2) 每次收到上传参数，需要配置inputMap，然后传入，此为输入参数目的是为初始化脚本环境服务，也是不允许修改的
 	 * (3) 所有的修改都是在全局的cache中，使用hardCode做头来区分不同设备，cache是存储内部状态，服务于多次接收数据以判断报警的情况
 	 * */
-	public static List<String> dealIotAlarm(String scriptName, String hardCode, Map<String, Object> inputMap){
-		List<String> errStateList = new ArrayList<>();
+	public static List<Map<String, String>> dealIotAlarm(String scriptName, String hardCode, Map<String, Object> inputMap){
+		List<Map<String, String>> errStateList = new ArrayList<>();
 		ScriptBean scriptBean = scriptBeanMap.get(scriptName);
 		
 		// =========脚本环境初始化==================
@@ -74,18 +77,22 @@ public class ScriptTest {
 			Arrays.sort(priorityArr); // 由于是字符串排序，因此请注意"12"与"2"的大小问题
 			for (String priorityName : priorityArr) {
 				for (String stateName : scriptBean.getState_priority().get(priorityName)) {
-					if (cache.get(hardCode + "#S#" + stateName) != null && cache.get(hardCode + "#S#" + stateName) == 1) {
-						errStateList.add(scriptBean.getState_description().get(stateName));
-						cache.put(hardCode + "#S#" + stateName, 0);
+					if (cache.get(hardCode + "#S#" + stateName) != null && "1".equals(cache.get(hardCode + "#S#" + stateName))) {
+						Map<String, String> resMap = new HashMap<>();
+						resMap.put(scriptBean.getState_description().get(stateName),"1");
+						errStateList.add(resMap);
+						cache.put(hardCode + "#S#" + stateName, "");
 						cleanCache(hardCode, scriptBean.getInner_state());
 					}
 				}
 			}
 		}else {
 			for(String stateName: scriptBean.getState().keySet()) {
-				if (cache.get(hardCode + "#S#" + stateName) != null && cache.get(hardCode + "#S#" + stateName) == 1) {
-					errStateList.add(scriptBean.getState_description().get(stateName));
-					cache.put(hardCode + "#S#" + stateName, 0);
+				if (cache.get(hardCode + "#S#" + stateName) != null) {
+					Map<String, String> resMap = new HashMap<>();
+					resMap.put(stateName,cache.get(hardCode + "#S#" + stateName).toString());
+					errStateList.add(resMap);
+					cache.put(hardCode + "#S#" + stateName, "");
 					cleanCache(hardCode, scriptBean.getInner_state());
 				}
 			}
@@ -134,7 +141,7 @@ public class ScriptTest {
 				if (tmp) {
 					Map<String, Object> setValFunMap = logicMap.get(logicCellName);
 					for (String paramName : setValFunMap.keySet()) {
-						cache.put(hardCode + "#S#" + paramName, Float.valueOf(script.eval(setValFunMap.get(paramName).toString()).toString()).intValue());
+						cache.put(hardCode + "#S#" + paramName, script.eval(setValFunMap.get(paramName).toString()).toString());
 					}
 				}
 			} catch (ScriptException e) {
@@ -154,15 +161,29 @@ public class ScriptTest {
 			if(cache.get(hardCode+"#S#"+innerStateName)==null){
 				script.put(innerStateName, 0);
 			}else{
-				script.put(innerStateName, cache.get(hardCode+"#S#"+innerStateName));
+				script.put(innerStateName, getValueByString(cache.get(hardCode+"#S#"+innerStateName)));
 			}
 		}
+	}
+	
+	// 原则上模板目的是进行计算操作，因此将变量载入js引擎环境的时候，需要将之转换为数值类型double，以支持js正确的计算
+	private static double getValueByString(String str) {
+		double res = 0.0;
+		if(str==null || "".equals(str) || "NA".equalsIgnoreCase(str)) {
+			return 0.0;
+		}
+		try {
+			res = Double.parseDouble(str);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 	
 	// 将缓存中内部状态初始化
 	private static void cleanCache(String hardCode, Map<String, Integer> innerStateMap){
 		for (String key : innerStateMap.keySet()) {
-			cache.put(hardCode+"#S#"+key, 0);
+			cache.put(hardCode+"#S#"+key, "");
 		}
 	}
 }

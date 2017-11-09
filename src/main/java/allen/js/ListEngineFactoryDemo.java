@@ -159,6 +159,16 @@ public class ListEngineFactoryDemo {
 			System.err.println(e);
 		}
 	}
+	
+	public static void exeCal() {
+		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
+		try {
+			script.put("param1", 11.1);
+			System.out.println(script);
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+	}
 
 	/**
 	 * @param args
@@ -168,9 +178,10 @@ public class ListEngineFactoryDemo {
 //		exeJSForCode();
 //		exeJSForFile();
 //		exeJSForBinding();
-		exeJSForFunction();
+//		exeJSForFunction();
 //		exeJSForCompilable();
 //		exeJavaScript();
+		exeCal();
 	}
 
 }
