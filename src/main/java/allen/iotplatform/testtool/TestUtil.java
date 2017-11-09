@@ -1,10 +1,12 @@
 package allen.iotplatform.testtool;
 
+import java.util.Base64;
+
 public class TestUtil {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		UpHardAnalysis bean = new UpHardAnalysis();
+		
 	}
 
 	public static String genMockData(UpHardAnalysis bean) {
@@ -146,7 +148,29 @@ public class TestUtil {
 		// 504~511
 		buf.append(getStringByInt(bean.getVer_code(), 1)); // Ver_code 1byte
 		
+		baseStr = Base64.getEncoder().encodeToString(getByteByStr(buf.toString()));
+		
 		return baseStr;
+	}
+	
+	private static byte[] getByteByStr(String str) {
+		int len = str.length()/8;
+		byte[] resArr = new byte[len];
+		
+		int tmp = 0;
+		for(int i=0; i<len; i++) {
+			tmp = 0;
+			tmp += Integer.parseInt(str.substring(i*8, i*8+1))<<7;
+			tmp += Integer.parseInt(str.substring(i*8+1, i*8+2))<<6;
+			tmp += Integer.parseInt(str.substring(i*8+2, i*8+3))<<5;
+			tmp += Integer.parseInt(str.substring(i*8+3, i*8+4))<<4;
+			tmp += Integer.parseInt(str.substring(i*8+4, i*8+5))<<3;
+			tmp += Integer.parseInt(str.substring(i*8+5, i*8+6))<<2;
+			tmp += Integer.parseInt(str.substring(i*8+6, i*8+7))<<1;
+			tmp += Integer.parseInt(str.substring(i*8+7, i*8+8));
+			resArr[i] = (byte)tmp;
+		}
+		return resArr;
 	}
 	
 	private static String getValueDefaultZero(String val) {
