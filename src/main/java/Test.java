@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -7,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -26,15 +31,53 @@ public class Test {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		Test tt = new Test();
-		//System.out.println(tt.getRandom(2));
-//		tt.redisTool();
 		
-		System.out.println(new BigDecimal("12.2345").compareTo(new BigDecimal("12.2345")));
-		System.out.println(Integer.parseInt("10100101", 2));
+		String zhongwen = "这是测试";
+		Map<String, String> map = new HashMap<>();
+		map.put("abc", zhongwen);
+		map.put("xyz", "123");
+		System.out.println(new Gson().toJson(map));
+		
+		zhongwen = URLEncoder.encode(zhongwen, "UTF-8");
+		map.put("abc", zhongwen);
+		String json = new Gson().toJson(map);
+		System.out.println(json);
+		
+		
+		System.out.println(URLDecoder.decode(json, "UTF-8"));
+		
+	}
+	
+	private String encode(String value) throws Exception {
+		return URLEncoder.encode(value, "UTF-8");
+	}
+	
+	private static byte[] getByteByStr(String str) {
+		int len = str.length()/8;
+		byte[] resArr = new byte[len];
+		
+		int tmp = 0;
+		for(int i=0; i<len; i++) {
+			tmp = 0;
+			tmp += Integer.parseInt(str.substring(i*8, i*8+1))<<7;
+			tmp += Integer.parseInt(str.substring(i*8+1, i*8+2))<<6;
+			tmp += Integer.parseInt(str.substring(i*8+2, i*8+3))<<5;
+			tmp += Integer.parseInt(str.substring(i*8+3, i*8+4))<<4;
+			tmp += Integer.parseInt(str.substring(i*8+4, i*8+5))<<3;
+			tmp += Integer.parseInt(str.substring(i*8+5, i*8+6))<<2;
+			tmp += Integer.parseInt(str.substring(i*8+6, i*8+7))<<1;
+			tmp += Integer.parseInt(str.substring(i*8+7, i*8+8));
+			resArr[i] = (byte)tmp;
+		}
+		return resArr;
 	}
 
+	private void getPlanAndRealCount(String startDate, String endDate, String line_id, int interval_day) {
+		String key="EmployeePerformanceDaoImpl#getPlanAndRealCount@"+startDate+"&"+endDate+"&"+line_id+"&"+interval_day;
+		System.out.println(key);
+	}
 	public void redisTool() {
 		int fl = 1;
 		UpHardAnalysisVO bean = new UpHardAnalysisVO();
