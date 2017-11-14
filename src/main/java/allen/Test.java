@@ -1,23 +1,16 @@
 package allen;
 
-import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
-
 import com.google.gson.Gson;
-
-import deepCopy.TreeBean;
 
 public class Test {
 	private static String tt;
@@ -159,31 +152,6 @@ public class Test {
 		System.out.println(df.format(0));
 	}
 	
-	public void test0606(){
-		int aa = -123;
-		String bitStr = Integer.toBinaryString(aa);
-		DecimalFormat df = new DecimalFormat("000");
-		System.out.println(bitStr);
-		System.out.println(df.format(11));
-		
-		StringBuilder sb = new StringBuilder();
-		for(int i=0;i<32-bitStr.length();i++){
-			sb.append("0");
-		}
-		sb.append(bitStr);
-		System.out.println(sb.toString());
-		
-		ParentClass clazz = new ChildClass("ss");
-		System.out.println(clazz.getClass().getName());
-		
-		try{
-			System.out.println("sss");
-		}catch(Exception e){
-			
-		}finally{
-			
-		}
-	}
 	
 	public void test0711(){
 		Calendar c1 = Calendar.getInstance();
