@@ -11,6 +11,15 @@ public class ScriptBean {
 	private Map<String, Integer> state;
 	private Map<String, List<String>> state_priority;
 	private Map<String, String> state_description;
+	private List<String> stop_condition;
+
+	public List<String> getStop_condition() {
+		return stop_condition;
+	}
+
+	public void setStop_condition(List<String> stop_condition) {
+		this.stop_condition = stop_condition;
+	}
 
 	private Map<String, LogicUnitBean> beanMap = new HashMap<>();
 
