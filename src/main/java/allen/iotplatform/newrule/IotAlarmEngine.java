@@ -159,7 +159,7 @@ public class IotAlarmEngine {
 	// 将缓存中内部状态初始化
 	private static void cleanCache(String hardCode, Map<String, Integer> innerStateMap){
 		for (String key : innerStateMap.keySet()) {
-			cache.put(hardCode+"#S#"+key, "0");
+			cache.remove(hardCode+"#S#"+key);
 		}
 	}
 	

@@ -19,9 +19,9 @@
           "PEOPLE": 0
         },
         "!con1 && !(con2 && con3 && con4)": {
-          "inner_person_state": "__PEOPLE_FLAG",
-          "PEOPLE": "__PEOPLE_FLAG"
-        },
+          "inner_person_state": "__PEOPLE_LAST_FLAG",
+          "PEOPLE": "__PEOPLE_LAST_FLAG"
+        }
       }
     },
     {
@@ -591,6 +591,7 @@
     "__ERROR_2": "",
     "__ERROR_3": "",
     "__PEOPLE_FLAG": "",
+    "__PEOPLE_LAST_FLAG": "",
     "__ROOMMAINTAIN": "",
     "__ROOMELECREIC": "",
     "__ALARM": "",
