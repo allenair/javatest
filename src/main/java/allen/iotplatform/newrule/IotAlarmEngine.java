@@ -199,19 +199,33 @@ public class IotAlarmEngine {
 		}
 		
 		Map<String, Map<String, Object>> logicMap = logic.getLogic();
-		for (String logicCellName : logicMap.keySet()) {
-			tmp = false;
-			try {
+		Map<String, Object> elseValFunMap = null;
+		boolean elseFlag = true;
+		try {
+			for (String logicCellName : logicMap.keySet()) {
+				if ("else".equalsIgnoreCase(logicCellName.trim())) {
+					elseValFunMap = logicMap.get(logicCellName);
+					continue;
+				}
+				
+				tmp = false;
 				tmp = Boolean.parseBoolean(script.eval(logicCellName).toString());
 				if (tmp) {
+					elseFlag = false;// 如果已经有条件生效，则else不生效
 					Map<String, Object> setValFunMap = logicMap.get(logicCellName);
 					for (String paramName : setValFunMap.keySet()) {
 						cache.put(hardCode + "#S#" + paramName, script.eval(setValFunMap.get(paramName).toString()).toString());
 					}
 				}
-			} catch (ScriptException e) {
-				e.printStackTrace();
 			}
+
+			if (elseFlag && elseValFunMap != null) {
+				for (String paramName : elseValFunMap.keySet()) {
+					cache.put(hardCode + "#S#" + paramName, script.eval(elseValFunMap.get(paramName).toString()).toString());
+				}
+			}
+		} catch (ScriptException e) {
+			e.printStackTrace();
 		}
 		
 		// 本次逻辑单元执行完毕，更新内部状态和脚本环境

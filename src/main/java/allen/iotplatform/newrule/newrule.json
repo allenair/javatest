@@ -7,18 +7,23 @@
         "con1": "__P11 == 0",
         "con2": "__P11 == 1",
         "con3": "__P12 == 1",
-        "con4": "__P15 == 1"
+        "con4": "__P15 == 1",
+        "con5": "__PEOPLE_FLAG == 1"
       },
       "logic": {
-        "con1": {
-          "inner_person_state": "__PEOPLE_FLAG",
-          "PEOPLE": "__PEOPLE_FLAG"
+        "con1 && con5": {
+          "inner_person_state": 1,
+          "PEOPLE": 1
+        },
+        "con1 && !con5": {
+          "inner_person_state": "__PEOPLE_LAST_FLAG",
+          "PEOPLE": "__PEOPLE_LAST_FLAG"
         },
         "con2 && con3 && con4": {
           "inner_person_state": 0,
           "PEOPLE": 0
         },
-        "!con1 && !(con2 && con3 && con4)": {
+        "else": {
           "inner_person_state": "__PEOPLE_LAST_FLAG",
           "PEOPLE": "__PEOPLE_LAST_FLAG"
         }

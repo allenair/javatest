@@ -163,8 +163,8 @@ public class ListEngineFactoryDemo {
 	public static void exeCal() {
 		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
 		try {
-			script.put("param1", 11.1);
-			System.out.println(script);
+			script.put("__PEOPLE_FLAG", "1");
+			System.out.println(script.eval(" __PEOPLE_FLAG == 1 ").toString());
 		} catch (Exception e) {
 			System.err.println(e);
 		}
