@@ -491,7 +491,8 @@
         "con2": "__ERROR_2 == 'E109'",
         "con3": "inner_S219_start_time > 0",
         "con4": "(__NOW - inner_S219_start_time) <= 7200",
-        "con5": "inner_S219_count > 3"
+        "con5": "inner_S219_count > 3",
+        "con6": "__E109_LAST == 0"
       },
       "logic": {
         "con1 && con3 && con4 && con5": {
@@ -501,7 +502,7 @@
           "inner_S219_start_time": "__NOW",
           "inner_S219_count": 1
         },
-        "con1 && con2 && con3 && con4": {
+        "con1 && con2 && con3 && con4 && con6": {
           "inner_S219_count": "inner_S219_count + 1"
         },
         "con3 && !con4": {
@@ -518,7 +519,8 @@
         "con2": "__ERROR_3 == 'E152'",
         "con3": "inner_S220_start_time > 0",
         "con4": "(__NOW - inner_S220_start_time) <= 86400",
-        "con5": "inner_S220_count > 5"
+        "con5": "inner_S220_count > 5",
+        "con6": "__E152_LAST == 0"
       },
       "logic": {
         "con1 && con3 && con4 && con5": {
@@ -528,7 +530,7 @@
           "inner_S220_start_time": "__NOW",
           "inner_S220_count": 1
         },
-        "con1 && con2 && con3 && con4": {
+        "con1 && con2 && con3 && con4 && con6": {
           "inner_S220_count": "inner_S220_count + 1"
         },
         "con3 && !con4": {
@@ -611,7 +613,9 @@
     "__P382": "",
     "__P384": "",
     "__P386": "",
-    "__P387": ""
+    "__P387": "",
+    "__E109_LAST": "",
+    "__E152_LAST": ""
   },
   "inner_state": {
     "inner_maintance_state": 0,
