@@ -368,10 +368,14 @@
       "dep_logic": [],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
-        "con2": "__ERROR_2 == 'E126'"
+        "con2": "__ERROR_2 == 'E126'",
+        "con3": "__ERROR_1 == 'E75'"
       },
       "logic": {
         "con1 && con2": {
+          "S209": 1
+        },
+        "con1 && con3": {
           "S209": 1
         }
       }
@@ -381,10 +385,14 @@
       "dep_logic": [],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
-        "con2": "__ERROR_2 == 'E125'"
+        "con2": "__ERROR_2 == 'E125'",
+        "con3": "__ERROR_1 == 'E76'"
       },
       "logic": {
         "con1 && con2": {
+          "S210": 1
+        },
+        "con1 && con3": {
           "S210": 1
         }
       }
