@@ -28,7 +28,7 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception{
-		Test tt = new Test();
+		Test tt = new Test(); 
 		
 		String zhongwen = "这是测试";
 		Map<String, String> map = new HashMap<>();
