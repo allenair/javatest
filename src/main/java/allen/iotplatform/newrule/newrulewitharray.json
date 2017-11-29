@@ -2,33 +2,28 @@
   "logic_unit": [
     {
       "lg_name": "base_price_map",
-      "dep_logic": [],
-      "condition": {},
-      "logic": {},
       "value_map": {
         "inner_base_price_state": [
           {"__SPEED": "1.0", "__WEIGHT": "630", "__FLOOR": "2", "__val__": "17123"},
           {"__SPEED": "1.0", "__WEIGHT": "630", "__FLOOR": "10", "__val__": "18999"},
           {"__SPEED": "1.0", "__WEIGHT": "630", "__FLOOR": "NA", "__val__": "29876"},
           {"__SPEED": "(1,2]", "__WEIGHT": "[650,$)", "__FLOOR": "10,11,20,30", "__val__": "99999"},
-          {"__SPEED": "NA", "__WEIGHT": "NA", "__FLOOR": "NA", "__val__": "NA"}
+          {"__val__": "0"}
         ]
       }
     },
     {
       "lg_name": "sum_price_map",
       "dep_logic": ["base_price_map"],
-      "condition": {},
-      "logic": {},
       "value_map": {
-        "SUM_PRICE": [
+        "SUM_PRICE, PRICE_OTHER": [
           {"__SCREEN_FLAG": "0", "__CAMERA_FLAG": "0", "__val__": "inner_base_price_state*1.1"},
           {"__SCREEN_FLAG": "0", "__CAMERA_FLAG": "1", "__val__": "inner_base_price_state*1.2+100"},
           {"__SCREEN_FLAG": "1", "__CAMERA_FLAG": "0", "__val__": "inner_base_price_state*1.2+200"},
           {"__SCREEN_FLAG": "1", "__CAMERA_FLAG": "1", "__val__": "inner_base_price_state*1.3+200"}
         ],
         "CALL_PRICE": [
-          {"__val__": "SUM_PRICE*1.23"}
+          {"__val__": "inner_base_price_state*1.23"}
         ]
       }
     }
@@ -45,12 +40,7 @@
   },
   "state": {
     "SUM_PRICE": 0,
-    "CALL_PRICE": 0
-  },
-  "state_priority": {},
-  "state_description": {
-    "CALL_PRICE": "报价",
-    "SUM_PRICE": "总价"
-  },
-  "stop_condition": []
+    "CALL_PRICE": 0,
+    "PRICE_OTHER": 0
+  }
 }

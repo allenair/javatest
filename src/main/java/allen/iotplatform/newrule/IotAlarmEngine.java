@@ -1,6 +1,7 @@
 package allen.iotplatform.newrule;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,6 +16,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.Gson;
 
 
@@ -24,10 +27,10 @@ public class IotAlarmEngine {
 	private static Map<String, String> errorDescriptMap = new HashMap<>();
 	
 	static {
-		init("d:/iot_alarm_template.json");
+//		load(init("d:/iot_alarm_template.json"), "xio_alarm");
 	}
 	
-	private static void init(String fileName) {
+	public static String init(String fileName) {
 		try {
 			List<String> lines = Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
 			StringBuilder jsonBuilder = new StringBuilder();
@@ -35,10 +38,13 @@ public class IotAlarmEngine {
 			for (String str : lines) {
 				jsonBuilder.append(str);
 			}
-			load(jsonBuilder.toString(), "xio_alarm");
+			
+			return jsonBuilder.toString();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}  
+		return "";
 	}
 	
 	/**
@@ -46,8 +52,10 @@ public class IotAlarmEngine {
 	 * */
 	public static synchronized void load(String json, String scriptName){
 		ScriptBean scriptBean = new Gson().fromJson(json, ScriptBean.class);
+		
+		// 初始化、规范化模板
 		scriptBean.init();
-		dealPriority(scriptBean);
+		// 清除缓存
 		cleanAllCache();
 		
 		scriptBeanMap.put(scriptName, scriptBean);
@@ -71,9 +79,10 @@ public class IotAlarmEngine {
 		
 		// =========脚本环境初始化=====？？？此处需要考虑是否可以按照硬件编码给出固定的解析引擎，增加速度？？？=====
 		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
-		// 将input参数放入本次脚本执行环境
+		// 将input参数放入本次脚本执行环境，输入参数也放入缓存中
 		for (String key : inputMap.keySet()) {
 			script.put(key, inputMap.get(key));
+			cache.put(hardCode + "#S#" + key, inputMap.get(key).toString());
 		}
 		// 将缓存中的内部状态信息放入本次脚本执行环境，此处实现了将上次逻辑判断结果应用于本次逻辑判断的目的
 		updateInnerState(hardCode, scriptBean.getInner_state(), script);
@@ -134,27 +143,7 @@ public class IotAlarmEngine {
 		return false;
 	}
 	
-	// 此处处理一个问题，就是如果模板优先级列表中没有数据或是数据少于state中的要求，则此处默认将所有state中数据加入，
-	// 此处是对模板的修正，此处只修改模板的内存对象，并不变动模板文件
-	// 把所有不包括在priority中的state都默认增加到，最小优先级（99）的列表中，以保证都能输出
-	private static void dealPriority(ScriptBean scriptBean) {
-		List<String> lastPriorityList = new ArrayList<>();
-		
-		Map<String, String> allPriorityMap = new HashMap<>();
-		for (String priorityKey : scriptBean.getState_priority().keySet()) {
-			for (String priorityState : scriptBean.getState_priority().get(priorityKey)) {
-				allPriorityMap.put(priorityState, "1");
-			}
-		}
-		
-		for (String stateKey : scriptBean.getState().keySet()) {
-			if(!allPriorityMap.containsKey(stateKey)) {
-				lastPriorityList.add(stateKey);
-			}
-		}
-		
-		scriptBean.getState_priority().put("99", lastPriorityList);
-	}
+	
 	
 	// 将缓存中内部状态初始化
 	private static void cleanCache(String hardCode, Map<String, Integer> innerStateMap){
@@ -186,6 +175,7 @@ public class IotAlarmEngine {
 			callLogicUnit(scriptBean, hardCode, deptLogicName, script, finishedMap);
 		}
 		
+		// 1、将单位条件判断结果存入脚本环境以便进行后续逻辑的判断计算
 		boolean tmp;
 		Map<String, String> conditionMap = logic.getCondition();
 		for (String conditionName : conditionMap.keySet()) {
@@ -198,6 +188,7 @@ public class IotAlarmEngine {
 			script.put(conditionName, tmp);
 		}
 		
+		// 2、根据单位条件（脚本环境中）计算逻辑输出值
 		Map<String, Map<String, Object>> logicMap = logic.getLogic();
 		Map<String, Object> elseValFunMap = null;
 		boolean elseFlag = true;
@@ -225,11 +216,48 @@ public class IotAlarmEngine {
 				}
 			}
 		} catch (ScriptException e) {
-			e.printStackTrace();
+			System.err.println("==ERROR=IN=LOGIC=>>>"+logicName+"<<<========");;
 		}
 		
-		// 本次逻辑单元执行完毕，更新内部状态和脚本环境
+		// 3、计算查表计算的值（value_map区域）
+		Map<String, List<Map<String, String>>> valueMap = logic.getValue_map();
+		String rowRes;
+		for (String key : valueMap.keySet()) {
+			List<Map<String, String>> rowList = valueMap.get(key);
+			String calVal="";
+			for (Map<String, String> row : rowList) {
+				rowRes = calArrayOneRow(row, hardCode, script);
+				if(StringUtils.isNotEmpty(rowRes)) {
+					try {
+						calVal = script.eval(rowRes).toString();
+					} catch (ScriptException e) {
+						calVal = "NA";
+						System.err.println("==ERROR=IN=CALCULATE=>>>"+key+"<<<========");
+					}
+					break;
+				}else {
+					calVal = "NA";
+				}
+			}
+			
+			// 此处处理是支持多重赋值的情况
+			String[] keyArr = key.split(",");
+			for (String keySingle : keyArr) {
+				if(StringUtils.isNotEmpty(keySingle)) {
+					keySingle = keySingle.trim();
+					cache.put(hardCode + "#S#" + keySingle, calVal);
+				}
+			}
+		}
+		
+		// 4、本次逻辑单元执行完毕，将缓存中的内容更新脚本环境中的内部状态的值，以便其他单元使用
 		updateInnerState(hardCode, scriptBean.getInner_state(), script);
+		
+		// 清除当前脚本环境中的条件单元（设置成false），避免对其他逻辑单元计算造成影响(因为一般条件的名称都相同，例如con1)，
+		// 一般情况不会影响其他单元，因为每个单元计算时候使用到的值都会被覆盖，此处是防御性编程考虑
+		for (String conditionName : conditionMap.keySet()) {
+			script.put(conditionName, false);
+		}
 		
 		finishedMap.put(logicName, true);
 	}
@@ -258,4 +286,132 @@ public class IotAlarmEngine {
 		}
 		return res;
 	}
+	
+	// 逐行查看表中数据是否符合条件
+	private static String calArrayOneRow(Map<String, String> row, String hardCode, ScriptEngine script) {
+		boolean flag = true;
+		String res = "";
+		try {
+			for (String key : row.keySet()) {
+				if("__val__".equals(key)) {
+					if("NA".equals(row.get(key))) {
+						res = "NA";
+					}else {
+						res = script.eval(row.get(key)).toString();
+					}
+					
+				}else {
+					flag = calConditionStr(cache.get(hardCode+"#S#"+key), row.get(key));
+					if(!flag) {
+						break;
+					}
+				}
+			}
+			
+			if(flag) {
+				return res;
+			}
+			
+		}catch(ScriptException e) {
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
+	
+	// 此方法是对条件的解析，目前支持的条件类型是：
+	// 单条件：1.0  指val=1.0，此处也支持val是字符串的情况
+	// 范围值：(1,8] 指 1<val<=8，$代表无穷，在左为负无穷，在右为正无穷
+	// 单独值：1,2,4,5,6 值val取值在此列表中，此处也支持val是字符串的情况
+	private static boolean calConditionStr(String val, String conditionStr) {
+		boolean flag = false;
+		
+		// 如果没有值则认为该条件不成立
+		if(StringUtils.isEmpty(val)) {
+			return false;
+		}
+		// 如果没有条件描述，则认为该条件成立
+		conditionStr = conditionStr.trim();
+		if(StringUtils.isEmpty(conditionStr) || "NA".equalsIgnoreCase(conditionStr)) {
+			return true;
+		}
+		
+		BigDecimal valNum = null;
+		String valStr = null;
+		boolean valNumFlag;
+		if(isNumber(val)) {
+			valNum = new BigDecimal(val);
+			valNumFlag = true;
+		}else {
+			valStr = val;
+			valNumFlag = false;
+		}
+		
+		String firstStr = conditionStr.substring(0, 1);
+		String lastStr = conditionStr.substring(conditionStr.length()-1);
+		if("(".equals(firstStr) || "[".equals(firstStr)) {
+			String[] arr = conditionStr.substring(1,conditionStr.length()-1).split(",");
+			arr[0] = arr[0].trim();
+			arr[1] = arr[1].trim();
+			BigDecimal leftNum, rightNum;
+			if("$".equals(arr[0])) {
+				leftNum = new BigDecimal(Integer.MIN_VALUE);
+			}else {
+				leftNum = new BigDecimal(arr[0]);
+			}
+			if("$".equals(arr[1])) {
+				rightNum = new BigDecimal(Integer.MAX_VALUE);
+			}else {
+				rightNum = new BigDecimal(arr[1]);
+			}
+			
+			if("(".equals(firstStr) && ")".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) < 0) && (rightNum.compareTo(valNum) > 0);
+			}
+			if("[".equals(firstStr) && "]".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) <= 0) && (rightNum.compareTo(valNum) >= 0);
+			}
+			if("(".equals(firstStr) && "]".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) < 0) && (rightNum.compareTo(valNum) >= 0);
+			}
+			if("[".equals(firstStr) && ")".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) <= 0) && (rightNum.compareTo(valNum) > 0);
+			}
+			
+		}else if(conditionStr.contains(",")) {
+			String[] arr = conditionStr.split(",");
+			BigDecimal tmpNum;
+			for (String string : arr) {
+				string = string.trim();
+				if(valNumFlag) {
+					tmpNum = new BigDecimal(string);
+					if(tmpNum.compareTo(valNum)==0) {
+						flag = true;
+						break;
+					}
+				}else {
+					if(string.equalsIgnoreCase(valStr)) {
+						flag = true;
+						break;
+					}
+				}
+			}
+			
+		}else {
+			if(valNumFlag) {
+				BigDecimal singleNum = new BigDecimal(conditionStr);
+				flag = (singleNum.compareTo(valNum)==0);
+			}else {
+				flag = valStr.equalsIgnoreCase(conditionStr);
+			}
+			
+		}
+		
+		return flag;
+	}
+	
+	private static boolean isNumber(String str){  
+        String reg = "^[0-9]+(.[0-9]+)?$";  
+        return str.matches(reg);  
+    }  
 }

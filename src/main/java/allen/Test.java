@@ -1,5 +1,6 @@
 package allen;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -10,86 +11,130 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.Gson;
 
 public class Test {
 	private static String tt;
 	/**
 	 * @param args
+	 * @throws ScriptException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ScriptException {
 		Test t = new Test();
-//		t.hashmapTest();
-//		System.out.println((long)(Math.random()*100));
-//		System.out.println(new BigDecimal(12.34));
-//		
-//		System.out.println(t.getMD5Str("Allen��"));
-//		
-//		for (String string : "com.sinyd.demo.domain".split("\\.")) {
-//			System.out.println(string);
-//		}
-//		
-//		System.out.println(replaceStr("wangyc@allen#base_transport_org#list"));
-//		String tmp="1234,asd,";
-//		System.out.println(tmp.substring(0, tmp.length()-1));
-//		
-//		
-//		String url = "/ //qasp//sysmanage/sysorglist.do";
-//		String[] arrUrl = url.split("/");
-//		StringBuilder sb = new StringBuilder();
-//		int index=0;
-//		for (String string : arrUrl) {
-//			if(StringUtils.isNotBlank(string)){
-//				index++;
-//			}
-//			if(index>1){
-//				sb.append("/").append(string);
-//			}
-//		}
-//		System.out.println(sb.toString());
-//		
-//		
-//		System.out.println((allToJson(1,2,3)));
-//		System.out.println((allToJson()));
-//		System.out.println((allToJson(null)));
-//		System.out.println((allToJson(new TreeBean(), tt, null, new Date(), null)));
-//		System.out.println(new Date());
-//		
-//		System.out.println(checkIP("127.0.0.1"));
-//		
-//		HashMap<String, String> mmm = new HashMap<String, String>();
-//		mmm.put("aaa", "aaa");
-//		
-//		System.out.println(mmm.get("aaa"));
-//		System.out.println(mmm.get(null));
 		
-//		Map<String, String> aa = new HashMap<>();
-//		aa.put("01", "aaa");
-//		aa.put("02", "bbb");
-//		aa.put("13", "bbb");
-//		
-//		String[] priorityArr = aa.keySet().toArray(new String[0]);
-//		Arrays.sort(priorityArr);
-//		for (String priorityName : priorityArr) {
-//			System.out.println(priorityName);
-//		}
+//		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
+//		script.put("aa", 1.22345678);
+//		System.out.println(script.eval("aa==1.22345678"));
+//		double aa = 1.12345678;
+//		BigDecimal bb = new BigDecimal("1.12345678");
+//		System.out.println(aa==1.22345678);
 		
-		
-		
-		System.out.println(getNowTimestamp().getTime());
-		
-//		try {
-//			Thread.sleep(2000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		System.out.println(getNowTimestamp().getTime());
+		System.out.println(calConditionStr("12.1", "12.0"));
+		System.out.println(calConditionStr("12.3", "($,18)"));
+		System.out.println(calConditionStr("12.3", "($,$)"));
+		System.out.println(calConditionStr("15", "11,13, 15.0, 15.2,13"));
 	}
 	
 	public static Timestamp getNowTimestamp() {
 		return new Timestamp(new Date().getTime());
+	}
+	
+	public static boolean isNumber(String str){  
+        String reg = "^[0-9]+(.[0-9]+)?$";  
+        return str.matches(reg);  
+    }  
+	
+	private static boolean calConditionStr(String val, String conditionStr) {
+		boolean flag = false;
+		
+		// 如果没有值则认为该条件不成立
+		if(StringUtils.isEmpty(val)) {
+			return false;
+		}
+		// 如果没有条件描述，则认为该条件成立
+		conditionStr = conditionStr.trim();
+		if(StringUtils.isEmpty(conditionStr) || "NA".equalsIgnoreCase(conditionStr)) {
+			return true;
+		}
+		
+		BigDecimal valNum = null;
+		String valStr = null;
+		boolean valNumFlag;
+		if(isNumber(val)) {
+			valNum = new BigDecimal(val);
+			valNumFlag = true;
+		}else {
+			valStr = val;
+			valNumFlag = false;
+		}
+		
+		String firstStr = conditionStr.substring(0, 1);
+		String lastStr = conditionStr.substring(conditionStr.length()-1);
+		if("(".equals(firstStr) || "[".equals(firstStr)) {
+			String[] arr = conditionStr.substring(1,conditionStr.length()-1).split(",");
+			arr[0] = arr[0].trim();
+			arr[1] = arr[1].trim();
+			BigDecimal leftNum, rightNum;
+			if("$".equals(arr[0])) {
+				leftNum = new BigDecimal(Integer.MIN_VALUE);
+			}else {
+				leftNum = new BigDecimal(arr[0]);
+			}
+			if("$".equals(arr[1])) {
+				rightNum = new BigDecimal(Integer.MAX_VALUE);
+			}else {
+				rightNum = new BigDecimal(arr[1]);
+			}
+			
+			if("(".equals(firstStr) && ")".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) < 0) && (rightNum.compareTo(valNum) > 0);
+			}
+			if("[".equals(firstStr) && "]".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) <= 0) && (rightNum.compareTo(valNum) >= 0);
+			}
+			if("(".equals(firstStr) && "]".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) < 0) && (rightNum.compareTo(valNum) >= 0);
+			}
+			if("[".equals(firstStr) && ")".equals(lastStr)) {
+				flag = (leftNum.compareTo(valNum) <= 0) && (rightNum.compareTo(valNum) > 0);
+			}
+			
+		}else if(conditionStr.contains(",")) {
+			String[] arr = conditionStr.split(",");
+			BigDecimal tmpNum;
+			for (String string : arr) {
+				string = string.trim();
+				if(valNumFlag) {
+					tmpNum = new BigDecimal(string);
+					if(tmpNum.compareTo(valNum)==0) {
+						flag = true;
+						break;
+					}
+				}else {
+					if(string.equalsIgnoreCase(valStr)) {
+						flag = true;
+						break;
+					}
+				}
+			}
+			
+		}else {
+			if(valNumFlag) {
+				BigDecimal singleNum = new BigDecimal(conditionStr);
+				flag = (singleNum.compareTo(valNum)==0);
+			}else {
+				flag = valStr.equalsIgnoreCase(conditionStr);
+			}
+			
+		}
+		
+		return flag;
 	}
 	
 	private static boolean checkIP(String ip) {
