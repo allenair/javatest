@@ -206,6 +206,7 @@ public class IotAlarmEngine {
 					Map<String, Object> setValFunMap = logicMap.get(logicCellName);
 					for (String paramName : setValFunMap.keySet()) {
 						cache.put(hardCode + "#S#" + paramName, script.eval(setValFunMap.get(paramName).toString()).toString());
+						script.put(paramName, getValueByString(cache.get(hardCode+"#S#"+paramName)));
 					}
 				}
 			}
@@ -213,6 +214,7 @@ public class IotAlarmEngine {
 			if (elseFlag && elseValFunMap != null) {
 				for (String paramName : elseValFunMap.keySet()) {
 					cache.put(hardCode + "#S#" + paramName, script.eval(elseValFunMap.get(paramName).toString()).toString());
+					script.put(paramName, getValueByString(cache.get(hardCode+"#S#"+paramName)));
 				}
 			}
 		} catch (ScriptException e) {
