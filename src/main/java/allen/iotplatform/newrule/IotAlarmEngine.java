@@ -17,18 +17,18 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
 
 public class IotAlarmEngine {
+	private static Logger log = LoggerFactory.getLogger(IotAlarmEngine.class);
+	
 	private static ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<>();
 	private static Map<String, ScriptBean> scriptBeanMap = new HashMap<>();
 	private static Map<String, String> errorDescriptMap = new HashMap<>();
-	
-	static {
-//		load(init("d:/iot_alarm_template.json"), "xio_alarm");
-	}
 	
 	public static String init(String fileName) {
 		try {
@@ -123,32 +123,45 @@ public class IotAlarmEngine {
 		
 		// 如果此处标记清理标记，说明已经产生预警或本次计算完成，需要将本系列计算中的状态清除，以便开始下次计算
 		if(cleanFlag) {
-			cleanCache(hardCode, scriptBean.getInner_state());
-			cleanCache(hardCode, scriptBean.getState());
+			cleanCache(hardCode, scriptBean);
 		}
 
 		return errStateList;
 	}
 	
 	// 此处处理结束计算的问题，由于存在两种情况，一是模板执行一遍就出结果，二是模板需要执行多次（次数不定）需要等到出现符合条件的时候才能结束
-	// 因此此处控制方式是，判断输出的变量是否在停止标记中，如果停止标记列表为空，则模板只执行一次
-	private static boolean isFinished(String stateName, ScriptBean scriptBean) {
-		if(scriptBean.getStop_condition()==null || scriptBean.getStop_condition().size()==0) {
-			return true;
+	// 作废：因此此处控制方式是，判断输出的变量是否在停止标记中，如果停止标记列表为空，则模板只执行一次
+	// 新逻辑是：需要查询except_state标记列表,如果状态名在此列表中，说明此状态需要跳过，不需要更新状态
+	private static boolean isExcepted(String stateName, ScriptBean scriptBean) {
+		if(scriptBean.getExcept_state()==null || scriptBean.getExcept_state().size()==0) {
+			return false;
+			
 		}else {
-			if(scriptBean.getStop_condition().contains(stateName)) {
+			if(scriptBean.getExcept_state().contains(stateName)) {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
+	private static boolean isFinished(String stateName, ScriptBean scriptBean) {
+		return !isExcepted(stateName, scriptBean);
+	}
 	
 	
-	// 将缓存中内部状态初始化
-	private static void cleanCache(String hardCode, Map<String, Integer> innerStateMap){
-		for (String key : innerStateMap.keySet()) {
-			cache.remove(hardCode+"#S#"+key);
+	// 将缓存中状态初始化
+	private static void cleanCache(String hardCode, ScriptBean scriptBean){
+		for (String key : scriptBean.getInner_state().keySet()) {
+			if(!isExcepted(key, scriptBean)) {
+				cache.remove(hardCode+"#S#"+key);
+			}
+		}
+		
+		for (String key : scriptBean.getState().keySet()) {
+			if(!isExcepted(key, scriptBean)) {
+				cache.remove(hardCode+"#S#"+key);
+			}
 		}
 	}
 	
@@ -218,7 +231,7 @@ public class IotAlarmEngine {
 				}
 			}
 		} catch (ScriptException e) {
-			System.err.println("==ERROR=IN=LOGIC=>>>"+logicName+"<<<========");;
+			log.error("==ERROR=IN=LOGIC=>>>"+logicName+"<<<========");;
 		}
 		
 		// 3、计算查表计算的值（value_map区域）
@@ -234,7 +247,7 @@ public class IotAlarmEngine {
 						calVal = script.eval(rowRes).toString();
 					} catch (ScriptException e) {
 						calVal = "NA";
-						System.err.println("==ERROR=IN=CALCULATE=>>>"+key+"<<<========");
+						log.error("==ERROR=IN=CALCULATE=>>>"+key+"<<<========");
 					}
 					break;
 				}else {

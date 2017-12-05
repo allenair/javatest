@@ -13,25 +13,25 @@
       "logic": {
         "con1 && con5": {
           "inner_person_state": 1,
-          "PEOPLE": 1
-        },
-        "con1 && !con5": {
-          "inner_person_state": "__PEOPLE_LAST_FLAG",
-          "PEOPLE": "__PEOPLE_LAST_FLAG"
+          "PEOPLE": 1,
+          "inner_person_last": 1
         },
         "con2 && con3 && con4": {
           "inner_person_state": 0,
-          "PEOPLE": 0
+          "PEOPLE": 0,
+          "inner_person_last": 0
         },
         "else": {
-          "inner_person_state": "__PEOPLE_LAST_FLAG",
-          "PEOPLE": "__PEOPLE_LAST_FLAG"
+          "inner_person_state": "inner_person_last",
+          "PEOPLE": "inner_person_last"
         }
       }
     },
     {
       "lg_name": "S101",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__P381 == 1",
@@ -74,7 +74,9 @@
     },
     {
       "lg_name": "S102",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__P386 == 1",
@@ -101,7 +103,9 @@
     },
     {
       "lg_name": "S103",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__P387 == 1",
@@ -128,7 +132,9 @@
     },
     {
       "lg_name": "S104",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__P382 == 1",
@@ -173,7 +179,9 @@
     },
     {
       "lg_name": "S105",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__P384 == 1",
@@ -218,7 +226,9 @@
     },
     {
       "lg_name": "S106",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__ERROR_2 == 'E107'",
@@ -245,7 +255,9 @@
     },
     {
       "lg_name": "S107",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__P382 == 1",
@@ -288,7 +300,9 @@
     },
     {
       "lg_name": "S108",
-      "dep_logic": ["person"],
+      "dep_logic": [
+        "person"
+      ],
       "condition": {
         "con1": "__ROOMMAINTAIN == 0",
         "con2": "__ROOMELECREIC == 0",
@@ -500,7 +514,7 @@
         "con3": "inner_S219_start_time > 0",
         "con4": "(__NOW - inner_S219_start_time) <= 7200",
         "con5": "inner_S219_count > 3",
-        "con6": "__E109_LAST == 0"
+        "con6": "inner_S219_last == 1"
       },
       "logic": {
         "con1 && con3 && con4 && con5": {
@@ -510,12 +524,18 @@
           "inner_S219_start_time": "__NOW",
           "inner_S219_count": 1
         },
-        "con1 && con2 && con3 && con4 && con6": {
+        "con1 && con2 && con3 && con4 && !con6": {
           "inner_S219_count": "inner_S219_count + 1"
         },
         "con3 && !con4": {
           "inner_S219_start_time": 0,
           "inner_S219_count": 0
+        },
+        "con2": {
+          "inner_S219_last": 1
+        },
+        "!con2": {
+          "inner_S219_last": 0
         }
       }
     },
@@ -528,7 +548,7 @@
         "con3": "inner_S220_start_time > 0",
         "con4": "(__NOW - inner_S220_start_time) <= 86400",
         "con5": "inner_S220_count > 5",
-        "con6": "__E152_LAST == 0"
+        "con6": "inner_S220_last == 1"
       },
       "logic": {
         "con1 && con3 && con4 && con5": {
@@ -538,12 +558,18 @@
           "inner_S220_start_time": "__NOW",
           "inner_S220_count": 1
         },
-        "con1 && con2 && con3 && con4 && con6": {
+        "con1 && con2 && con3 && con4 && !con6": {
           "inner_S220_count": "inner_S220_count + 1"
         },
         "con3 && !con4": {
           "inner_S220_start_time": 0,
           "inner_S220_count": 0
+        },
+        "con2": {
+          "inner_S220_last": 1
+        },
+        "!con2": {
+          "inner_S220_last": 0
         }
       }
     },
@@ -606,7 +632,6 @@
     "__ERROR_2": "",
     "__ERROR_3": "",
     "__PEOPLE_FLAG": "",
-    "__PEOPLE_LAST_FLAG": "",
     "__ROOMMAINTAIN": "",
     "__ROOMELECREIC": "",
     "__ALARM": "",
@@ -621,13 +646,12 @@
     "__P382": "",
     "__P384": "",
     "__P386": "",
-    "__P387": "",
-    "__E109_LAST": "",
-    "__E152_LAST": ""
+    "__P387": ""
   },
   "inner_state": {
     "inner_maintance_state": 0,
     "inner_person_state": 0,
+    "inner_person_last": 0,
     "inner_S101_start_time": 0,
     "inner_S104_start_time": 0,
     "inner_S105_start_time": 0,
@@ -642,12 +666,14 @@
     "inner_S217_start_time": 0,
     "inner_S218_start_time": 0,
     "inner_S219_start_time": 0,
+    "inner_S219_last": 0,
     "inner_S219_count": 0,
     "inner_S220_start_time": 0,
-    "inner_S220_count": 0
+    "inner_S220_count": 0,
+    "inner_S220_last": 0
   },
   "state": {
-  	"PEOPLE": 0,
+    "PEOPLE": 0,
     "S101": 0,
     "S102": 0,
     "S103": 0,
@@ -681,8 +707,42 @@
     "S224": 0
   },
   "state_priority": {
-    "1": ["PEOPLE", "S101", "S102", "S103", "S104", "S105", "S106", "S107", "S108", "S109"],
-    "2": ["S201", "S202", "S203", "S204", "S205", "S206", "S207", "S208", "S209", "S210", "S211", "S212", "S213", "S216", "S217", "S218", "S219", "S220", "S221", "S222", "S223", "S224"]
+    "1": [
+      "PEOPLE",
+      "S101",
+      "S102",
+      "S103",
+      "S104",
+      "S105",
+      "S106",
+      "S107",
+      "S108",
+      "S109"
+    ],
+    "2": [
+      "S201",
+      "S202",
+      "S203",
+      "S204",
+      "S205",
+      "S206",
+      "S207",
+      "S208",
+      "S209",
+      "S210",
+      "S211",
+      "S212",
+      "S213",
+      "S216",
+      "S217",
+      "S218",
+      "S219",
+      "S220",
+      "S221",
+      "S222",
+      "S223",
+      "S224"
+    ]
   },
   "state_description": {
     "S101": "门区外停车困人",
@@ -717,5 +777,8 @@
     "S223": "上下强减动作",
     "S224": "安全开关动作"
   },
-  "stop_condition": ["S101", "S102", "S103", "S104", "S105", "S106", "S107", "S108", "S109", "S201", "S202", "S203", "S204", "S205", "S206", "S207", "S208", "S209", "S210", "S211", "S212", "S213", "S216", "S217", "S218", "S219", "S220", "S221", "S222", "S223", "S224"]
+  "except_state": [
+    "PEOPLE",
+    "inner_person_last"
+  ]
 }
