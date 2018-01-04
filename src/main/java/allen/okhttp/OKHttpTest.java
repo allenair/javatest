@@ -72,4 +72,27 @@ public class OKHttpTest {
 		Response response = client.newCall(request).execute();
 		return response.body().string();
 	}
+	
+	public void postAsyn(String url, String json) throws IOException {
+		RequestBody body = RequestBody.create(JSON, json);
+		Request request = new Request.Builder().url(url).post(body).build();
+		client.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				if(response.isSuccessful()) {
+					log.info(response.body().string());
+					System.out.println("===========TTTTT==="+System.currentTimeMillis());
+				}else {
+					throw new IOException("Some Error Happen: " + response);
+				}
+			}
+			@Override
+			public void onFailure(Call call, IOException err) {
+				log.error(err.getMessage());
+			}
+		});
+		
+	}
+	
+	
 }
