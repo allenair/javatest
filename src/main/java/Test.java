@@ -3,13 +3,19 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,7 +29,7 @@ import com.zxtech.bean.UpHardAnalysisVO;
 
 
 public class Test {
-
+	private static Logger log = LoggerFactory.getLogger(Test.class);
 	/**
 	 * @param args
 	 */
@@ -49,6 +55,7 @@ public class Test {
 		
 		int a = 100_000_000;
 		System.out.println(a);
+		
 	}
 	
 	
