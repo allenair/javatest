@@ -1,6 +1,7 @@
 package allen.okhttp;
 
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +43,29 @@ public class OKHttpTest {
 //			}).start();
 //		}
 		
-		String url = "http://localhost:8080/ess/api/savecallfixdataforiot.io?hardCode=80063&errorDescript=aaaaallllleeeeennnnn" + "&peopleFlag=1";
-		new OKHttpTest().getFunAsyn(url);
+//		String url = "http://localhost:8080/ess/api/savecallfixdataforiot.io?hardCode=80063&errorDescript=aaaaallllleeeeennnnn" + "&peopleFlag=1";
+//		new OKHttpTest().getFunAsyn(url);
+		
+		final OKHttpTest okhttp = new OKHttpTest();
+		final String url = "http://localhost:8080/essiot/ftiotdata.io";
+		final String json="{\"elevatorId\":\"allentest123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
+		
+//		final String url = "http://localhost:8080/essiot/eliotdata.io";
+//		final String json="{\"elevator_id\":\"el123\",\"parameter_str\":\"AMEAfwDEtwAA5AwAAAMAAACkgQEPLS0AFwAAAMgBzAAABQACAQEBAAAAAKqqqqoAAAAAAGkAAAAAAAAAAAAAcg==\",\"hard_time\":\"123456789\",\"electric_flag\":\"1\",\"people_flag\":\"1\",\"room_electric_flag\":\"1\",\"room_maintain_flag\":\"0\",\"top_electric_flag\":\"1\",\"top_maintain_flag\":\"0\",\"alarm\":\"0\",\"err_info\":\"100\"}";
+		
+		okhttp.post(url, json);
+		
+		IntStream.range(1, 1400).forEach(n->{
+			Thread tt = new Thread(()->{
+				try {
+					okhttp.post(url, json);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+			
+			tt.start();
+		});
 
 	}
 	
