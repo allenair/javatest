@@ -3,14 +3,19 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,13 +24,12 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.mongodb.util.Hash;
 import com.zxtech.RedisUtil;
 import com.zxtech.bean.UpHardAnalysisVO;
 
 
 public class Test {
-
+	private static Logger log = LoggerFactory.getLogger(Test.class);
 	/**
 	 * @param args
 	 */
@@ -49,26 +53,9 @@ public class Test {
 		String ss = "00000000010000010000000001111111000000001000001010111001000000000000000000101100000000010000000000000000000000010000000000000000000000001000010010000000000000010000111100101101001011010000000000000110000000000000000000000000011011000100000111110111000000000010001011111111000000000010100111100100000000010000000011111111111111111111111111111111000000000000000000000000000000000010000000000001000000000000000001000000000000000000000001100100000000000000000000000000000000000000000000000000000000000000000001110010";
 		System.out.println("ss:>>"+Base64.getEncoder().encodeToString(getByteByStr(ss)));
 		
+		int a = 100_000_000;
+		System.out.println(a);
 		
-		Map<String, String> map1 = new HashMap<>();
-		Map<String, String> map2 = new HashMap<>();
-		
-		map1.put("1", "1");
-		map1.put("11", "11");
-		map1.put("111", "111");
-		map1.put("1111", "1111");
-		
-		map2.put("a", "a");
-		map2.put("aa", "aa");
-		map2.put("aaa", "aaa");
-		map2.put("aaaa", "aaaa");
-		
-		Set<String> mySet = map1.keySet();
-		mySet.addAll(map2.keySet());
-		
-		for (String string : mySet) {
-			System.err.println(string);
-		}
 	}
 	
 	

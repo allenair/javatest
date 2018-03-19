@@ -1,5 +1,6 @@
 package allen;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
@@ -19,13 +20,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
 
+import allen.okhttp.OKHttpTest;
+
 public class Test {
 	private static String tt;
 	/**
 	 * @param args
 	 * @throws ScriptException 
 	 */
-	public static void main(String[] args) throws ScriptException {
+	public static void main(String[] args) throws Exception {
 		Test t = new Test();
 		
 //		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
@@ -35,10 +38,37 @@ public class Test {
 //		BigDecimal bb = new BigDecimal("1.12345678");
 //		System.out.println(aa==1.22345678);
 		
-		System.out.println(calConditionStr("12.1", "12.0"));
-		System.out.println(calConditionStr("12.3", "($,18)"));
-		System.out.println(calConditionStr("12.3", "($,$)"));
-		System.out.println(calConditionStr("15", "11,13, 15.0, 15.2,13"));
+//		System.out.println(calConditionStr("12.1", "12.0"));
+//		System.out.println(calConditionStr("12.3", "($,18)"));
+//		System.out.println(calConditionStr("12.3", "($,$)"));
+//		System.out.println(calConditionStr("15", "11,13, 15.0, 15.2,13"));
+		
+		
+		final String url="http://localhost:8888/testpost.do";
+//		final String jsondata = "{\"name\":\"Allen\",\"post\":\"aa\",\"sex\":\"male\",\"time\":\""+System.currentTimeMillis()+"\"}";
+		final String jsondata = "{\"name\":\"Allen\",\"post\":\"aa\",\"sex\":\"male\",\"time\":\"";
+		
+		
+		for(int i=0; i<30; i++) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						new OKHttpTest().postAsyn(url, jsondata+System.currentTimeMillis()+"\"}");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}).start();
+		}
+		
+		
+//		new OKHttpTest().postAsyn(url, jsondata);
+//		new OKHttpTest().post(url, jsondata);
+		
+		
+		System.out.println("===========END============");
 	}
 	
 	public static Timestamp getNowTimestamp() {
