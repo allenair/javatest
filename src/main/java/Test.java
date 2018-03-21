@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,9 +57,18 @@ public class Test {
 		int a = 100_000_000;
 		System.out.println(a);
 		
+		testNumber();
 	}
 	
-	
+	private static void testNumber() {
+		System.out.println(Pattern.matches("[0-9]+", "123"));
+		System.out.println(Pattern.matches("[0-9]+", "a234"));
+		System.out.println(Pattern.matches("[0-9]+", "90009"));
+		System.out.println(Pattern.matches("[0-9]+", "12j33"));
+		System.out.println(Pattern.matches("[0-9]+", "1.33"));
+		System.out.println(Pattern.matches("[0-9]+", "1.33"));
+		System.out.println(Pattern.matches("[0-9]+", "133 "));
+	}
 	
 	private String encode(String value) throws Exception {
 		return URLEncoder.encode(value, "UTF-8");

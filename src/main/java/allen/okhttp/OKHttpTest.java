@@ -47,25 +47,30 @@ public class OKHttpTest {
 //		new OKHttpTest().getFunAsyn(url);
 		
 		final OKHttpTest okhttp = new OKHttpTest();
-//		final String url = "http://localhost:8080/essiot/ftiotdata.io";
-//		final String json="{\"elevatorId\":\"allentest123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
+		final String url = "http://localhost:9999/essiot/ftiotdata.io";
+		final String json="{\"elevatorId\":\"allentest123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
 		
-		final String url = "http://localhost:8080/essiot/eliotdata.io";
-		final String json="{\"elevatorId\":\"el123\",\"parameterStr\":\"AMEAfwDEtwAA5AwAAAMAAACkgQEPLS0AFwAAAMgBzAAABQACAQEBAAAAAKqqqqoAAAAAAGkAAAAAAAAAAAAAcg==\",\"time\":\"123456789\",\"electric\":\"1\",\"people\":\"1\",\"roomElectric\":\"1\",\"roomMaintain\":\"0\",\"topElectric\":\"1\",\"topMaintain\":\"0\",\"alarm\":\"0\",\"errInfo\":\"100\"}";
+//		final String url = "http://localhost:8080/essiot/eliotdata.io";
+//		final String json="{\"elevatorId\":\"el123\",\"parameterStr\":\"AMEAfwDEtwAA5AwAAAMAAACkgQEPLS0AFwAAAMgBzAAABQACAQEBAAAAAKqqqqoAAAAAAGkAAAAAAAAAAAAAcg==\",\"time\":\"123456789\",\"electric\":\"1\",\"people\":\"1\",\"roomElectric\":\"1\",\"roomMaintain\":\"0\",\"topElectric\":\"1\",\"topMaintain\":\"0\",\"alarm\":\"0\",\"errInfo\":\"100\"}";
 		
-		okhttp.post(url, json);
+//		okhttp.post(url, json);
 		
-		IntStream.range(1, 15000).forEach(n->{
-			Thread tt = new Thread(()->{
-				try {
-					okhttp.post(url, json);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		for (int k = 0; k < 1; k++) {
+			Thread.sleep(500);
+			IntStream.rangeClosed(1, 2).forEach(n -> {
+				Thread tt = new Thread(() -> {
+					try {
+						okhttp.post(url, json);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+
+				tt.start();
 			});
-			
-			tt.start();
-		});
+			System.out.println("===="+k);
+		}
+		
 		
 		System.out.println("========FIN==========");
 
