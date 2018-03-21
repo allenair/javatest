@@ -47,30 +47,14 @@ public class OKHttpTest {
 //		new OKHttpTest().getFunAsyn(url);
 		
 		final OKHttpTest okhttp = new OKHttpTest();
-<<<<<<< HEAD
-//		final String url = "http://localhost:8080/essiot/ftiotdata.io";
-=======
 //		final String url = "http://localhost:9999/essiot/ftiotdata.io";
->>>>>>> branch 'master' of https://github.com/allenair/javatest.git
 //		final String json="{\"elevatorId\":\"allentest123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
 		
-<<<<<<< HEAD
-		final String url = "http://localhost:8080/essiot/eliotdata.io";
-=======
 		final String url = "http://localhost:9999/essiot/eliotdata.io";
->>>>>>> branch 'master' of https://github.com/allenair/javatest.git
 		final String json="{\"elevatorId\":\"el123\",\"parameterStr\":\"AMEAfwDEtwAA5AwAAAMAAACkgQEPLS0AFwAAAMgBzAAABQACAQEBAAAAAKqqqqoAAAAAAGkAAAAAAAAAAAAAcg==\",\"time\":\"123456789\",\"electric\":\"1\",\"people\":\"1\",\"roomElectric\":\"1\",\"roomMaintain\":\"0\",\"topElectric\":\"1\",\"topMaintain\":\"0\",\"alarm\":\"0\",\"errInfo\":\"100\"}";
 		
 //		okhttp.post(url, json);
 		
-<<<<<<< HEAD
-		IntStream.range(1, 15000).forEach(n->{
-			Thread tt = new Thread(()->{
-				try {
-					okhttp.post(url, json);
-				} catch (IOException e) {
-					e.printStackTrace();
-=======
 		int deviceCount=3000;
 		int dataCount = 5;
 		
@@ -83,7 +67,6 @@ public class OKHttpTest {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
->>>>>>> branch 'master' of https://github.com/allenair/javatest.git
 				}
 			}).start();
 			
