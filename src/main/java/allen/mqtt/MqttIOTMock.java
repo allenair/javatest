@@ -16,17 +16,22 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class MqttIOTMock {
 
 	private int qos = 0;
-	private String broker = "tcp://localhost:1883";
-	private String topic = "/iotdata/ft/";
-	private final int deviceCount = 1000;
-	private final int threadCount = 100;
+	private String broker = "tcp://192.168.0.214:1883";
+//	private String broker = "tcp://localhost:1883";
+	private final int deviceCount = 2000;
+	private final int threadCount = 5;
 
 	public static void main(String[] args) {
 		new MqttIOTMock().runMock();
 	}
 
 	public void runMock() {
-		final String json = "{\"elevatorId\":\"allentest-123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
+//		final String topic = "/iotdata/ft/";
+//		final String json = "{\"elevatorId\":\"allentest-123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
+		
+		final String topic = "/iotdata/el/";
+		final String json = "{\"elevatorId\":\"el123\",\"parameterStr\":\"AMEAfwDEtwAA5AwAAAMAAACkgQEPLS0AFwAAAMgBzAAABQACAQEBAAAAAKqqqqoAAAAAAGkAAAAAAAAAAAAAcg==\",\"time\":\"123456789\",\"electric\":\"1\",\"people\":\"1\",\"roomElectric\":\"1\",\"roomMaintain\":\"0\",\"topElectric\":\"1\",\"topMaintain\":\"0\",\"alarm\":\"0\",\"errInfo\":\"100\"}";
+		
 		for (int k = 0; k < deviceCount; k++) {
 			new Thread(() -> {
 				try {
