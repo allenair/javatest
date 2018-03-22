@@ -18,14 +18,16 @@ public class MqttIOTMock {
 	private int qos = 0;
 	private String broker = "tcp://192.168.0.214:1883";
 //	private String broker = "tcp://localhost:1883";
-	private final int deviceCount = 2000;
-	private final int threadCount = 5;
+	
 
 	public static void main(String[] args) {
 		new MqttIOTMock().runMock();
 	}
 
 	public void runMock() {
+		final int deviceCount = 5000;
+		final int threadCount = 10;
+		
 //		final String topic = "/iotdata/ft/";
 //		final String json = "{\"elevatorId\":\"allentest-123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
 		
@@ -36,7 +38,7 @@ public class MqttIOTMock {
 			new Thread(() -> {
 				try {
 					MqttClient mqttClient = connect("" + UUID.randomUUID());
-					int clientCode = new Random().nextInt(deviceCount * 10);
+					int clientCode = new Random().nextInt(100);
 					for (int n = 0; n < threadCount; n++) {
 						Thread.sleep(500);
 						pub(mqttClient, json, topic + clientCode);
