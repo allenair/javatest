@@ -24,7 +24,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.StringJoiner;
 import java.util.function.IntConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -35,6 +37,9 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestOne {
 
@@ -48,6 +53,9 @@ public class TestOne {
 //		othersFun();
 		
 		stringtest();
+		
+//		File file = new File("/Users/allen/Desktop/aaa");
+//		file.mkdir();
 	}
 	
 	public static void stringtest() {
@@ -55,7 +63,30 @@ public class TestOne {
 //		Stream.of(ss.toCharArray()
 //		Stream.<String>of(ss.split("")).filter(s->!s.trim().isEmpty());
 		
-		IntStream.range(1, 100).parallel().forEach(System.out::println);
+//		IntStream.range(1, 100).parallel().forEach(System.out::println);
+		
+		List<String> strlist = Stream.of("a","b","c").map(str->str.toUpperCase()).collect(Collectors.toList());
+		
+		strlist.stream().forEach(System.out::println);
+		
+		String str = String.join(",", "a","b","c");
+		System.out.println(str);
+		
+		StringJoiner strjoin = new StringJoiner(",", "[", "]");
+		strjoin.add("a");
+//		strjoin.add("a1");
+//		strjoin.add("a2");
+		System.out.println(strjoin.toString());
+		
+		StringJoiner strjoin2 = new StringJoiner(",", "(", ")");
+		strjoin2.add("b");
+		strjoin2.add("b1");
+		System.out.println(strjoin2.toString());
+		System.out.println(strjoin.merge(strjoin2).toString());
+		
+		
+		int sum = IntStream.range(1, 1000).parallel().sum();
+		System.out.println(sum);
 	}
 
 	public static void othersFun() {
