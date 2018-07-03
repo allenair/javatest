@@ -25,7 +25,7 @@ public class MqttIOTMock {
 	}
 
 	public void runMock() {
-		final int deviceCount = 5000;
+		final int deviceCount = 3500;
 		final int threadCount = 10;
 		
 //		final String topic = "/iotdata/ft/";
@@ -44,6 +44,7 @@ public class MqttIOTMock {
 						pub(mqttClient, json, topic + clientCode);
 //						System.out.println("====" + n);
 					}
+					mqttClient.disconnect();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
