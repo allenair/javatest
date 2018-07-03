@@ -28,7 +28,6 @@ public class SqlServerStat {
 		for (String dbName : allDb) {
 			statDb(dbName);
 		}
-		
 	}
 	
 	private void statDb(String dbName){
