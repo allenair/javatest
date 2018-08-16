@@ -52,10 +52,12 @@ public class TestOne {
 		// testParallelJs();
 //		othersFun();
 		
-		stringtest();
+//		stringtest();
 		
 //		File file = new File("/Users/allen/Desktop/aaa");
 //		file.mkdir();
+		
+		testStream();
 	}
 	
 	public static void stringtest() {
@@ -194,6 +196,26 @@ public class TestOne {
 		});
 	}
 
+	public static void testStream() {
+		List<Map<String, Integer>> testList = new ArrayList<>();
+		HashMap<String, Integer> row = new HashMap<>();
+		row.put("count", 12);
+		testList.add(row);
+		
+		row = new HashMap<>();
+		row.put("count", 23);
+		testList.add(row);
+		
+		int sum = 0;
+//		testList.forEach(obj->{
+//			sum +=obj.get("count");
+//		});
+		
+		sum = testList.stream().mapToInt(obj->obj.get("count")).sum();
+		
+		System.out.println(sum);
+	}
+	
 	public static void calljs() {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("nashorn");
