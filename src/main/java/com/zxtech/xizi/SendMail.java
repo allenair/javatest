@@ -1,5 +1,6 @@
 package com.zxtech.xizi;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Properties;
 
@@ -9,7 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 
@@ -38,9 +38,10 @@ public class SendMail {
 		account.setSocketFactoryClass("javax.net.ssl.SSLSocketFactory");
 		account.setStartttlsEnable(true);
 
+		File file = new File("/Users/allen/Desktop/aaaa");
 		
 		
-		MailUtil.send(account, "yucai.wang@5000m.com", "测试", "邮件来自Hutool<h1>测试</h1>", true);
+		MailUtil.send(account, "yucai.wang@5000m.com", "测试", "邮件来自Hutool<h1>测试</h1>", true, file);
 	}
 
     public void testSendEmail() throws Exception {

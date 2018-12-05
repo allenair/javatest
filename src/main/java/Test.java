@@ -1,14 +1,17 @@
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -37,27 +40,61 @@ public class Test {
 	public static void main(String[] args) throws Exception{
 		Test tt = new Test(); 
 		
-		String zhongwen = "这是测试";
-		Map<String, String> map = new HashMap<>();
-		map.put("abc", zhongwen);
-		map.put("xyz", "123");
-		System.out.println(new Gson().toJson(map));
+	    System.out.println(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]); 
+//		String zhongwen = "这是测试";
+//		Map<String, String> map = new HashMap<>();
+//		map.put("abc", zhongwen);
+//		map.put("xyz", "123");
+//		System.out.println(new Gson().toJson(map));
+//		
+//		zhongwen = URLEncoder.encode(zhongwen, "UTF-8");
+//		map.put("abc", zhongwen);
+//		String json = new Gson().toJson(map);
+//		System.out.println(json);
+//		
+//		
+//		System.out.println(URLDecoder.decode(json, "UTF-8"));
+//		
+//		String ss = "00000000010000010000000001111111000000001000001010111001000000000000000000101100000000010000000000000000000000010000000000000000000000001000010010000000000000010000111100101101001011010000000000000110000000000000000000000000011011000100000111110111000000000010001011111111000000000010100111100100000000010000000011111111111111111111111111111111000000000000000000000000000000000010000000000001000000000000000001000000000000000000000001100100000000000000000000000000000000000000000000000000000000000000000001110010";
+//		System.out.println("ss:>>"+Base64.getEncoder().encodeToString(getByteByStr(ss)));
+//		
+//		int a = 100_000_000;
+//		System.out.println(a);
+//		
+//		testNumber();
 		
-		zhongwen = URLEncoder.encode(zhongwen, "UTF-8");
-		map.put("abc", zhongwen);
-		String json = new Gson().toJson(map);
-		System.out.println(json);
+		tt.tt181114();
+	}
+	
+	private void tt181114() {
+		final int count=5;
+		for(int i=0; i<10; i++) {
+			final int num = i * count;
+			new Thread(()->{
+				for(int k=num;k<num+count;k++) {
+					System.out.println(k);
+				}
+				
+			}).start();;
+		}
+	}
+	
+	private void tt181021() {
+		List<String> list = new ArrayList<>();
+		list.add("1");
+		list.add("2");
 		
+		for (String item : list) {
+			System.out.println(item);
+			if(item.equals("2")) {
+				list.remove(item);
+			}
+		}
 		
-		System.out.println(URLDecoder.decode(json, "UTF-8"));
+		for (String string : list) {
+			System.out.println(">>   "+string);
+		}
 		
-		String ss = "00000000010000010000000001111111000000001000001010111001000000000000000000101100000000010000000000000000000000010000000000000000000000001000010010000000000000010000111100101101001011010000000000000110000000000000000000000000011011000100000111110111000000000010001011111111000000000010100111100100000000010000000011111111111111111111111111111111000000000000000000000000000000000010000000000001000000000000000001000000000000000000000001100100000000000000000000000000000000000000000000000000000000000000000001110010";
-		System.out.println("ss:>>"+Base64.getEncoder().encodeToString(getByteByStr(ss)));
-		
-		int a = 100_000_000;
-		System.out.println(a);
-		
-		testNumber();
 	}
 	
 	private static void testNumber() {
