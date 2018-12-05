@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,34 +48,58 @@ public class OKHttpTest {
 //		new OKHttpTest().getFunAsyn(url);
 		
 		final OKHttpTest okhttp = new OKHttpTest();
-		final String url = "http://localhost:9999/essiot/ftiotdata.io";
-		final String json="{\"elevatorId\":\"allentest123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
+//		final String url = "http://localhost:9999/essiot/ftiotdata.io";
+//		final String json="{\"elevatorId\":\"allentest123\",\"parameterStr\":\"ExX+D31ubgAAY3oBAA==\",\"time\":\"12345678\"}";
 		
 //		final String url = "http://localhost:9999/essiot/eliotdata.io";
 //		final String json="{\"elevatorId\":\"el123\",\"parameterStr\":\"AMEAfwDEtwAA5AwAAAMAAACkgQEPLS0AFwAAAMgBzAAABQACAQEBAAAAAKqqqqoAAAAAAGkAAAAAAAAAAAAAcg==\",\"time\":\"123456789\",\"electric\":\"1\",\"people\":\"1\",\"roomElectric\":\"1\",\"roomMaintain\":\"0\",\"topElectric\":\"1\",\"topMaintain\":\"0\",\"alarm\":\"0\",\"errInfo\":\"100\"}";
-		
 //		okhttp.post(url, json);
 		
-		int deviceCount=2500;
-		int dataCount = 10;
+//		int deviceCount=2500;
+//		int dataCount = 10;
+//		for (int k = 0; k < deviceCount; k++) {
+//			new Thread(() -> {
+//				for (int n = 0; n < dataCount; n++) {
+//					try {
+//						okhttp.post(url, json);
+//						Thread.sleep(500);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}).start();
+//		}
 		
-		for (int k = 0; k < deviceCount; k++) {
-			new Thread(() -> {
-				for (int n = 0; n < dataCount; n++) {
-					try {
-						okhttp.post(url, json);
-						Thread.sleep(500);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
-			
-		}
 		
+		okhttp.mockMailClient();
 		
 		System.out.println("========FIN==========");
 
+	}
+	
+	public void mockMailClient()  throws Exception {
+//		HttpUrl url = new HttpUrl.Builder().scheme("http").host("192.168.0.119").port(8080)
+//				.addPathSegment("/xzessutil/util/sendmail.do")
+//				.addQueryParameter("address", "yucai.wang@5000m.com")
+//				.addQueryParameter("personal", "测试AAA")
+//				.addQueryParameter("title", "这是测试发送@"+System.currentTimeMillis())
+//				.addQueryParameter("content", "<div><a href='http://www.baidu.com'>「baidu百度」</a></div>")
+//				.build();
+		
+		HttpUrl url = HttpUrl.parse("http://192.168.0.119:8080/xzessutil/util/sendmail.do");
+		url = url.newBuilder()
+		.addQueryParameter("address", "yucai.wang@5000m.com")
+		.addQueryParameter("personal", "测试AAA")
+		.addQueryParameter("title", "这是测试发送@"+System.currentTimeMillis())
+		.addQueryParameter("content", "<div><a href='http://www.baidu.com'>「baidu百度」</a></div>")
+		.build();
+		
+		
+		System.out.println(url.toString());
+		
+		Request request = new Request.Builder().url(url).build();
+		Response response = client.newCall(request).execute();
+		System.out.println(response.body().string());
 	}
 	
 	public void getFunAsyn(String url) throws Exception {
