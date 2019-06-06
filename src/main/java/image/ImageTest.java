@@ -9,18 +9,124 @@ import javax.imageio.ImageIO;
 
 public class ImageTest {
 
-	public static void main(String[] args) throws Exception  {
-		BufferedImage simg = initBufferedImage("e:/a.png");
-		
+	public static void main(String[] args) throws Exception {
+		BufferedImage simg = initBufferedImage("d:/a.png");
+
 //		BufferedImage gimg = grayProcess(simg);
 //		BufferedImage alimg = alphaProcess(simg);
 //		BufferedImage bimg = binaryImage(simg); 
+//		BufferedImage rimg = getRed(simg);
 		
-		BufferedImage rimg = getRed(simg); 
+		BufferedImage rimg = img_color_contrast(simg,100);
+		
+//		BufferedImage bimg = binaryImage(rimg); 
 
+//		writeBufferedImage(rimg, "d:/abc222.png");
 		
+		System.out.println("a.png==="+checkTable("d:/a.png"));
+		System.out.println("a01.png==="+checkTable("d:/a01.png"));
+		System.out.println("b.jpg==="+checkTable("d:/b.jpg"));
+		System.out.println("cc.png==="+checkTable("d:/cc.png"));
+		System.out.println("c5.png==="+checkTable("d:/c5.png"));
+		System.out.println("c6.png==="+checkTable("d:/c6.png"));
+		System.out.println("d3.png==="+checkTable("d:/d3.png"));
+		System.out.println("b3.png==="+checkTable("d:/b3.png"));
+		System.out.println("zx02.png==="+checkTable("d:/zx02.png"));
 		
-		writeBufferedImage(rimg, "e:/a3.png");
+	}
+
+	public static boolean checkTable(String fileName) throws Exception  {
+		BufferedImage simg = initBufferedImage(fileName);
+		int width = simg.getWidth();
+		int height = simg.getHeight();
+		
+		int maxLength = 0;
+		for (int i = 0; i < width - 50; i+=10) {
+			BufferedImage tmp = simg.getSubimage(i, 0, 50, height);
+			BufferedImage rimg = img_color_contrast(tmp, 100);
+			BufferedImage bimg = binaryImage(rimg);
+
+			int count = 0;
+			for (int h = 0; h < height; h++) {
+				boolean flag = false;
+				for (int r = 0; r < 50; r++) {
+					Color color = new Color(bimg.getRGB(r, h));
+					if (color.getRed() + color.getGreen() + color.getBlue() < 100) {
+						count++;
+						flag = true;
+						break;
+					}
+				}
+
+				maxLength = maxLength < count ? count : maxLength;
+				if (maxLength > height / 4) {
+					return true;
+				}
+
+				if (!flag) {
+					count = 0;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	public static BufferedImage img_color_contrast(BufferedImage imgsrc, int contrast) {
+		try {
+			int contrast_average = 128;
+			// 创建一个不带透明度的图片
+			BufferedImage back = new BufferedImage(imgsrc.getWidth(), imgsrc.getHeight(), BufferedImage.TYPE_INT_RGB);
+			int width = imgsrc.getWidth();
+			int height = imgsrc.getHeight();
+			int pix;
+			for (int i = 0; i < height; i++) {
+				for (int j = 0; j < width; j++) {
+					int pixel = imgsrc.getRGB(j, i);
+					Color color = new Color(pixel);
+
+					if (color.getRed() < contrast_average) {
+						pix = color.getRed() - Math.abs(contrast);
+						if (pix < 0)
+							pix = 0;
+					} else {
+						pix = color.getRed() + Math.abs(contrast);
+						if (pix > 255)
+							pix = 255;
+					}
+					int red = pix;
+					if (color.getGreen() < contrast_average) {
+						pix = color.getGreen() - Math.abs(contrast);
+						if (pix < 0)
+							pix = 0;
+					} else {
+						pix = color.getGreen() + Math.abs(contrast);
+						if (pix > 255)
+							pix = 255;
+					}
+					int green = pix;
+					if (color.getBlue() < contrast_average) {
+						pix = color.getBlue() - Math.abs(contrast);
+						if (pix < 0)
+							pix = 0;
+					} else {
+						pix = color.getBlue() + Math.abs(contrast);
+						if (pix > 255)
+							pix = 255;
+					}
+					int blue = pix;
+
+					color = new Color(red, green, blue);
+					int x = color.getRGB();
+					back.setRGB(j, i, x);
+				}
+			}
+			return back;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private static BufferedImage initBufferedImage(String imagePath) {
@@ -50,7 +156,7 @@ public class ImageTest {
 		}
 		return grayImage;
 	}
-	
+
 	private static BufferedImage grayProcess(BufferedImage sourceImage) {
 		int width = sourceImage.getWidth();
 		int height = sourceImage.getHeight();
