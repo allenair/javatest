@@ -41,17 +41,11 @@ public class Test {
 		Test tt = new Test(); 
 		
 	    System.out.println(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]); 
-//		String zhongwen = "这是测试";
-//		Map<String, String> map = new HashMap<>();
-//		map.put("abc", zhongwen);
-//		map.put("xyz", "123");
-//		System.out.println(new Gson().toJson(map));
 //		
 //		zhongwen = URLEncoder.encode(zhongwen, "UTF-8");
 //		map.put("abc", zhongwen);
 //		String json = new Gson().toJson(map);
 //		System.out.println(json);
-//		
 //		
 //		System.out.println(URLDecoder.decode(json, "UTF-8"));
 //		
@@ -63,19 +57,19 @@ public class Test {
 //		
 //		testNumber();
 		
-		tt.tt181114();
+		tt.tt181021();
 	}
 	
 	private void tt181114() {
-		final int count=5;
-		for(int i=0; i<10; i++) {
+		final int count = 5;
+		for (int i = 0; i < 10; i++) {
 			final int num = i * count;
-			new Thread(()->{
-				for(int k=num;k<num+count;k++) {
+			new Thread(() -> {
+				for (int k = num; k < num + count; k++) {
 					System.out.println(k);
 				}
-				
-			}).start();;
+
+			}).start();
 		}
 	}
 	
@@ -94,7 +88,6 @@ public class Test {
 		for (String string : list) {
 			System.out.println(">>   "+string);
 		}
-		
 	}
 	
 	private static void testNumber() {
@@ -112,29 +105,25 @@ public class Test {
 	}
 	
 	private static byte[] getByteByStr(String str) {
-		int len = str.length()/8;
+		int len = str.length() / 8;
 		byte[] resArr = new byte[len];
-		
+
 		int tmp = 0;
-		for(int i=0; i<len; i++) {
+		for (int i = 0; i < len; i++) {
 			tmp = 0;
-			tmp += Integer.parseInt(str.substring(i*8, i*8+1))<<7;
-			tmp += Integer.parseInt(str.substring(i*8+1, i*8+2))<<6;
-			tmp += Integer.parseInt(str.substring(i*8+2, i*8+3))<<5;
-			tmp += Integer.parseInt(str.substring(i*8+3, i*8+4))<<4;
-			tmp += Integer.parseInt(str.substring(i*8+4, i*8+5))<<3;
-			tmp += Integer.parseInt(str.substring(i*8+5, i*8+6))<<2;
-			tmp += Integer.parseInt(str.substring(i*8+6, i*8+7))<<1;
-			tmp += Integer.parseInt(str.substring(i*8+7, i*8+8));
-			resArr[i] = (byte)tmp;
+			tmp += Integer.parseInt(str.substring(i * 8, i * 8 + 1)) << 7;
+			tmp += Integer.parseInt(str.substring(i * 8 + 1, i * 8 + 2)) << 6;
+			tmp += Integer.parseInt(str.substring(i * 8 + 2, i * 8 + 3)) << 5;
+			tmp += Integer.parseInt(str.substring(i * 8 + 3, i * 8 + 4)) << 4;
+			tmp += Integer.parseInt(str.substring(i * 8 + 4, i * 8 + 5)) << 3;
+			tmp += Integer.parseInt(str.substring(i * 8 + 5, i * 8 + 6)) << 2;
+			tmp += Integer.parseInt(str.substring(i * 8 + 6, i * 8 + 7)) << 1;
+			tmp += Integer.parseInt(str.substring(i * 8 + 7, i * 8 + 8));
+			resArr[i] = (byte) tmp;
 		}
 		return resArr;
 	}
 
-	private void getPlanAndRealCount(String startDate, String endDate, String line_id, int interval_day) {
-		String key="EmployeePerformanceDaoImpl#getPlanAndRealCount@"+startDate+"&"+endDate+"&"+line_id+"&"+interval_day;
-		System.out.println(key);
-	}
 	public void redisTool() {
 		int fl = 1;
 		UpHardAnalysisVO bean = new UpHardAnalysisVO();
@@ -295,24 +284,8 @@ public class Test {
             out.value(new SimpleDateFormat("HH:mm:ss").format(value));
         }
     };
-//    
-	public void test160812(){
-		TestBean bean = new TestBean();
-		bean.setFirstStr("aaa");
-		bean.setMyDate(new java.sql.Date(System.currentTimeMillis()));
-		bean.setMyTime(new Time(System.currentTimeMillis()));
-		
-		String aa = "{\"firstStr\":\"aaa\",\"myDate\":\"2016-12-08\",\"myTime\":\"\"}";
-		GsonBuilder gsonBulder = new GsonBuilder();
-        gsonBulder.registerTypeAdapter(java.sql.Date.class, DATE);   
-        gsonBulder.registerTypeAdapter(java.sql.Time.class, TIME);   
-        TestBean abean = gsonBulder.create().fromJson(aa, TestBean.class);
-		
-		
-		System.out.println(abean);
-	}
-	
-	public int hex2Int(Object s){
+
+    public int hex2Int(Object s){
 		return Integer.parseInt(s.toString(), 16);
 	}
 	

@@ -6,11 +6,6 @@ import java.util.Date;
 public class DateTest {
 	private int[] days = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-	/**
-	 * 1、isLegalDate：对于任意3个整数，判断其是否为一个合法的日期值
-	 * 2、getDateAfterDays：给定一个日期值，计算若干天数后的日期值 
-	 * 3、diffDays：如果有两个日期值，计算它们相距的天数
-	 */
 	public static void main(String[] args) {
 		DateTest tt = new DateTest();
 

@@ -8,12 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.opencv.core.Core;
@@ -27,8 +21,6 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import com.baidu.aip.ocr.AipOcr;
-
 /**
  * * Servlet implementation class TutableRead
  * 
@@ -36,15 +28,8 @@ import com.baidu.aip.ocr.AipOcr;
  * System.loadLibrary("opencv_java410");
  * 
  */
-@WebServlet("/TutableReadBaidu")
-public class TutableReadBaidu extends HttpServlet {
+public class OpenCV{
 	private static final long serialVersionUID = 1L;
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doPost(request, response);
-	}
 
 	static {
 		System.load("F:/opencv/build/java/x86/opencv_java310.dll");
@@ -55,21 +40,16 @@ public class TutableReadBaidu extends HttpServlet {
 	public static final String API_KEY = "";
 	public static final String SECRET_KEY = "";
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void deal(String fileName)
+			throws IOException {
 		long startTime = System.currentTimeMillis();
-		String basePath = request.getSession().getServletContext().getRealPath("/images/");
-		File dir = new File(basePath);
+		File dir = new File(fileName);
 		if (dir.isDirectory()) {
 			for (File f : dir.listFiles()) {
 				f.delete();
 			}
 		}
-		Mat src = Imgcodecs.imread("C:/Users/lilin/Desktop/" + request.getParameter("name") + ".png");
+		Mat src = Imgcodecs.imread("d:/" + "res" + ".png");
 		if (src.empty()) {
 			System.out.println("not found file");
 			return;
@@ -114,7 +94,8 @@ public class TutableReadBaidu extends HttpServlet {
 		Mat horizontal = thresh.clone();
 		Mat vertical = thresh.clone();
 		// 这个值越大，检测到的直线越多
-		String parameter = request.getParameter("xian");
+//		String parameter = request.getParameter("xian");
+		String parameter = "5";
 		if (parameter == null || parameter.equals("")) {
 			parameter = "20";
 		}
@@ -256,7 +237,8 @@ public class TutableReadBaidu extends HttpServlet {
 			int[] y_z = maptoint(mapdata.get("y"));
 
 			// 纵切
-			String px_biao = request.getParameter("x_biao");
+//			String px_biao = request.getParameter("x_biao");
+			String px_biao = "5";
 			if (px_biao == null || px_biao.equals("")) {
 				px_biao = "5";
 			}
@@ -284,9 +266,10 @@ public class TutableReadBaidu extends HttpServlet {
 					}
 				}
 			}
-			imshow(basePath, table, "table_" + i + ".png");// 当前table图
+			imshow(fileName, table, "table_" + i + ".png");// 当前table图
 			// 横切保存
-			String py_biao = request.getParameter("y_biao");
+//			String py_biao = request.getParameter("y_biao");
+			String py_biao = "5";
 			if (py_biao == null || py_biao.equals("")) {
 				py_biao = "5";
 			}
@@ -299,19 +282,19 @@ public class TutableReadBaidu extends HttpServlet {
 					if (k == 0) {
 						Mat img = new Mat(mat, new Rect(0, 0, tuwidth, y_z[k]));
 						if (img.rows() > y_biao) {
-							imshow(basePath, img, "table_" + i + "_" + j + "_" + cy_len + ".png");
+							imshow(fileName, img, "table_" + i + "_" + j + "_" + cy_len + ".png");
 							cy_len++;
 						}
 					} else {
 						Mat img = new Mat(mat, new Rect(0, y_z[k - 1], tuwidth, y_z[k] - y_z[k - 1]));
 						if (img.rows() > y_biao) {
-							imshow(basePath, img, "table_" + i + "_" + j + "_" + cy_len + ".png");
+							imshow(fileName, img, "table_" + i + "_" + j + "_" + cy_len + ".png");
 							cy_len++;
 						}
 						if (k == y_z.length - 1) {// 最后一个处理
 							Mat img1 = new Mat(mat, new Rect(0, y_z[k], tuwidth, tugao - y_z[k]));
 							if (img.rows() > y_biao) {
-								imshow(basePath, img1, "table_" + i + "_" + j + "_" + (cy_len) + ".png");
+								imshow(fileName, img1, "table_" + i + "_" + j + "_" + (cy_len) + ".png");
 							}
 						}
 					}
@@ -321,13 +304,14 @@ public class TutableReadBaidu extends HttpServlet {
 			// 保存数据信息
 			jspdata.put("table_" + i, x_len + "_" + y_len);
 		}
-		request.setAttribute("data", jspdata);
 
 		// 百度识别处理
-		AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+		/*AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+		
+		
 		// 可选：设置网络连接参数
 		client.setConnectionTimeoutInMillis(2000);
-		client.setSocketTimeoutInMillis(60000);
+		client.setSocketTimeoutInMillis(60000);*/
 
 		Map<String, String> jspdata1 = new HashMap<String, String>();
 		int num = 0;
@@ -343,7 +327,8 @@ public class TutableReadBaidu extends HttpServlet {
 					// 行
 					for (int j = 0; j < xlen; j++) {
 						String name = "table_" + num + "_" + j + "_" + i + ".png";
-						JSONObject res = client.basicGeneral(basePath + "/" + name, new HashMap<String, String>());
+//						JSONObject res = client.basicGeneral(fileName + "/" + name, new HashMap<String, String>());
+						JSONObject res = null;
 						String text = "";
 						try {
 							Object words_result = res.get("words_result");
@@ -369,9 +354,6 @@ public class TutableReadBaidu extends HttpServlet {
 			num++;
 		}
 		long endTime = System.currentTimeMillis();
-		request.setAttribute("time", (float) (endTime - startTime) / 1000);
-		request.setAttribute("shibiedata", jspdata1);
-		request.getRequestDispatcher("tutableread.jsp").forward(request, response);
 	}
 
 	public void imshow(String basePath, Mat dst, String name) {

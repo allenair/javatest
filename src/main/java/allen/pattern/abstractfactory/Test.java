@@ -8,9 +8,6 @@ import allen.pattern.abstractfactory.product.IJavaCode;
 
 public class Test {
 
-	/**
-	 * 抽象工厂模式较为常用，spring中大量使用
-	 */
 	public static void main(String[] args) {
 		Test tt = new Test();
 		tt.createByDescription("java", "difficult");

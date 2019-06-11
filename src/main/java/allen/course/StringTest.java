@@ -2,10 +2,6 @@ package allen.course;
 
 public class StringTest {
 
-	/**
-	 * 1、reverseStr字符串反转
-	 * 2、去除字符串中间的多余空格以及两侧空格，并把每个单词首字母大写
-	 */
 	public static void main(String[] args) {
 		StringTest tt = new StringTest();
 
