@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,10 +18,12 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.CharMatcher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -40,7 +43,7 @@ public class Test {
 	public static void main(String[] args) throws Exception{
 		Test tt = new Test(); 
 		
-	    System.out.println(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]); 
+//	    System.out.println(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]); 
 //		
 //		zhongwen = URLEncoder.encode(zhongwen, "UTF-8");
 //		map.put("abc", zhongwen);
@@ -57,7 +60,180 @@ public class Test {
 //		
 //		testNumber();
 		
-		tt.tt181021();
+		tt.tt190614();
+	}
+	private void tt190614() {
+		List<Integer> sortedList = new ArrayList<>();
+		sortedList.add(11000);
+		sortedList.add(9001);
+		sortedList.add(13002);
+		sortedList.add(7003);
+		
+		sortedList.stream().sorted(Comparator.<Integer>reverseOrder()).forEach(System.out::println);
+		
+		Map<String, String> matchMap = new HashMap<>();
+		matchMap.put("轿门", "12345");
+//		matchMap.put("轿门材质", "asdf");
+//		matchMap.put("轿材质", "asdf");
+		
+		String key = matchMap.keySet().stream().max(Comparator.comparing(String::length)).get();
+		
+		System.out.println(key);
+	}
+	private void tt190613() {
+		String[][] arr = new String[][] {{"1","2","3","4"},{}};
+		System.out.println(String.join(";", arr[1]));
+		
+		String[][] lastArray = new String[][] {{"q1","q2","q3","q4"}
+											  ,{"1","2","3","4"}
+											  ,{"1a","2a","3a","4a"}
+											  ,{"1","2","3","4"}};					
+		
+		
+		String[][] currentArray = new String[][] {{"1","2","3","4"}
+												 ,{"1a","2a","3a","4a"}
+												 ,{"1b","2b","3b","4b"}};
+		
+	    
+		Arrays.<String[]>stream(dealTableContentArray(currentArray, lastArray)).forEach(val->{
+			System.out.println(String.join(";", val));
+		});
+		
+	}
+	
+	public String[][] dealTableContentArray(String[][] currentArray, String[][] lastArray) {
+		int index = 0, count = 0;
+		for (int i = lastArray.length - 1; i > 0; i--) {
+			if (String.join(";", lastArray[i]).equals(String.join(";", currentArray[0]))) {
+				index = i;
+				for (int k = index; k < lastArray.length; k++) {
+					if (!String.join(";", lastArray[k]).equals(String.join(";", currentArray[k - index]))) {
+						count = 0;
+						break;
+					}
+					count++;
+				}
+				break;
+			}
+		}
+		
+		
+		int rowNum = lastArray.length + currentArray.length - count;
+		int colNum = currentArray[0].length;
+		
+		String[][] resArr = new String[rowNum][colNum];
+		for (int i = 0; i < lastArray.length; i++) {
+			for (int k = 0; k < colNum; k++) {
+				resArr[i][k] = lastArray[i][k];
+			}
+		}
+		for (int i = count; i < currentArray.length; i++) {
+			for (int k = 0; k < colNum; k++) {
+				resArr[i + lastArray.length - count][k] = currentArray[i][k];
+			}
+		}
+		
+		return resArr;
+	}
+	
+	private void tt190612() {
+		List<String> lastList  = new ArrayList<>();
+		lastList.add("1");
+		lastList.add("2");
+		lastList.add("3");
+		lastList.add("4");
+		lastList.add("5");
+		lastList.add("6");
+		lastList.add("7");
+		lastList.add("8");
+		lastList.add("9");
+		lastList.add("1.7轿底:PVC");
+		lastList.add("1.8轿壁:发纹不锈钢");
+		lastList.add("1.9层门:发纹不锈钢");
+		lastList.add("1.10轿厢操作箱:触点式按钮,两侧均设置。");
+		lastList.add("1.11厅外指示器:一体化触点式按钮,液晶显示器(带方向指示和楼层指示)");
+		lastList.add("1.12首层门套:喷涂钢板象牙白小门套。");
+		lastList.add("1.13其余层门套:发纹不锈钢小门套。");
+		
+		
+		List<String> currentList = new ArrayList<>();
+		currentList.add("1.9层门:发纹不锈钢。");
+		currentList.add("1.10轿厢操作箱:触点式按钮,两侧均设置。");
+		currentList.add("1.11厅外指示器:一体化触点式按钮,液晶显示器(带方向指示和楼层指示)。");
+		currentList.add("1.12首层门套:喷涂钢板象牙白小门套。");
+		currentList.add("1.13其余层门套:发纹不锈钢小门套。");
+		currentList.add("1.14并联控制。");
+		currentList.add("1.15轿内报站钟。");
+		currentList.add("1.16停电自动平层。");
+		currentList.add("7");
+		currentList.add("8");
+		currentList.add("9");
+		currentList.add("b");
+		
+		delRepeatLine(currentList, lastList).forEach(System.out::println);
+	}
+	private List<String> delRepeatLine(List<String> currentList, List<String> lastList){
+		int index = 0, count = 0;
+		for (int i = lastList.size() - 1; i > 0; i--) {
+			if (isStringEqual(lastList.get(i),currentList.get(0))) {
+				index = i;
+				for (int k = index; k < lastList.size(); k++) {
+					if (!isStringEqual(lastList.get(k), currentList.get(k - index)) ) {
+						count=0;
+						break;
+					}
+					count++;
+				}
+				break;
+			}
+		}
+		
+		if(count==0) {
+			return currentList;
+		}
+		
+		List<String> resList = new ArrayList<>();
+		for(int i=count; i<currentList.size();i++) {
+			resList.add(currentList.get(i));
+		}
+
+		return resList;
+	}
+	
+	private boolean isStringEqual(String one, String two) {
+		String oneStr = CharMatcher.anyOf("：，。.！？,!?:").or(CharMatcher.whitespace()).removeFrom(one).trim();
+		String twoStr = CharMatcher.anyOf("：，。.！？,!?:").or(CharMatcher.whitespace()).removeFrom(two).trim();
+		
+		return oneStr.equals(twoStr);
+	}
+	
+	private void tt190611() {
+		String[][] tableDataArray = new String[2][5];
+		tableDataArray[0][0]="00";
+		tableDataArray[0][1]="01";
+		tableDataArray[0][2]="02";
+		tableDataArray[0][3]="03";
+		tableDataArray[0][4]="04";
+		
+		tableDataArray[1][0]="10";
+		tableDataArray[1][1]="11";
+		tableDataArray[1][2]="12";
+		tableDataArray[1][3]="13";
+		tableDataArray[1][4]="14";
+		
+		String[][] newTableDataArray;
+		newTableDataArray = new String[tableDataArray[0].length][tableDataArray.length];
+
+		for (int i = 0; i < tableDataArray.length; i++) {
+			for (int k = 0; k < tableDataArray[0].length; k++) {
+				newTableDataArray[k][i] = tableDataArray[i][k];
+			}
+		}
+
+		tableDataArray = newTableDataArray;
+		
+		Stream.of(tableDataArray).forEach(row->System.out.println(row[0]+"  "+row[1]));
+		
 	}
 	
 	private void tt181114() {
