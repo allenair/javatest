@@ -295,7 +295,11 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.6</version>
+		</dependency>
 		<dependency>
 			<groupId>org.bytedeco.javacpp-presets</groupId>
 			<artifactId>opencv</artifactId>
