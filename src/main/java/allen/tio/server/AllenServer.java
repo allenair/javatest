@@ -52,9 +52,9 @@ public class AllenServer {
 			new Timer().schedule(new TimerTask() {
 				@Override
 				public void run() {
-					int index = RandomUtils.nextInt(0, 50);
+					int index = RandomUtils.nextInt(0, 20);
 					
-					if (index < 20) {
+					if (index < 10) {
 						String clientKey = MockClientGroup.mockClientIdList.get(index);
 						ChannelContext tmp = Tio.getChannelContextByBsId(serverGroupContext, clientKey);
 						
