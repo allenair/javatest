@@ -2,7 +2,6 @@ package allen.tio.client;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.time.LocalDateTime;
 
 import org.tio.client.intf.ClientAioHandler;
 import org.tio.core.ChannelContext;
@@ -65,6 +64,7 @@ public class AllenClientHandler implements ClientAioHandler {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		
 		return heartbeatPacket;
 	}
 

@@ -13,8 +13,8 @@ import allen.tio.TioTestApp;
 import allen.tio.common.AllenPacket;
 
 public class AllenClient {
-//	public static Node serverNode = new Node("172.16.16.23", 9876);
-	public static Node serverNode = new Node("127.0.0.1", 9876);
+	public static Node serverNode = new Node("172.16.5.230", 9876);
+//	public static Node serverNode = new Node("127.0.0.1", 9876);
 	
 	private static ReconnConf reconnConf = new ReconnConf(3000L);
 	
