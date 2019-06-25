@@ -14,8 +14,8 @@ import org.tio.server.TioServer;
 import org.tio.server.intf.ServerAioHandler;
 import org.tio.server.intf.ServerAioListener;
 
-import allen.tio.TioTestApp;
 import allen.tio.common.AllenPacket;
+import allen.tio.common.MockClientGroup;
 
 public class AllenServer {
 	// handler, 包括编码、解码、消息处理
@@ -55,7 +55,7 @@ public class AllenServer {
 					int index = RandomUtils.nextInt(0, 50);
 					
 					if (index < 20) {
-						String clientKey = TioTestApp.mockClientIdList.get(index);
+						String clientKey = MockClientGroup.mockClientIdList.get(index);
 						ChannelContext tmp = Tio.getChannelContextByBsId(serverGroupContext, clientKey);
 						
 						if (tmp != null && !tmp.isClosed) {

@@ -9,14 +9,18 @@ import org.tio.client.intf.ClientAioListener;
 import org.tio.core.Node;
 import org.tio.core.Tio;
 
-import allen.tio.TioTestApp;
 import allen.tio.common.AllenPacket;
+import allen.tio.common.MockClientGroup;
 
 public class AllenClient {
 	public static Node serverNode = new Node("172.16.5.230", 9876);
 //	public static Node serverNode = new Node("127.0.0.1", 9876);
 	
 	private static ReconnConf reconnConf = new ReconnConf(3000L);
+	
+	public static void main(String[] args) throws Exception {
+		send();
+	}
 	
 	public static void send() throws Exception {
 		for (int i = 0; i < 10; i++) {
@@ -31,7 +35,7 @@ public class AllenClient {
 					TioClient tioClient = new TioClient(clientGroupContext);
 					
 					ClientChannelContext clientChannelContext = tioClient.connect(serverNode);
-					String clientId = TioTestApp.mockClientIdList.get(k);
+					String clientId = MockClientGroup.mockClientIdList.get(k);
 					clientChannelContext.setBsId(clientId);
 					
 					while (true) {

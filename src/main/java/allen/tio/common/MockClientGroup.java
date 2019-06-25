@@ -1,11 +1,9 @@
-package allen.tio;
+package allen.tio.common;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import allen.tio.client.AllenClient;
-
-public class TioTestApp {
+public class MockClientGroup {
 	public static List<String> mockClientIdList = new ArrayList<>();
 	static {
 		mockClientIdList.add("mock_client_00");
@@ -29,9 +27,4 @@ public class TioTestApp {
 		mockClientIdList.add("mock_client_18");
 		mockClientIdList.add("mock_client_19");
 	}
-	
-	public static void main(String[] args) throws Exception {
-		AllenClient.send();
-	}
-
 }
