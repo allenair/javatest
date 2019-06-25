@@ -64,10 +64,7 @@ public class AllenServerHandler implements ServerAioHandler {
 			resppacket.setBody(("收到数据").getBytes(AllenPacket.CHARSET));
 			Tio.send(channelContext, resppacket);
 
-		} else {
-			System.out.println("[Server" + LocalDateTime.now() + "]收到：心跳包#" + channelContext.getBsId());
 		}
-		return;
 
 	}
 
