@@ -1,5 +1,6 @@
 package allen.tio.client;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.tio.client.ClientChannelContext;
 import org.tio.client.ClientGroupContext;
 import org.tio.client.ReconnConf;
@@ -42,10 +43,14 @@ public class AllenClient {
 						AllenPacket packet = new AllenPacket();
 						String msg =  clientId + "#client#" + System.currentTimeMillis();
 						packet.setBody(msg.getBytes(AllenPacket.CHARSET));
-						Tio.send(clientChannelContext, packet);
+						boolean flag = Tio.send(clientChannelContext, packet);
+						System.out.println(clientId+"@"+flag);
 
-						Thread.sleep(3000);
-
+						Thread.sleep(4000);
+						
+						if(RandomUtils.nextInt(0, 10)<3) {
+							System.exit(1);
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

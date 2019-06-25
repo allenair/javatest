@@ -50,7 +50,7 @@ public class AllenClientHandler implements ClientAioHandler {
 		byte[] body = helloPacket.getBody();
 		if (body != null) {
 			String str = new String(body, AllenPacket.CHARSET);
-//			System.out.println("[Client"+LocalDateTime.now()+"] 收到：" + str);
+			System.out.println("[Client] 收到："+channelContext.getBsId()+ "%%%" + str);
 		}
 		return;
 	}
