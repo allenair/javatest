@@ -281,6 +281,12 @@
 			<version>4.1.5</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.t-io/tio-core -->
+		<dependency>
+			<groupId>org.t-io</groupId>
+			<artifactId>tio-core</artifactId>
+			<version>3.3.3.v20190620-RELEASE</version>
+		</dependency>
 
 		<exclusion>
 			<groupId>org.apache.geronimo.specs</groupId>

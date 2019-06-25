@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 public class Test1906 {
 
 	public static void main(String[] args) {
-		new Test1906().test0617();
+		new Test1906().test0619();
 	}
 
 	public void test0619() {
@@ -32,7 +32,15 @@ public class Test1906 {
 		
 		aa19test(darr);
 		
+		String a="11";
+		String b = null;
 		
+		System.out.println(joinStr("",a,b));
+		
+	}
+	
+	public static String joinStr(String delimiter, String... str) {
+		return Stream.<String>of(str).map(s-> s==null?"":s).reduce((x, y)->String.join(delimiter, x, y)).get();
 	}
 	
 	private void aa19test(double... aa) {
