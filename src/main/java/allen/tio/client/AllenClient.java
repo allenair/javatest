@@ -48,9 +48,9 @@ public class AllenClient {
 
 						Thread.sleep(4000);
 						
-						if(RandomUtils.nextInt(0, 10)<3) {
-							System.exit(1);
-						}
+//						if(RandomUtils.nextInt(0, 10)<3) {
+//							System.exit(1);
+//						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
