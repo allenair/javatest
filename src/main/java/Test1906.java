@@ -20,9 +20,16 @@ import com.google.gson.Gson;
 public class Test1906 {
 
 	public static void main(String[] args) {
-		new Test1906().test0619();
+		new Test1906().test0627();
 	}
 
+	public void test0627() {
+		System.out.println(Pattern.matches("\\[.*\\]", "[-oo,12]"));
+		System.out.println(Pattern.matches("\\[.*\\]", "[-12,12]"));
+		System.out.println(Pattern.matches("\\[.*\\]", "[-oo,oo]"));
+		System.out.println(Pattern.matches("\\[.*\\]", "[-23,12]"));
+	}
+	
 	public void test0619() {
 		String[] strArr = new String[]{"其余层门套","额定载重","层站数站数","开门尺寸","轿内报站钟","额定速度","开门尺寸开门高度","厅外指示器显示器","层站数","其余层门套类别","层门材质","层站数层数","并联控制","厅外指示器","精确再平层","轿门","操纵箱按钮排布","机房类型","轿门材质","开门尺寸开门宽度","控制系统","操纵箱","井道尺寸井道深度","产品类型","电梯数量","轿底材质","首层门套","轿底","井道尺寸井道宽度","其余层门套材质","层门","首层门套类别","停电自动平层","提升高度","轿壁材质","操纵箱操纵箱按钮","首层门套材质","开门方式","本层开门","轿壁","首层门套颜色","厅外指示器按钮","井道尺寸"}; 
 	
