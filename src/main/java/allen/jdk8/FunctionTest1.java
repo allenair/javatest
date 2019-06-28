@@ -2,9 +2,15 @@ package allen.jdk8;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BinaryOperator;
+import java.util.function.IntSupplier;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,24 +21,68 @@ public class FunctionTest1 {
 		Predicate<Integer> isRight = x -> x > 5;
 		System.out.println(isRight.test(12));
 		testPredict(6, x -> x > 5);
-
-		// =================================================================
+		
+		System.out.println("=================================================");
 		BinaryOperator<Integer> mulFun = (x, y) -> x * y;
 		System.out.println(mulFun.apply(12, 9));
 		System.out.println(testBinOper("abc", "123", (x, y) -> {
 			return x + ";;;" + y;
 		}));
 
-		// ==================================================================
+		System.out.println("=================================================");
 		testFilter();
 		
+		System.out.println("=================================================");
 		Stream.of("asd","xcv","345","dfg").map(x -> x.toUpperCase()).forEach(System.out::println);
 		
+		System.out.println("=================================================");
 		testFlatmap();
 		
+		System.out.println("=================================================");
 		testMaxMin();
+		
+		System.out.println("=================================================");
+		testSpplier(()->"Allen ZZZZXXXXXCCCCC");
+		testIntSpplier(()->123);
+		
+		System.out.println("=================================================");
+		List<String> slist = Arrays.asList("asd","a","567","dfghjk","hj","4567");
+		System.out.println(slist.stream().collect(Collectors.maxBy(Comparator.<String, Integer>comparing(s->s.length()))).get());
+		
+		Map<Boolean, List<String>> resMap = slist.stream().collect(Collectors.partitioningBy(s->isNumber(s)));
+		System.out.println("=================================================");
+		
+		Set<String> set = slist.stream().map(String::toUpperCase).collect(Collectors.toCollection(TreeSet::new));
+		String joined = slist.stream().map(String::toUpperCase).collect(Collectors.joining(","));
+		int total = slist.stream().collect(Collectors.summingInt(String::length));
+		System.out.println("================================================="+total);
+		
+		Map<String, List<String>> byDept = slist.stream().collect(Collectors.groupingBy(String::toUpperCase));
+		Map<Integer, List<String>> byDept2 = slist.stream().collect(Collectors.groupingBy(String::length));
+		Map<String, Integer> totalByDept = slist.stream().collect(Collectors.groupingBy(String::toUpperCase, Collectors.summingInt(String::length)));
+		System.out.println("=================================================");
+		
+		
+		System.out.println(fiboFun(8));
+		cache.forEach((key,value)->System.out.println(key+">>>"+value));
 	}
 
+	private static Map<Integer, Integer> cache = new HashMap<>();
+	public static int fiboFun(int n) {
+		if(n<3) {
+			return 1;
+		}
+		return cache.computeIfAbsent(n-1, FunctionTest1::fiboFun) + cache.computeIfAbsent(n-2, FunctionTest1::fiboFun);
+	}
+	
+	public static void testSpplier(Supplier<String> sfun) {
+		System.out.println(sfun.get().toUpperCase());
+	}
+	
+	public static void testIntSpplier(IntSupplier ifun) {
+		System.out.println(ifun.getAsInt()*10);
+	}
+	
 	public static <T> void testPredict(T num, Predicate<T> pFun) {
 		System.out.println(pFun.test(num));
 	}

@@ -20,9 +20,22 @@ import com.google.gson.Gson;
 public class Test1906 {
 
 	public static void main(String[] args) {
-		new Test1906().test0627();
+		new Test1906().test0628();
 	}
 
+	public void test0628() {
+		String[][] tableDataArray = { {"01tyu","02bnm", "03tyu"}, {"11qwe","12ghj","13ghjk"}, {"21ghj","22ui","23fgh"}, {"31yui","32ghn","33yui"} };
+		int firstRow = 1;
+		String[][] flatArray = new String[firstRow + 2][(tableDataArray.length - firstRow) * tableDataArray[0].length];
+		for (int i = firstRow; i < tableDataArray.length; i++) {
+			for (int k = 0; k < tableDataArray[i].length; k++) {
+				flatArray[firstRow + 1][(i - firstRow) * tableDataArray[0].length + k] = tableDataArray[i][k];
+			}
+		}
+		tableDataArray = flatArray;
+		
+		
+	}
 	public void test0627() {
 		System.out.println(Pattern.matches("\\[.*\\]", "[-oo,12]"));
 		System.out.println(Pattern.matches("\\[.*\\]", "[-12,12]"));
