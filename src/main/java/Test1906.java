@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import com.google.gson.Gson;
 public class Test1906 {
 
 	public static void main(String[] args) {
-		new Test1906().test0628();
+		new Test1906().test0617();
 	}
 
 	public void test0628() {
@@ -224,7 +225,7 @@ public class Test1906 {
 	}
 	
 	public static int[][] numberArraySimilar(double stdNum, double... numArr) {
-		return arraySimilar((x, y) -> numberSimilar(x, y), new Double(stdNum), Arrays.stream(numArr).map(Double::new).boxed().toArray(Double[]::new));
+		return arraySimilar((x, y) -> numberSimilar(x, y), new Double(stdNum), Arrays.stream(numArr).boxed().toArray(Double[]::new));
 	}
 
 	public static int stringSimilar(String one, String two) {
@@ -243,7 +244,10 @@ public class Test1906 {
 			resArr[i][1] = fun.apply(stdNum, numArr[i]);
 		}
 
-		Arrays.sort(resArr, (arr1, arr2) -> arr1[1] < arr2[1] ? 1 : arr1[1] == arr2[1] ? 0 : -1);
+		Comparator<int[]> cp = (arr1, arr2) -> arr1[1] < arr2[1] ? -1 : arr1[1] == arr2[1] ? 0 : 1;
+		Arrays.sort(resArr, cp.reversed());
+		
+//		resArr[0] = Arrays.stream(resArr).max(cp).get();
 		
 		return resArr;
 	}

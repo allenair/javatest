@@ -65,6 +65,13 @@ public class FunctionTest1 {
 		
 		System.out.println(fiboFun(8));
 		cache.forEach((key,value)->System.out.println(key+">>>"+value));
+		System.out.println("=================================================");
+		
+		List<String> strList = Arrays.asList("123");
+		strList.sort(String::compareToIgnoreCase);
+		strList.forEach(System.out::println);
+		
+		
 	}
 
 	private static Map<Integer, Integer> cache = new HashMap<>();
