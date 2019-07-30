@@ -50,7 +50,7 @@ public class FunctionTest1 {
 		System.out.println(slist.stream().collect(Collectors.maxBy(Comparator.<String, Integer>comparing(s->s.length()))).get());
 		
 		Map<Boolean, List<String>> resMap = slist.stream().collect(Collectors.partitioningBy(s->isNumber(s)));
-		System.out.println("=================================================");
+		System.out.println("=================================================" + resMap.get(true).size());
 		
 		Set<String> set = slist.stream().map(String::toUpperCase).collect(Collectors.toCollection(TreeSet::new));
 		String joined = slist.stream().map(String::toUpperCase).collect(Collectors.joining(","));
