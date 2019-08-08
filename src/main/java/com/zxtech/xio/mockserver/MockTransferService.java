@@ -15,8 +15,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.zxtech.RedisUtil;
 import com.zxtech.xio.iot.TransferElevatorParameter;
+
+import db.RedisUtil;
 
 public class MockTransferService {
 	private static GsonBuilder gsonBulder = new GsonBuilder();

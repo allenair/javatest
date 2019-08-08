@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import db.RedisUtil;
+
 
 public class EmpPosition {
 	private Connection conn;

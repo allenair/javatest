@@ -1,4 +1,4 @@
-package com.zxtech;
+package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +14,11 @@ public class OracleDB {
 		conn.setAutoCommit(false);
 		
 		
+		
+		
+//		Class.forName("org.postgresql.Driver");
+//		Connection conn = DriverManager.getConnection(
+//						"jdbc:postgresql://192.168.1.67:5432/essorgtestdb","essdb", "essdb@zxtech");
 	}
 
 }

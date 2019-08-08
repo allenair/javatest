@@ -44,19 +44,6 @@ import org.slf4j.LoggerFactory;
 public class TestOne {
 
 	public static void main(String[] args) throws Exception {
-		// test180222();
-		// printSubPath("/Users/allen/Desktop");
-		// fileOper();
-		// wordCount();
-		// calljs3();
-		// testParallelJs();
-//		othersFun();
-		
-//		stringtest();
-		
-//		File file = new File("/Users/allen/Desktop/aaa");
-//		file.mkdir();
-		
 		testStream();
 	}
 	

@@ -1,4 +1,4 @@
-package com.zxtech;
+package db;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
