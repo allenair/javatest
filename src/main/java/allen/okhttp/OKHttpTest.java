@@ -1,6 +1,8 @@
 package allen.okhttp;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -71,7 +74,25 @@ public class OKHttpTest {
 //		}
 		
 		
-		okhttp.mockMailClient();
+//		okhttp.mockMailClient();
+		
+		
+		IntStream.range(0, 10).forEach(n->{
+			new Thread(()->{
+				for(int k=0;k<10;k++) {
+					try {
+						Map<String, String> paraMap = new HashMap<>();
+						paraMap.put("phoneNums", n + "-" + k + "-12345");
+						paraMap.put("content", n + "-" + k + "-内容asdf");
+						new OKHttpTest().post("http://127.0.0.1:9876/util/sendsms.do", paraMap);
+						Thread.sleep(1);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		});
+		
 		
 		System.out.println("========FIN==========");
 
@@ -126,6 +147,23 @@ public class OKHttpTest {
 		Request request = new Request.Builder().url(url).post(body).build();
 		Response response = client.newCall(request).execute();
 		return response.body().string();
+	}
+	
+	public String post(String url, Map<String, String> paraMap) throws IOException {
+		FormBody.Builder builder = new FormBody.Builder();
+		for (String key : paraMap.keySet()) {
+			builder.add(key, paraMap.get(key));
+		}
+		FormBody body = builder.build();
+
+		Request request = new Request.Builder()
+				.header("Content-Type", "application/x-www-form-urlencoded")
+				.url(url)
+				.post(body).build();
+
+		try (Response response = client.newCall(request).execute()) {
+			return response.body().string();
+		}
 	}
 	
 	public void postAsyn(String url, String json) throws IOException {
