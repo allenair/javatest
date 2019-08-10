@@ -71,8 +71,7 @@ public class JsonDealCompare {
 	}
 
 	/*
-	 * 由于没有指针，此处无法实现设想的操作
-	 * 赋值完成后无法将结果绑定回Map或List对象里的value，需要set操作
+	 * 非递归方式，执行时间与递归方式相当
 	 * */
 	public static Map<String, Object> filterNullStack(String resultStr) {
 		Map<String, Object> map = new HashMap<>();
