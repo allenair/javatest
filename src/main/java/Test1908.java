@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,5 +28,7 @@ public class Test1908 {
 		
 		
 		System.out.println(new Gson().toJson(list));
+		
+		System.out.println(LocalTime.now().toString());
 	}
 }

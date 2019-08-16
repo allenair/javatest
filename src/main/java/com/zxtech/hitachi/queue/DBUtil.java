@@ -3,6 +3,8 @@ package com.zxtech.hitachi.queue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.List;
+import java.util.Map;
 
 public class DBUtil {
 	public static String HOST = "192.168.8.200";
@@ -31,7 +33,27 @@ public class DBUtil {
 		return pst.executeUpdate();
 	}
 	
-	
+	public static int[] saveApiOperationLogBatch(List<Map<String, String>> rows)throws Exception {
+		Connection conn = getConn();
+//		conn.setAutoCommit(f);
+		StringBuilder sql = new StringBuilder();
+		sql.append(" INSERT INTO dbo.api_operation_log                      ");
+		sql.append(" (category, url, request_data, response_data, api_name) ");
+		sql.append(" VALUES(?, ?, ?, ?, ?);                             ");
+		PreparedStatement pst = conn.prepareStatement(sql.toString());
+		
+		for (Map<String, String> row : rows) {
+			pst.setInt(1, Integer.parseInt(row.get("category")));
+			pst.setString(2, row.get("url"));
+			pst.setString(3, row.get("requestData"));
+			pst.setString(4, row.get("responseData"));
+			pst.setString(5, row.get("apiName"));
+			
+			pst.addBatch();
+		}
+		
+		return pst.executeBatch();
+	}
 
 	private static Connection getConn() throws Exception {
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

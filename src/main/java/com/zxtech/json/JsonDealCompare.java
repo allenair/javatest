@@ -25,15 +25,34 @@ public class JsonDealCompare {
 			fin.lines().forEach(resultStr::append);
 		}
 		long start = System.currentTimeMillis();
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			System.out.println("====" + i + "=====");
 //			doPostWbWithParamBAD(resultStr.toString());
-			filterNullDealMap(resultStr.toString());
+			filterNullDealMyObject(resultStr.toString());
+//			filterNullDealMap(resultStr.toString());
 //			filterNullStack(resultStr.toString());
 		}
 		System.out.println("=====" + (System.currentTimeMillis() - start));
 	}
 
+	/*
+	 * 默认实现的JSONObject
+	 * */
+	public static MyJSONObject filterNullDealMyObject(String resultStr) {
+		MyJSONObject map = new MyJSONObject();
+		map = new Gson().fromJson(resultStr, map.getClass());
+		for (String key : map.keySet()) {
+			Object obj = map.get(key);
+			if (obj == null) {
+				obj = "";
+			} else {
+				obj = dealNull(obj);
+			}
+			map.put(key, obj);
+		}
+		return map;
+	}
+	
 	/*
 	 * 现有方法
 	 * ============================================================================
