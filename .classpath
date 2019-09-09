@@ -29,9 +29,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/code/lib/esb_jar/commons-beanutils-1.8.3.jar"/>
-	<classpathentry kind="lib" path="D:/code/lib/esb_jar/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="D:/code/lib/esb_jar/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="D:/code/lib/esb_jar/ezmorph-1.0.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

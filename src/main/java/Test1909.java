@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +10,9 @@ public class Test1909 {
 		test0905();
 	}
 
+	/**
+	 * 
+	 */
 	public static void test0905() {
 		int aa = 12;
 
@@ -17,62 +21,80 @@ public class Test1909 {
 		System.out.println(Math.sqrt(3 * ((aa))));
 		System.out.println(( - 23 + 12));
 
-		System.out.println("asd%fghjk#dsa#345bn%asd%fghjaswcvbn%asd%hjkl".replaceAll("asd", "@"));
+//		System.out.println("asd%fghjk#dsa#345bn%asd%fghjaswcvbn%asd%hjkl".replaceAll("asd", "@"));
 		
-		String expStr = "asd^%f_ghjk345bn%^asd%_fghjaswcvbn_%^asd^_%hjkl";
+		String expStr = "asd^\times% f_ghjk345bn%^asd%_fghjas\timeswcvbn_%  ^asd^_%hjkl";
 		
 		System.out.println(expStr.indexOf("asd",0));
 		System.out.println(expStr.charAt(expStr.indexOf("asd",0)+1));
+//		System.out.println(expStr.replaceAll("\\times", "@@@"));
+		System.out.println(expStr.replaceAll("\\s", ""));
 		
-		StringBuilder sb = new StringBuilder();
-		char c;
-		for(int i=0; i<expStr.length(); i++) {
-			c = expStr.charAt(i);
-			if((c=='^' || c=='_') && expStr.charAt(i+1)!='{') {
-				sb.append(c);
-				sb.append("{");
-				sb.append(expStr.charAt(i+1));
-				sb.append("}");
-				i++;
-			}else {
-				sb.append(c);
-			}
-		}
-		expStr = sb.toString();
+		expStr="$I_{CW}\\times N_{CW}\\times\\left(\\frac{D_M}{D_{CW}}\\right)^2\\times\\left(\\frac{1}{R_{SP}}\\right)^2$";
 		
-//		while ((index = expStr.indexOf("^", index)) > -1 || (index = expStr.indexOf("_", index)) > -1) {
-//			if(expStr.charAt(index+1)!='{') {
-//				expStr = expStr.substring(0, index+1)+"{"+expStr.charAt(index+1)+"}"+expStr.substring(index+2);
-//			}
-//			index++;
-//		}
+		expStr = expStr.replace('\\', '#');
 		
-		expStr = "asd^%f_ghjk345 bn%^a23 sd%_fghjas2 wcvbn_%^a456 Asd^_78 #PI%hjkl";
-		Pattern pattern = Pattern.compile("\\d+[a-z,A-Z,#]");
-		Matcher matcher = pattern.matcher(expStr);
-		int index = 0;
-		sb = new StringBuilder();
-		while (matcher.find(index)) {
-			String tmp = matcher.group();
-			tmp = tmp.substring(0, tmp.length() - 1) + " * " + tmp.substring(tmp.length() - 1);
-			sb.append(expStr.substring(index, matcher.start()));
-			sb.append(tmp);
-			index = matcher.end();
-		}
-		if(index<expStr.length()) {
-			sb.append(expStr.substring(index));
-		}
+		expStr = expStr.replaceAll("\\s", "");
+		expStr = expStr.replaceAll("\\$", "");
+		expStr = expStr.replaceAll("#times", " * ");
+		expStr = expStr.replaceAll("#div", " / ");
+		expStr = expStr.replaceAll("#left\\(", " ( ");
+		expStr = expStr.replaceAll("#left\\|", " | ");
+		expStr = expStr.replaceAll("\\+", " + ");
+		expStr = expStr.replaceAll("\\-", " - ");
+		
 		System.out.println(expStr);
-		System.out.println(sb.toString());
 		
-//		if (matcher.find(1)) {
-//			System.out.println("=================");
-//			System.out.println(matcher.group());
-//			System.out.println(matcher.start());
-//			System.out.println(matcher.end());
-//		} 
-
+		int startIndex = expStr.indexOf('{');
+		int endIndex = findPair(expStr, startIndex, '{', '}');
+		System.out.println(expStr.substring(startIndex, endIndex+1));
 		
 	}
 
+	private static String dealFrac(String expressStr) {
+		String expStr = expressStr;
+		int index = 0;
+		StringBuilder sb = new StringBuilder();
+		while ((index = expStr.indexOf("#FRAC")) > -1) {
+			int startIndex = expStr.indexOf('{', index);
+			int endIndex = findPair(expStr, startIndex, '{', '}');
+
+			int startIndex2 = expStr.indexOf('{', endIndex + 1);
+			int endIndex2 = findPair(expStr, startIndex2, '{', '}');
+
+			sb = new StringBuilder();
+			sb.append(expStr.substring(0, index));
+			sb.append(" (");
+			sb.append(expStr.substring(startIndex + 1, endIndex));
+			sb.append(") / (");
+			sb.append(expStr.substring(startIndex2 + 1, endIndex2));
+			sb.append(") ");
+			sb.append(expStr.substring(endIndex2 + 1));
+
+			expStr = sb.toString();
+		}
+
+		return expStr;
+	}
+	
+	private static int findPair(String expressStr, int startIndex, char left, char right) {
+		int endIndex = startIndex;
+		Stack<Character> checkStack = new Stack<>();
+		checkStack.push(left);
+
+		for (int i = startIndex + 1; i < expressStr.length(); i++) {
+			if (right == expressStr.charAt(i)) {
+				checkStack.pop();
+			} else if (left == expressStr.charAt(i)) {
+				checkStack.push(left);
+			}
+
+			if (checkStack.isEmpty()) {
+				endIndex = i;
+				break;
+			}
+		}
+
+		return endIndex;
+	}
 }
