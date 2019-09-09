@@ -103,6 +103,9 @@ public class LatexExpressionParse {
 		expressStr = expressStr.replaceAll("\\}", "");
 		String parameters = getParameters(expressStr);
 
+		// 处理数字与字符紧邻的情况
+		expressStr = dealNumberAndLetter(expressStr);
+				
 		// 8、使用目标语言的函数替换占位符
 		expressStr = lastDealLanguageSign(expressStr);
 
@@ -124,7 +127,6 @@ public class LatexExpressionParse {
 	 * 6、使用 #ABS(...) 替换 \left|...\right| 
 	 * 7、将 ^ 和 _ 紧邻的后续字符使用 { } 包裹（默认一个字符时候会有不包裹的情况）
 	 * 8、将 + 和 - 左右增加空格，以便后续处理
-	 * 9、将数字与非数字字符（字母或#）紧邻的情况中间加入 * ，举例：2a, 2alpha 转换为 2*a, 2*alpha
 	 */
 	private static String preDealNormalSign(String expressStr) {
 		String expStr = expressStr;
@@ -152,23 +154,6 @@ public class LatexExpressionParse {
 		// 处理8
 		expStr = expStr.replaceAll("\\+", " + ");
 		expStr = expStr.replaceAll("\\-", " - ");
-
-		// 处理9
-		Pattern pattern = Pattern.compile("\\d+[a-zA-Z#]");
-		Matcher matcher = pattern.matcher(expStr);
-		int index = 0;
-		sb = new StringBuilder();
-		while (matcher.find(index)) {
-			String tmp = matcher.group();
-			tmp = tmp.substring(0, tmp.length() - 1) + " * " + tmp.substring(tmp.length() - 1);
-			sb.append(expStr.substring(index, matcher.start()));
-			sb.append(tmp);
-			index = matcher.end();
-		}
-		if (index < expStr.length()) {
-			sb.append(expStr.substring(index));
-		}
-		expStr = sb.toString();
 
 		return expStr;
 	}
@@ -397,6 +382,27 @@ public class LatexExpressionParse {
 		}
 
 		return expStr;
+	}
+	
+	// 9、将数字与非数字字符（字母或#）紧邻的情况中间加入 * ，举例：2a, 2alpha 转换为 2*a, 2*alpha
+	private static String dealNumberAndLetter(String expressStr) {
+		Pattern pattern = Pattern.compile("\\s\\d+[a-zA-Z#]");
+		Matcher matcher = pattern.matcher(expressStr);
+		int index = 0;
+		StringBuilder sb = new StringBuilder();
+		while (matcher.find(index)) {
+			String tmp = matcher.group();
+			tmp = tmp.substring(0, tmp.length() - 1) + " * " + tmp.substring(tmp.length() - 1);
+			sb.append(expressStr.substring(index, matcher.start()));
+			sb.append(tmp);
+			index = matcher.end();
+		}
+		if (index < expressStr.length()) {
+			sb.append(expressStr.substring(index));
+		}
+		expressStr = sb.toString();
+		
+		return expressStr;
 	}
 	
 	private static int findPair(String expressStr, int startIndex, char left, char right) {

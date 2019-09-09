@@ -7,12 +7,18 @@ import java.util.regex.Pattern;
 public class Test1909 {
 
 	public static void main(String[] args) {
-		test0905();
+		test0909();
 	}
 
-	/**
-	 * 
-	 */
+	public static void test0909() {
+		String line = "111. 每台梯配3条层门钥匙。";
+		Pattern p = Pattern.compile("\\D+");
+		Matcher m = p.matcher(line);
+		if(m.find())
+			System.out.println(line.charAt(m.start()));
+		
+	}
+	
 	public static void test0905() {
 		int aa = 12;
 
