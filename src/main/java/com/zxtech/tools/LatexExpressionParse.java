@@ -101,10 +101,9 @@ public class LatexExpressionParse {
 		// 7、删除多余的大括号（此时大括号中应该仅剩字符串变量），然后提取参数（参数是指非关键字，并且是字母开头的字符串）
 		expressStr = expressStr.replaceAll("\\{", "");
 		expressStr = expressStr.replaceAll("\\}", "");
-		String parameters = getParameters(expressStr);
-
 		// 处理数字与字符紧邻的情况
 		expressStr = dealNumberAndLetter(expressStr);
+		String parameters = getParameters(expressStr);
 				
 		// 8、使用目标语言的函数替换占位符
 		expressStr = lastDealLanguageSign(expressStr);
