@@ -287,17 +287,9 @@
 			<artifactId>tio-core</artifactId>
 			<version>3.3.3.v20190620-RELEASE</version>
 		</dependency>
- <!-- 
-		<exclusion>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-javamail_1.4_spec</artifactId>
-		</exclusion>
-		
-		<exclusion>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-activation_1.1_spec</artifactId>
-		</exclusion>
-		 -->
+		<!-- <exclusion> <groupId>org.apache.geronimo.specs</groupId> <artifactId>geronimo-javamail_1.4_spec</artifactId> 
+			</exclusion> <exclusion> <groupId>org.apache.geronimo.specs</groupId> <artifactId>geronimo-activation_1.1_spec</artifactId> 
+			</exclusion> -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -329,6 +321,13 @@
 			<artifactId>json-lib</artifactId>
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- <dependency> <groupId>javax.activation</groupId> <artifactId>activation</artifactId> 
 			<version>1.0.2</version> </dependency> -->
