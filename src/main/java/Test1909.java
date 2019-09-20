@@ -12,10 +12,13 @@ public class Test1909 {
 
 	public static void test0909() {
 		String line = "111. 每台梯配3条层门钥匙。";
-		Pattern p = Pattern.compile("\\D+");
+		Pattern p = Pattern.compile("\\d+");
 		Matcher m = p.matcher(line);
-		if(m.find())
-			System.out.println(line.charAt(m.start()));
+		if(m.find()) {
+			System.out.println(m.start());
+			System.out.println(m.end());
+		}
+			
 		
 	}
 	
