@@ -287,15 +287,17 @@
 			<artifactId>tio-core</artifactId>
 			<version>3.3.3.v20190620-RELEASE</version>
 		</dependency>
-
+ <!-- 
 		<exclusion>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-javamail_1.4_spec</artifactId>
 		</exclusion>
+		
 		<exclusion>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-activation_1.1_spec</artifactId>
 		</exclusion>
+		 -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
