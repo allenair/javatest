@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -8,51 +9,72 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.http.entity.StringEntity;
+
+import com.google.gson.Gson;
+
 public class Test1909 {
 
-	public static void main(String[] args) {
-		test0919();
+	public static void main(String[] args) throws Exception  {
+		doPostWithParam();
+	}
+
+	public static void doPostWithParam() throws Exception {
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("id", 123456789);
+		param.put("name", "asdfg");
+		
+		
+		String jsonStr = new Gson().toJson(param);
+		System.out.println(jsonStr);
+		
+		StringEntity entity = new StringEntity(jsonStr, "utf-8");// 解决中文乱码问题
+		
+		byte[] b = new byte[2048];
+		int num = entity.getContent().read(b);
+		byte[] c = new byte[num];
+		System.arraycopy(b, 0, c, 0, num);
+		System.out.println(new String(c, "utf-8"));
+		
 	}
 
 	public static void test0919() {
 		String ss = "啊";
 		System.out.println(ss.length());
 		System.out.println(ss.getBytes().length);
-		
+
 		Random rnd = new Random(System.nanoTime());
 		List<Double> numList = rnd.doubles(500000).boxed().collect(Collectors.toList());
-		
+
 		List<Double> numList2 = new ArrayList<>();
 		for (Double num : numList) {
 			numList2.add(num);
 		}
-		
+
 		long start = System.currentTimeMillis();
 		Collections.sort(numList);
 		numList.stream().limit(5).forEach(System.out::println);
 		System.out.println("=====Total=====" + (System.currentTimeMillis() - start));
-		
+
 		start = System.currentTimeMillis();
 		numList2.stream().sorted().limit(5).forEach(System.out::println);
 		System.out.println("=====Total=====" + (System.currentTimeMillis() - start));
-		
-		
+
 //		List<Integer> numList3 = rnd.ints(500000).boxed().collect(Collectors.toList());
 //		start = System.currentTimeMillis();
 //		numList3.removeIf(s -> s.equals(23));
 //		System.out.println("=====Total=====" + (System.currentTimeMillis() - start));
-		
-		
+
 		PriorityQueue<Double> plist = new PriorityQueue<>(5);
 		for (Double double1 : numList2) {
 			plist.add(double1);
 		}
 		start = System.currentTimeMillis();
-		for(int i=0;i<5;i++) {
+		for (int i = 0; i < 5; i++) {
 			System.out.println(plist.poll());
 		}
 		System.out.println("=====Total=====" + (System.currentTimeMillis() - start));
-		
+
 	}
 
 	public static void test0909() {
