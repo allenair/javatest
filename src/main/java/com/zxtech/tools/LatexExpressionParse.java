@@ -74,6 +74,7 @@ public class LatexExpressionParse {
 		languageMapList.add(new String[] { "#FCOT", "System.Math.Coth" });
 		languageMapList.add(new String[] { "#FABS", "System.Math.Abs" });
 		languageMapList.add(new String[] { "#FPI", "System.Math.PI" });
+//		languageMapList.add(new String[] { "#FDOUBLE", ", Double)" });
 	}
 	
 	public static Map<String, String> parse(String srcExpression) {
@@ -104,10 +105,13 @@ public class LatexExpressionParse {
 		// 处理数字与字符紧邻的情况
 		expressStr = dealNumberAndLetter(expressStr);
 		String parameters = getParameters(expressStr);
-				
+
 		// 8、使用目标语言的函数替换占位符
 		expressStr = lastDealLanguageSign(expressStr);
 
+		// 8.1、为VB特殊处理的变量转换问题
+		expressStr = changeDoubleForVB(expressStr, parameters);
+		
 		// 9、去掉多余的空格
 		expressStr = expressStr.replaceAll("\\s", "");
 
@@ -465,6 +469,16 @@ public class LatexExpressionParse {
 		return String.join(",", paramList);
 	}
 
+	private static String changeDoubleForVB(String expressStr, String parameters) {
+		String expStr = expressStr;
+		String[] arr = parameters.split(",");
+		for (String paramter : arr) {
+			expStr = expStr.replaceAll(paramter, "CType("+paramter+", Double)");
+		}
+		
+		return expStr;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		try (BufferedReader fin = new BufferedReader(new FileReader("d:/latex.txt"));
 				PrintWriter fout = new PrintWriter("d:/out.txt", "utf-8");) {
