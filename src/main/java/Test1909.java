@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Stack;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -16,9 +17,16 @@ import com.google.gson.Gson;
 public class Test1909 {
 
 	public static void main(String[] args) throws Exception  {
-		doPostWithParam();
+		String str = "Allen";
+//		funTest(str, s->System.out.println(s));
+		funTest(str, System.out::println);
 	}
 
+	public static void funTest(String str, Consumer<String> consumer) {
+//		consumer.accept("AAA  "+str);
+		consumer.accept(str.toUpperCase());
+	}
+	
 	public static void doPostWithParam() throws Exception {
 		HashMap<String, Object> param = new HashMap<>();
 		param.put("id", 123456789);
