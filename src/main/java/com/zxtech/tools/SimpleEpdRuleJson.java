@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class SimpleEpdRuleJson {
 
@@ -30,8 +31,10 @@ public class SimpleEpdRuleJson {
 				simpleRow.put("PropertyName", row.get("PropertyName"));
 				simpleRow.put("ValueList", row.get("ValueList"));
 				
-				Map<String, Object> innerData = (Map<String, Object>)row.get("Data");
-				simpleRow.put("Type", innerData.get("Type"));
+				Map<String, Object> innerData = new HashMap<>();
+				Map<String, Object> tmpMap =(Map<String, Object>)row.get("Data");
+				innerData.put("Type", tmpMap.get("Type"));
+				simpleRow.put("Data", innerData);
 				simpleBean.getCPARA_InputParameterValueList().add(simpleRow);
 			}
 
@@ -41,8 +44,10 @@ public class SimpleEpdRuleJson {
 				simpleRow.put("PropertyName", row.get("PropertyName"));
 				simpleRow.put("ValueList", row.get("ValueList"));
 				
-				Map<String, Object> innerData = (Map<String, Object>)row.get("Data");
-				simpleRow.put("Type", innerData.get("Type"));
+				Map<String, Object> innerData = new HashMap<>();
+				Map<String, Object> tmpMap =(Map<String, Object>)row.get("Data");
+				innerData.put("Type", tmpMap.get("Type"));
+				simpleRow.put("Data", innerData);
 				simpleBean.getCPARA_InternalParameterValueList().add(simpleRow);
 			}
 
@@ -130,7 +135,10 @@ public class SimpleEpdRuleJson {
 
 //			System.out.println(new Gson().toJson(simpleBean));
 			System.out.println("=========FINISHED!!===========");
-			fout.println(new Gson().toJson(simpleBean));
+			
+			Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+			
+			fout.println(gson.toJson(simpleBean));
 		}
 
 	}
