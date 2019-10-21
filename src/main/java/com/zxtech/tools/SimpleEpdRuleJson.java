@@ -29,6 +29,9 @@ public class SimpleEpdRuleJson {
 				Map<String, Object> simpleRow = new HashMap<>();
 				simpleRow.put("PropertyName", row.get("PropertyName"));
 				simpleRow.put("ValueList", row.get("ValueList"));
+				
+				Map<String, Object> innerData = (Map<String, Object>)row.get("Data");
+				simpleRow.put("Type", innerData.get("Type"));
 				simpleBean.getCPARA_InputParameterValueList().add(simpleRow);
 			}
 
@@ -37,6 +40,9 @@ public class SimpleEpdRuleJson {
 				Map<String, Object> simpleRow = new HashMap<>();
 				simpleRow.put("PropertyName", row.get("PropertyName"));
 				simpleRow.put("ValueList", row.get("ValueList"));
+				
+				Map<String, Object> innerData = (Map<String, Object>)row.get("Data");
+				simpleRow.put("Type", innerData.get("Type"));
 				simpleBean.getCPARA_InternalParameterValueList().add(simpleRow);
 			}
 
