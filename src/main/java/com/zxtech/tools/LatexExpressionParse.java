@@ -452,6 +452,8 @@ public class LatexExpressionParse {
 	
 	// 从公式中获取变量
 	private static String getParameters(String expressStr) {
+		expressStr = expressStr.replace('(', ' ').replace(')', ' ');
+		
 		Set<String> paramSet = new HashSet<>();
 		Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*");
 		String[] arr = expressStr.split("\\s+");
@@ -470,6 +472,10 @@ public class LatexExpressionParse {
 	}
 
 	private static String changeDoubleForVB(String expressStr, String parameters) {
+		if(parameters.length()==0) {
+			return expressStr;
+		}
+		
 		String expStr = expressStr;
 		String[] arr = parameters.split(",");
 		for (String paramter : arr) {
@@ -480,21 +486,27 @@ public class LatexExpressionParse {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		try (BufferedReader fin = new BufferedReader(new FileReader("d:/latex.txt"));
-				PrintWriter fout = new PrintWriter("d:/out.txt", "utf-8");) {
-			fin.lines().limit(1000).forEach(line -> {
-				System.out.println(line);
-				Map<String, String> resMap = LatexExpressionParse.parse(line);
-				System.out.println(">>>:  " + resMap.get("expression"));
-				System.out.println(">>>:  " + resMap.get("parameters"));
-				System.out.println("========================================================");
-				
-				fout.println(line);
-				fout.println(resMap.get("expression"));
-				fout.println(resMap.get("parameters"));
-				fout.println("========================================================");
-			});
-		}
+		String line = "$\\sqrt{asd_{11}}$";
+//		String line = "$\\frac{3\\times F_{ybx}\\times\\left(H+100\\right)}{16\\times Z_x}$";
+		Map<String, String> resMap = LatexExpressionParse.parse(line);
+		System.out.println(">>>:  " + resMap.get("expression"));
+		System.out.println(">>>:  " + resMap.get("parameters"));
+		System.out.println("========================================================");
+//		try (BufferedReader fin = new BufferedReader(new FileReader("d:/latex.txt"));
+//				PrintWriter fout = new PrintWriter("d:/out.txt", "utf-8");) {
+//			fin.lines().limit(1000).forEach(line -> {
+//				System.out.println(line);
+//				Map<String, String> resMap = LatexExpressionParse.parse(line);
+//				System.out.println(">>>:  " + resMap.get("expression"));
+//				System.out.println(">>>:  " + resMap.get("parameters"));
+//				System.out.println("========================================================");
+//				
+//				fout.println(line);
+//				fout.println(resMap.get("expression"));
+//				fout.println(resMap.get("parameters"));
+//				fout.println("========================================================");
+//			});
+//		}
 	}
 
 }
