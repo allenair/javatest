@@ -216,6 +216,8 @@ public class LatexExpressionParse {
 	// 处理幂，sdf^3
 	private static String dealUpPower(String expressStr) {
 		String expStr = expressStr;
+		expStr = expStr.replaceAll("[(]", "( ");
+//		expStr = expStr.replaceAll("[)]", " ) ");
 
 		int index = 0;
 		StringBuilder sb = new StringBuilder();
@@ -479,15 +481,15 @@ public class LatexExpressionParse {
 		String expStr = expressStr;
 		String[] arr = parameters.split(",");
 		for (String paramter : arr) {
-			expStr = expStr.replaceAll(paramter, "CType("+paramter+", Double)");
+			expStr = expStr.replaceAll("(?<!\\w)"+ paramter + "(?!\\w)", "CType("+paramter+", Double)");
 		}
 		
 		return expStr;
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String line = "$\\sqrt{asd_{11}}$";
-//		String line = "$\\frac{3\\times F_{ybx}\\times\\left(H+100\\right)}{16\\times Z_x}$";
+//		String line = "$\\sqrt{al^2+bl^2}$";
+		String line = "$\\frac{3\\times F_{ybx}\\times\\left(H+100\\right)}{16\\times Z_x}$";
 		Map<String, String> resMap = LatexExpressionParse.parse(line);
 		System.out.println(">>>:  " + resMap.get("expression"));
 		System.out.println(">>>:  " + resMap.get("parameters"));
