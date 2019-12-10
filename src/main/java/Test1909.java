@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Stack;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.http.entity.StringEntity;
 
@@ -17,9 +19,11 @@ import com.google.gson.Gson;
 public class Test1909 {
 
 	public static void main(String[] args) throws Exception  {
-		String str = "Allen";
-//		funTest(str, s->System.out.println(s));
-		funTest(str, System.out::println);
+//		funTest("Allen", System.out::println);
+		
+		IntStream.range(0, 200).forEach(i->{
+			System.out.println(UUID.randomUUID());
+		});
 	}
 
 	public static void funTest(String str, Consumer<String> consumer) {

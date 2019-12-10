@@ -1,0 +1,76 @@
+{
+    "flowName": "test1",
+    "nodes": [{
+            "nodeName": "start",
+            "preNodeNames": [],
+            "needUserNames": [],
+            "needRoleNames": [],
+            "conditions": [{
+                "nextNodeName": "first",
+                "condition": ""
+            }]
+        },
+        {
+            "nodeName": "first",
+            "preNodeNames": ["start"],
+            "needUserNames": [],
+            "needRoleNames": ["role1"],
+            "conditions": [{
+                "nextNodeName": "second",
+                "condition": ""
+            }]
+        },
+        {
+            "nodeName": "second",
+            "preNodeNames": ["first"],
+            "needUserNames": ["user1"],
+            "needRoleNames": ["role1"],
+            "conditions": [{
+                    "nextNodeName": "three",
+                    "condition": "${flag}=='1'"
+                },
+                {
+                    "nextNodeName": "four",
+                    "condition": "${flag}=='2'"
+                }
+            ]
+        },
+        {
+            "nodeName": "three",
+            "preNodeNames": ["second"],
+            "needUserNames": [],
+            "needRoleNames": ["role1"],
+            "conditions": [{
+                "nextNodeName": "five",
+                "condition": "${flag}=='3'"
+            }]
+        },
+        {
+            "nodeName": "four",
+            "preNodeNames": ["second"],
+            "needUserNames": [],
+            "needRoleNames": ["role1"],
+            "conditions": [{
+                "nextNodeName": "five",
+                "condition": "${flag}=='4'"
+            }]
+        },
+        {
+            "nodeName": "five",
+            "preNodeNames": ["three", "four"],
+            "needUserNames": [],
+            "needRoleNames": ["role1"],
+            "conditions": [{
+                "nextNodeName": "end",
+                "condition": "${flag}=='5'"
+            }]
+        },
+        {
+            "nodeName": "end",
+            "preNodeNames": ["five"],
+            "needUserNames": [],
+            "needRoleNames": [],
+            "conditions": []
+        }
+    ]
+}
