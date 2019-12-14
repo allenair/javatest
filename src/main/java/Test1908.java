@@ -3,13 +3,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.stream.IntStream;
 
 import com.google.gson.Gson;
 
 public class Test1908 {
 
 	public static void main(String[] args) {
-		test0810();
+		IntStream.range(1, 100).forEach(i->{
+			System.out.println(getid());
+		});
 	}
 
 	private static void test0810() {
@@ -30,5 +34,9 @@ public class Test1908 {
 		System.out.println(new Gson().toJson(list));
 		
 		System.out.println(LocalTime.now().toString());
+	}
+	
+	private static String getid() {
+		return UUID.randomUUID().toString();
 	}
 }

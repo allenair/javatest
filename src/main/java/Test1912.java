@@ -3,8 +3,10 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,8 +20,36 @@ import cn.hutool.core.date.DateUtil;
 public class Test1912 {
 
 	public static void main(String[] args) {
-		f1210();
-		System.out.println(diffDescription("13","11.025","0"));
+		f1214();
+//		System.out.println(diffDescription("13","11.025","0"));
+	}
+	
+	private static void f1214() {
+		List<Map<String, Object>> tempList = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		map.put("name", "allen");
+		map.put("age", 23);
+		tempList.add(map);
+		
+		map = new HashMap<>();
+		map.put("name", "bella");
+		map.put("age", 12);
+		tempList.add(map);
+		
+		map = new HashMap<>();
+		map.put("name", "aileen");
+		map.put("age", 23);
+		tempList.add(map);
+		
+//		tempList = new ArrayList<>();
+		
+//		String aa = tempList.stream().map(row->row.get("name").toString()).reduce("", (a,b)->a+","+b);
+		String aa = tempList.stream().map(row->row.get("name").toString()).reduce((a,b)->a+","+b).orElse("ss");
+		System.out.println(aa);
+		
+//		int bb = tempList.stream().map(row->Integer.parseInt(row.get("age").toString())).reduce(0, (a,b)->a+b);
+		int bb = tempList.stream().map(row->Integer.parseInt(row.get("age").toString())).reduce((a,b)->a+b).orElse(0);
+		System.out.println(bb);
 	}
 
 	private static String diffDescription(String realData, String upper, String down) {
