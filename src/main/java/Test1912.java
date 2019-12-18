@@ -4,18 +4,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
+import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-
-import cn.hutool.core.date.DateField;
-import cn.hutool.core.date.DateUtil;
 
 public class Test1912 {
 
@@ -51,7 +51,28 @@ public class Test1912 {
 		int bb = tempList.stream().map(row->Integer.parseInt(row.get("age").toString())).reduce((a,b)->a+b).orElse(0);
 		System.out.println(bb);
 	}
-
+	private static void f1211() {
+		String insertSql = "INSERT INTO base_dictionary(id, dict_type, dict_type_name, dict_name, dict_code, dict_sort)\r\n" + 
+				"VALUES('#1#', 'product_type_four', '产品型号第4部分', 'code', '#2#', #3#);";
+		
+		int[] vals = {30,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000,20000,25000,31500,40000,50000,630000};
+		
+		Set<Integer> valSet = new HashSet<>();
+		
+		IntStream.of(vals).forEach(valSet::add);
+		
+		List<Integer> valList = valSet.stream().sorted().collect(Collectors.toList());
+		int index=1;
+		for (Integer num : valList) {
+			String tmp = insertSql.replaceAll("#1#", UUID.randomUUID().toString());
+			tmp = tmp.replaceAll("#2#", num.toString());
+			tmp = tmp.replaceAll("#3#", index+"");
+			index++;
+			
+			System.out.println(tmp);
+		}
+		
+	}
 	private static String diffDescription(String realData, String upper, String down) {
 		BigDecimal realVal = new BigDecimal(realData);
 		BigDecimal upperVal = new BigDecimal(upper);
