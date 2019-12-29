@@ -13,7 +13,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +23,7 @@ public class MockFlowEngine {
 	private static Map<String, MockFlowBean> flowMap = new ConcurrentHashMap<>();
 	private static Map<String, Map<String, Boolean>> flowRunSatus = new ConcurrentHashMap<>();
 	private static Map<String, String> nameMap = new ConcurrentHashMap<>();
-
-//	@Autowired
-//	private MockRBAC rbacService;
+	private static Map<String, MockFlowCurrentStatBean> currentFlowBean = new ConcurrentHashMap<>();
 
 	static {
 		init();
@@ -44,7 +41,7 @@ public class MockFlowEngine {
 						br.lines().forEach(str -> jsonSb.append(str.trim()));
 
 						MockFlowBean bean = new Gson().fromJson(jsonSb.toString(), MockFlowBean.class);
-						flowMap.put(bean.getFlowName(), bean);
+						flowMap.put(bean.getFlowCode(), bean);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -55,6 +52,28 @@ public class MockFlowEngine {
 		}
 	}
 
+	public Map<String, String> startProcess(String flowCode) {
+		Map<String, String> resMap = new HashMap<>();
+		String procInstId = UUID.randomUUID().toString();
+		String startNodeCode = flowMap.get(flowCode).getNodes().get(0).getNodeCode();
+		MockFlowCurrentStatBean bean = new MockFlowCurrentStatBean();
+		bean.setFlowCode(flowCode);
+		bean.setCurrentNodeCode(startNodeCode);
+		bean.setStartFlag(true);
+		bean.setEndFlag(false);
+		
+		currentFlowBean.put(procInstId, bean);
+		
+		resMap.put("procInstId", procInstId);
+		resMap.put("startNodeCode", startNodeCode);
+		return resMap;
+	}
+	
+	public boolean cancelTask(String procInstId) {
+		currentFlowBean.remove(procInstId);
+		return true;
+	}
+	
 	public String[] startFlow(String flowName) {
 		String fid = UUID.randomUUID().toString();
 		MockFlowBean bean = flowMap.get(flowName);
@@ -73,7 +92,7 @@ public class MockFlowEngine {
 		flowRunSatus.put(fid, nodeRunMap);
 		nameMap.put(fid, flowName);
 
-		String nextName = runFlow(fid, bean.getNodes().get(0).getConditions().get(0).getNextNodeName(), null);
+		String nextName = runFlow(fid, bean.getNodes().get(0).getConditions().get(0).getNextNodeCode(), null);
 		return new String[] { fid, nextName };
 	}
 
@@ -95,7 +114,7 @@ public class MockFlowEngine {
 			return "#inner:finished";
 		}
 
-		boolean preFlag = node.getPreNodeNames().stream().allMatch(pname -> {
+		boolean preFlag = node.getPreNodeCodes().stream().allMatch(pname -> {
 			return flowRunSatus.get(fid).get(pname);
 		});
 		if (!preFlag) {
@@ -103,7 +122,7 @@ public class MockFlowEngine {
 		}
 
 		String nextNodeName = node.getConditions().stream().filter(con -> dealExpress(con.getCondition(), params))
-				.findFirst().orElse(new Condition()).getNextNodeName();
+				.findFirst().orElse(new Condition()).getNextNodeCode();
 
 		if (nextNodeName == null) {
 			return "#inner:condition are all wrong";
