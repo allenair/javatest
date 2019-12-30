@@ -14,14 +14,51 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 public class Test1912 {
 
 	public static void main(String[] args) {
-		f1214();
+		f1227();
 //		System.out.println(diffDescription("13","11.025","0"));
+		
+	}
+	
+	private static void f1227() {
+//		String expressStr = "phase_num+cold_type+circle_num+wire_material+adjust_type+\"-\"+ele_vol+\"/\"+volt_level";
+//		Map<String, String> inputMap = new HashMap<>();
+//		inputMap.put("phase_num", "S");
+//		inputMap.put("cold_type", "A");
+//		inputMap.put("circle_num", "100");
+//		inputMap.put("wire_material", "");
+//		inputMap.put("adjust_type", "B");
+//		inputMap.put("ele_vol", "50000");
+//		inputMap.put("volt_level", "110");
+		
+		String expressStr = "\"d087fe59-e888-4388-94e1-6f5f47876918\"";
+		Map<String, String> inputMap = new HashMap<>();
+		
+		try {
+			System.out.println(calExpressValueWithJs(expressStr, inputMap));
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public static String calExpressValueWithJs(String expressStr, Map<String, String> inputMap) throws ScriptException {
+		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
+		// 将input参数放入本次脚本执行环境
+		for (String key : inputMap.keySet()) {
+			script.put(key, inputMap.get(key));
+		}
+		
+		return script.eval(expressStr).toString();
 	}
 	
 	private static void f1214() {
