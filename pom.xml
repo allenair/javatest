@@ -119,7 +119,7 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -288,9 +288,7 @@
 			<artifactId>tio-core</artifactId>
 			<version>3.3.3.v20190620-RELEASE</version>
 		</dependency>
-		<!-- <exclusion> <groupId>org.apache.geronimo.specs</groupId> <artifactId>geronimo-javamail_1.4_spec</artifactId> 
-			</exclusion> <exclusion> <groupId>org.apache.geronimo.specs</groupId> <artifactId>geronimo-activation_1.1_spec</artifactId> 
-			</exclusion> -->
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -317,20 +315,20 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>7.0.0.jre8</version>
 		</dependency>
+
 		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
+			<groupId>org.nlpcn</groupId>
+			<artifactId>nlp-lang</artifactId>
+			<version>1.7.8</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-<dependency>
-    <groupId>org.jsoup</groupId>
-    <artifactId>jsoup</artifactId>
-    <version>1.12.1</version>
-</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.12.1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
