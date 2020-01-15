@@ -1,5 +1,7 @@
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,10 +15,13 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -24,11 +29,39 @@ import com.google.gson.Gson;
 public class Test1912 {
 
 	public static void main(String[] args) {
-		f1227();
+//		f1231();
 //		System.out.println(diffDescription("13","11.025","0"));
 		
+		System.out.println((int)'A');
+		System.out.println((int)'a');
+		System.out.println(StringUtils.capitalize("1adfg"));
 	}
 	
+	
+	private static void f1231() {
+		LocalDate today = LocalDate.now().plusDays(1);
+		File dirs = new File("c:/temp");
+		if (dirs.exists()) {
+			Stream.<File>of(dirs.listFiles()).filter(f -> {
+				String fileName = f.getName().split("_")[0];
+				return f.isFile() && LocalDate.parse(fileName).isBefore(today);
+			}).forEach(f -> {
+				f.delete();
+			});
+		}
+	}
+	private static void f1230() {
+		LocalDate today = LocalDate.now();
+		today = today.plusDays(5);
+		String dayStr = today.format(DateTimeFormatter.ofPattern("yyyy/M/d"));
+		
+		String timeStr = "08:12:56";
+		timeStr = timeStr.substring(0, timeStr.lastIndexOf(":"));
+		
+		String fullStr = dayStr + " " + timeStr;
+		
+		System.out.println(fullStr);
+	}
 	private static void f1227() {
 //		String expressStr = "phase_num+cold_type+circle_num+wire_material+adjust_type+\"-\"+ele_vol+\"/\"+volt_level";
 //		Map<String, String> inputMap = new HashMap<>();
