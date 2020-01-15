@@ -61,6 +61,36 @@ public class ListEngineFactoryDemo {
 		}
 	}
 
+	public static void exeJSForFile2() {
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("js");
+		try {
+			FileReader reader = new FileReader("E:\\code\\github\\javatest\\src\\main\\java\\allen\\js\\test.js");
+			engine.eval(reader);
+			Invocable jsInvoke = (Invocable) engine;
+			Object result = jsInvoke.invokeFunction("getConst", "1");
+			System.out.println(result);
+			
+			result = jsInvoke.invokeFunction("getConst", "2");
+			System.out.println(result);
+			
+			result = jsInvoke.invokeFunction("changeStr", "CCCCDDDD");
+			
+			result = jsInvoke.invokeFunction("getConst", "2");
+			System.out.println(result);
+			
+			
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * Binding AND Exception
 	 */
@@ -92,21 +122,21 @@ public class ListEngineFactoryDemo {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("js");
 		try {
-//			engine.eval("function add (a, b) {c = a + b; return c; }");
-//			Invocable jsInvoke = (Invocable) engine;
-//			Object result1 = jsInvoke.invokeFunction("add", new Object[] { 10, 5 });
-//			System.out.println(result1);
-//			Adder adder = jsInvoke.getInterface(Adder.class);
-//			int result2 = adder.add(10, 5);
-//			System.out.println(result2);
-			
-			
-			
-			engine.eval("function add (a,b) {c = ['aa','bb'];c.push(a);c.push(b); return c; }");
-//			engine.eval("function add (a,b) {c = {'name':a, 'subname': b, 'age': 22}; return c; }");
+			engine.eval("function add (a, b) {c = a + b; return c; }");
 			Invocable jsInvoke = (Invocable) engine;
-			Object result1 = jsInvoke.invokeFunction("add","ww","zz");
+			Object result1 = jsInvoke.invokeFunction("add", new Object[] { 10, 5 });
 			System.out.println(result1);
+			Adder adder = jsInvoke.getInterface(Adder.class);
+			int result2 = adder.add(10, 5);
+			System.out.println(result2);
+			
+			
+			
+//			engine.eval("function add (a,b) {c = ['aa','bb'];c.push(a);c.push(b); return c; }");
+////			engine.eval("function add (a,b) {c = {'name':a, 'subname': b, 'age': 22}; return c; }");
+//			Invocable jsInvoke = (Invocable) engine;
+//			Object result1 = jsInvoke.invokeFunction("add","ww","zz");
+//			System.out.println(result1);
 			
 			
 		} catch (ScriptException e) {
@@ -181,7 +211,8 @@ public class ListEngineFactoryDemo {
 //		exeJSForFunction();
 //		exeJSForCompilable();
 //		exeJavaScript();
-		exeCal();
+//		exeCal();
+		exeJSForFile2();
 	}
 
 }
