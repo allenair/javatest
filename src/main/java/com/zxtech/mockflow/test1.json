@@ -1,76 +1,91 @@
 {
-    "flowName": "test1",
+    "flowName": "测试流程1",
+    "flowCode": "test1",
     "nodes": [{
-            "nodeName": "start",
-            "preNodeNames": [],
+            "nodeName": "开始",
+            "nodeCode": "start",
+            "preNodeCodes": [],
             "needUserNames": [],
             "needRoleNames": [],
             "conditions": [{
-                "nextNodeName": "first",
+                "nextNodeCode": "first",
                 "condition": ""
-            }]
+            }],
+            "remark": ""
         },
         {
-            "nodeName": "first",
-            "preNodeNames": ["start"],
+            "nodeName": "第1节点",
+            "nodeCode": "first",
+            "preNodeCodes": ["start"],
             "needUserNames": [],
             "needRoleNames": ["role1"],
             "conditions": [{
-                "nextNodeName": "second",
+                "nextNodeCode": "second",
                 "condition": ""
-            }]
+            }],
+            "remark": ""
         },
         {
-            "nodeName": "second",
-            "preNodeNames": ["first"],
+            "nodeName": "第2节点",
+            "nodeCode": "second",
+            "preNodeCodes": ["first"],
             "needUserNames": ["user1"],
             "needRoleNames": ["role1"],
             "conditions": [{
-                    "nextNodeName": "three",
+                    "nextNodeCode": "three",
                     "condition": "${flag}=='1'"
                 },
                 {
-                    "nextNodeName": "four",
+                    "nextNodeCode": "four",
                     "condition": "${flag}=='2'"
                 }
-            ]
+            ],
+            "remark": ""
         },
         {
-            "nodeName": "three",
-            "preNodeNames": ["second"],
+            "nodeName": "第3节点",
+            "nodeCode": "three",
+            "preNodeCodes": ["second"],
             "needUserNames": [],
             "needRoleNames": ["role1"],
             "conditions": [{
-                "nextNodeName": "five",
+                "nextNodeCode": "five",
                 "condition": "${flag}=='3'"
-            }]
+            }],
+            "remark": ""
         },
         {
-            "nodeName": "four",
-            "preNodeNames": ["second"],
+            "nodeName": "第4节点",
+            "nodeCode": "four",
+            "preNodeCodes": ["second"],
             "needUserNames": [],
             "needRoleNames": ["role1"],
             "conditions": [{
-                "nextNodeName": "five",
+                "nextNodeCode": "five",
                 "condition": "${flag}=='4'"
-            }]
+            }],
+            "remark": ""
         },
         {
-            "nodeName": "five",
-            "preNodeNames": ["three", "four"],
+            "nodeName": "第5节点",
+            "nodeCode": "five",
+            "preNodeCodes": ["three", "four"],
             "needUserNames": [],
             "needRoleNames": ["role1"],
             "conditions": [{
-                "nextNodeName": "end",
+                "nextNodeCode": "end",
                 "condition": "${flag}=='5'"
-            }]
+            }],
+            "remark": ""
         },
         {
-            "nodeName": "end",
-            "preNodeNames": ["five"],
+            "nodeName": "结束",
+            "nodeCode": "end",
+            "preNodeCodes": ["five"],
             "needUserNames": [],
             "needRoleNames": [],
-            "conditions": []
+            "conditions": [],
+            "remark": ""
         }
     ]
 }
