@@ -11,11 +11,27 @@ import com.itextpdf.text.log.SysoCounter;
 public class Test2001 {
 
 	public static void main(String[] args) {
-		f15();
+		f17();
 //		int aa = Long.valueOf(Math.round(12*100.0/2343)).intValue();
 //		System.out.println(aa);
 	}
-
+	private static void f17() {
+		String key = "aaa";
+		switch (key) {
+		case "bbb":
+			System.out.println(111);
+			break;
+		case "aaa":
+		case "ccc":
+			System.out.println(222);
+			break;
+		case "cccs":
+			System.out.println(333);
+			break;
+		default:
+			break;
+		}
+	}
 	private static void f15() {
 		final Map<Integer, Integer> nummap = new HashMap<Integer, Integer>();
 		final Random rnd = new Random();

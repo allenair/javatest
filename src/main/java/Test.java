@@ -1,6 +1,9 @@
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -31,15 +35,40 @@ import db.RedisUtil;
 
 public class Test {
 	private static Logger log = LoggerFactory.getLogger(Test.class);
-
+	private static AtomicInteger serialNumber = new AtomicInteger(1002);
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
 		Test tt = new Test();
-		tt.tt190614();
+		
+		System.out.println("http://192.168.1.166:8080/mongo_file.html".substring(0, "http://192.168.1.166:8080/mongo_file.html".lastIndexOf("/")+1));
+		System.out.println(LocalDateTime.parse("20200102030405", DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+		System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")));
+		
+		Object ss = null;
+		
+		System.out.println("ssss".equals(ss));
+		System.out.println(tt.getSerialNumber(3));
 	}
 
+	public String getSerialNumber(int len) {
+		int resInt = serialNumber.getAndAdd(1);
+		String res = ""+resInt;
+		
+		if(res.length()>=len) {
+			return res.substring(res.length()-len);
+			
+		}else {
+			int diff = len-res.length();
+			for(int i=0; i<diff; i++) {
+				res = "0"+res;
+			}
+			return res;
+		}
+	}
+	
 	private void tt190614() {
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
