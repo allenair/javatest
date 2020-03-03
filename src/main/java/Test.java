@@ -37,14 +37,14 @@ public class Test {
 	 */
 	public static void main(String[] args) throws Exception {
 		String ss="ss";
-		char gg;
+		char gg='c';
 		Test tt = new Test();
 		tt.tt190614();
 	}
 
 	private void tt190614() {
 		int c=11;
-		int sdd=12;
+		int sddww=12;
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
 		sortedList.add(9001);
