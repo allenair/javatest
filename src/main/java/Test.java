@@ -45,7 +45,7 @@ public class Test {
 
 	private void tt190614() {
 		int c=11;
-		int sd=121;
+		int sd=11;
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
 		sortedList.add(9001);
