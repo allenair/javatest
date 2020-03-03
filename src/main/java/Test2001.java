@@ -20,6 +20,7 @@ import com.itextpdf.text.log.SysoCounter;
 public class Test2001 {
 
 	public static void main(String[] args) throws Exception{
+		int a=12;
 		f0205();
 //		int aa = Long.valueOf(Math.round(12*100.0/2343)).intValue();
 //		System.out.println(aa);
