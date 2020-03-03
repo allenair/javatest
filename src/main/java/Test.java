@@ -38,7 +38,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		String ss="ss";
 		char gg='7';
-		gg='5';
+		gg='6';
 		Test tt = new Test();
 		tt.tt190614();
 	}
