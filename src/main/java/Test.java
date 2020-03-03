@@ -38,14 +38,14 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		String ss="ss";
 		char gg='7';
-		gg='5';
+		gg='6';
 		Test tt = new Test();
 		tt.tt190614();
 	}
 
 	private void tt190614() {
 		int c=11;
-		int sd=12;
+		int sd=121;
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
 		sortedList.add(9001);
