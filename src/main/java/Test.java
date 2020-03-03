@@ -37,7 +37,6 @@ public class Test {
 	 */
 	public static void main(String[] args) throws Exception {
 		String ss="ss";
-		boolean flag=true;
 		Test tt = new Test();
 		tt.tt190614();
 	}
