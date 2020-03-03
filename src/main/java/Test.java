@@ -36,6 +36,7 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		String ss="ss";
 		Test tt = new Test();
 		tt.tt190614();
 	}
