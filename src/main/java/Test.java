@@ -1,6 +1,9 @@
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -31,16 +35,39 @@ import db.RedisUtil;
 
 public class Test {
 	private static Logger log = LoggerFactory.getLogger(Test.class);
-
+	private static AtomicInteger serialNumber = new AtomicInteger(1002);
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		String ss="ss";
+		char gg='7';
+		gg='6';
 		Test tt = new Test();
 		tt.tt190614();
 	}
 
+	public String getSerialNumber(int len) {
+		int resInt = serialNumber.getAndAdd(1);
+		String res = ""+resInt;
+		
+		if(res.length()>=len) {
+			return res.substring(res.length()-len);
+			
+		}else {
+			int diff = len-res.length();
+			for(int i=0; i<diff; i++) {
+				res = "0"+res;
+			}
+			return res;
+		}
+	}
+	
 	private void tt190614() {
+		int c=11;
+		int sd=11;
+		sd=12134;
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
 		sortedList.add(9001);

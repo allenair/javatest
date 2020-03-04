@@ -26,6 +26,7 @@ public class Test2001 {
 		f0205();
 //		int aa = Long.valueOf(Math.round(12*100.0/2343)).intValue();
 //		System.out.println(aa);
+<<<<<<< HEAD
 		System.out.println("sssFlagw".endsWith("Flag"));
 		System.out.println(UUID.randomUUID().toString().toUpperCase().replaceAll("-", ""));
 	}
@@ -45,8 +46,27 @@ public class Test2001 {
 		default:
 			break;
 		}
+=======
+		System.out.println(UUID.randomUUID().toString().toUpperCase().replaceAll("-", ""));
+>>>>>>> branch 'master' of https://github.com/allenair/javatest.git
 	}
-
+	private static void f17() {
+		String key = "aaa";
+		switch (key) {
+		case "bbb":
+			System.out.println(111);
+			break;
+		case "aaa":
+		case "ccc":
+			System.out.println(222);
+			break;
+		case "cccs":
+			System.out.println(333);
+			break;
+		default:
+			break;
+		}
+	}
 	private static void f15() {
 		final Map<Integer, Integer> nummap = new HashMap<Integer, Integer>();
 		final Random rnd = new Random();
