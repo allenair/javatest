@@ -13,12 +13,11 @@ public class OracleDB {
 		
 		conn.setAutoCommit(false);
 		
-		
-		
-		
 //		Class.forName("org.postgresql.Driver");
 //		Connection conn = DriverManager.getConnection(
 //						"jdbc:postgresql://192.168.1.67:5432/essorgtestdb","essdb", "essdb@zxtech");
+		
+		
 	}
 
 }

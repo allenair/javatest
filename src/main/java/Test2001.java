@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,9 +22,29 @@ import com.itextpdf.text.log.SysoCounter;
 public class Test2001 {
 
 	public static void main(String[] args) throws Exception{
+		int a=12;
 		f0205();
 //		int aa = Long.valueOf(Math.round(12*100.0/2343)).intValue();
 //		System.out.println(aa);
+		System.out.println("sssFlagw".endsWith("Flag"));
+		System.out.println(UUID.randomUUID().toString().toUpperCase().replaceAll("-", ""));
+	}
+	private static void f17() {
+		String key = "aaa";
+		switch (key) {
+		case "bbb":
+			System.out.println(111);
+			break;
+		case "aaa":
+		case "ccc":
+			System.out.println(222);
+			break;
+		case "cccs":
+			System.out.println(333);
+			break;
+		default:
+			break;
+		}
 	}
 
 	private static void f15() {
