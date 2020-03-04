@@ -41,16 +41,11 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		String ss="ss";
+		char gg='7';
+		gg='6';
 		Test tt = new Test();
-		
-		System.out.println("http://192.168.1.166:8080/mongo_file.html".substring(0, "http://192.168.1.166:8080/mongo_file.html".lastIndexOf("/")+1));
-		System.out.println(LocalDateTime.parse("20200102030405", DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
-		System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日")));
-		
-		Object ss = null;
-		
-		System.out.println("ssss".equals(ss));
-		System.out.println(tt.getSerialNumber(3));
+		tt.tt190614();
 	}
 
 	public String getSerialNumber(int len) {
@@ -70,6 +65,9 @@ public class Test {
 	}
 	
 	private void tt190614() {
+		int c=11;
+		int sd=11;
+		sd=12134;
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
 		sortedList.add(9001);
