@@ -1,3 +1,4 @@
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -16,13 +17,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+
+import cn.hutool.core.io.FileUtil;
 
 public class Test2003 {
 
 	public static void main(String[] args)throws Exception {
-		dealZtTaskFact();
+//		dealZtTaskFact();
 		
 //		double ss = 1/3.0;
 //		System.out.println(new BigDecimal(ss).setScale(2, RoundingMode.HALF_UP));
@@ -35,8 +40,44 @@ public class Test2003 {
 //			System.out.println("   " + now.getDayOfWeek());
 //			
 //		});
+		
+//		tt0311();
+		
+//		System.out.println(new File("D:/code/gitee/bi_research/document/design/笔记.txt").getParent());
+		System.out.println(new File("D:/code/gitee/bi_research/document").getAbsolutePath());
+		
+//		FileUtil.mkdir("d:/zzz/sssd");
+//		FileUtil.copy(new File("D:/code/gitee/bi_research/document/design/笔记.txt"), new File("d:/zzz/sssd/"), true);
+		
+		File srcPath = new File("D:/code/gitee/bi_research/document");
+		copyFile(srcPath, srcPath.getAbsolutePath(), "d:/zzz/");
 	}
 
+	private static void copyFile(File srcFile, String srcPath, String desPath) {
+		if(srcFile.isFile()) {
+			String nowPath = srcFile.getParent();
+			nowPath = nowPath.replace(srcPath, "");
+			FileUtil.copy(srcFile, new File(desPath + nowPath), true);
+		}else {
+			String nowPath = srcFile.getAbsolutePath();
+			nowPath = nowPath.replace(srcPath, "");
+			FileUtil.mkdir(desPath + nowPath);
+			for (File file : srcFile.listFiles()) {
+				copyFile(file, srcPath, desPath);
+			}
+		}
+	}
+	
+	private static void tt0311() {
+		Map<Integer, String> nameMap = new HashMap<>();
+		nameMap.put(12, "aaaa");
+		nameMap.put(23, "bbbb");
+		String[] arr = ",,23,12,".split(",");
+		String ss= String.join("/", Stream.<String>of(arr).filter(str -> StringUtils.isNotBlank(str.trim()))
+				.map(str -> nameMap.get(Integer.parseInt(str))).collect(Collectors.toList()));
+		System.out.println(ss);
+	}
+	
 	private static void createWorkday0304() throws Exception {
 		Connection conn = Test2003.getConn();
 		
