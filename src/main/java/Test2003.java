@@ -44,15 +44,41 @@ public class Test2003 {
 //		tt0311();
 		
 //		System.out.println(new File("D:/code/gitee/bi_research/document/design/笔记.txt").getParent());
-		System.out.println(new File("D:/code/gitee/bi_research/document").getAbsolutePath());
 		
 //		FileUtil.mkdir("d:/zzz/sssd");
 //		FileUtil.copy(new File("D:/code/gitee/bi_research/document/design/笔记.txt"), new File("d:/zzz/sssd/"), true);
 		
-		File srcPath = new File("D:/code/gitee/bi_research/document");
-		copyFile(srcPath, srcPath.getAbsolutePath(), "d:/zzz/");
+//		File srcPath = new File("D:/code/gitee/bi_research/document");
+//		copyFile(srcPath, srcPath.getAbsolutePath(), "d:/zzz/");
+		
+		t0327();
 	}
 
+	private static void t0327() {
+		List<String> columnList = new ArrayList<String>();
+		String showColumn = " name, id, sex as 性别 , age 年龄 ";
+		if (StringUtils.isNotBlank(showColumn)) {
+			String[] columnArr = showColumn.split(",");
+			for (int i = 0; i < columnArr.length; i++) {
+				String tmp = columnArr[i].trim();
+				String[] arr = tmp.split("\\s");
+				columnList.add(arr[arr.length-1].trim());
+			}
+		}
+		
+		columnList.forEach(System.out::println);
+	}
+	
+	private static void t0323() {
+		String filePath = "D:/temp/tmp/QMS2.0/savePath/202003/1584958204833.txt";
+		String downloadPath = "D:/temp/tmp/QMS2.0/savePath/";
+		
+		filePath = filePath.replace(downloadPath, "");
+		filePath = filePath.replaceAll("//", "/");
+		
+		System.out.println(filePath);
+	}
+	
 	private static void copyFile(File srcFile, String srcPath, String desPath) {
 		if(srcFile.isFile()) {
 			String nowPath = srcFile.getParent();
