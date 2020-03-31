@@ -12,6 +12,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,41 @@ public class Test2003 {
 //		File srcPath = new File("D:/code/gitee/bi_research/document");
 //		copyFile(srcPath, srcPath.getAbsolutePath(), "d:/zzz/");
 		
-		t0327();
+		//0x723B7C68359043169F5BC2B5E1413D3A
+		
+		
+		
+		t0331();
 	}
 
+	private static void t0331() {
+		String s = "723B7C68359043169F5BC2B5E1413D3A".toUpperCase();
+
+		List<Byte> list = new ArrayList<>();
+		byte[] res = new byte[16];
+		for(int i=0; i<31; i+=2) {
+			int up = s.charAt(i)>='A'?s.charAt(i)-'A'+10:s.charAt(i)-'0';
+			int down = s.charAt(i+1)>='A'?s.charAt(i+1)-'A'+10:s.charAt(i+1)-'0';
+			
+			int val = up*16 + down;
+			
+			list.add((byte)val);
+			res[i/2]=(byte)val;
+		}
+		
+		list.forEach(b->System.out.print(b+" "));
+
+		System.out.println("\n=============");
+		
+		for (byte b : res) {
+			System.out.print(b+" ");
+		}
+		System.out.println("\n=============");
+		for (byte b : res) {
+			System.out.print(String.format("%02x ", b));
+		}
+	}
+	
 	private static void t0327() {
 		List<String> columnList = new ArrayList<String>();
 		String showColumn = " name, id, sex as 性别 , age 年龄 ";
