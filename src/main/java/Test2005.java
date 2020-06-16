@@ -3,6 +3,9 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,13 +20,27 @@ import org.apache.commons.lang3.StringUtils;
 public class Test2005 {
 
 	public static void main(String[] args) {
-		t0521();
+		t0519();
 	}
 
 	private static void t0519() {
 		LocalDate today = LocalDate.now().minusWeeks(1).with(DayOfWeek.SUNDAY);
 
 		System.out.println(today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		
+		BigDecimal consumedHour = new BigDecimal("123.34");
+		System.out.println(consumedHour.divide(new BigDecimal(3), 2, RoundingMode.HALF_UP));
+		
+		System.out.println(LocalDate.now().getMonthValue());
+		
+		double qq = 100/3.0*22.0;
+		System.out.println(qq);
+		
+//		BigDecimal aq = new BigDecimal(String.format("%.2f", qq ));
+		System.out.println(String.format("%.2f", qq));
+		
+		int a = Integer.parseInt("01");
+		System.out.println(a==1?"y":"n");
 	}
 
 	private static void t0521() {
