@@ -36,7 +36,7 @@ public class SendMail {
 		account.setUser(ACCOUT);
 		account.setPass(PWD);
 		account.setSocketFactoryClass("javax.net.ssl.SSLSocketFactory");
-		account.setStartttlsEnable(true);
+		account.setStarttlsEnable(true);
 
 		File file = new File("/Users/allen/Desktop/aaaa");
 		
