@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqliteTools {
-	private static String dbPathName = "/Users/allen/sample.db";
+	private static String dbPathName = "d:/sample.db";
 	public static Connection getConnection() throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		Connection connection = null;
