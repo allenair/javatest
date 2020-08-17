@@ -18,11 +18,7 @@ import javax.script.ScriptException;
 public class Test2007 {
 
 	public static void main(String[] args) throws Exception {
-		String express = "order_category==\"1\" && estimate_sum>500";
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("order_category", "1");
-		map.put("estimate_sum", "0000");
-		System.out.println(calExpressValueWithJs(express, map));
+		genTableId();
 	}
 	private static void test0810() {
 		Set<String> res = new HashSet<String>();
