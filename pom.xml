@@ -314,11 +314,7 @@
 			<version>7.0.0.jre8</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.nlpcn</groupId>
-			<artifactId>nlp-lang</artifactId>
-			<version>1.7.8</version>
-		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
