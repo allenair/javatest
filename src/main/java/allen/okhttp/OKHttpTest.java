@@ -1,5 +1,6 @@
 package allen.okhttp;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -77,22 +79,24 @@ public class OKHttpTest {
 //		okhttp.mockMailClient();
 		
 		
-		IntStream.range(0, 10).forEach(n->{
-			new Thread(()->{
-				for(int k=0;k<10;k++) {
-					try {
-						Map<String, String> paraMap = new HashMap<>();
-						paraMap.put("phoneNums", n + "-" + k + "-12345");
-						paraMap.put("content", n + "-" + k + "-内容asdf");
-						new OKHttpTest().post("http://127.0.0.1:9876/util/sendsms.do", paraMap);
-						Thread.sleep(1);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
-		});
+//		IntStream.range(0, 10).forEach(n->{
+//			new Thread(()->{
+//				for(int k=0;k<10;k++) {
+//					try {
+//						Map<String, String> paraMap = new HashMap<>();
+//						paraMap.put("phoneNums", n + "-" + k + "-12345");
+//						paraMap.put("content", n + "-" + k + "-内容asdf");
+//						new OKHttpTest().post("http://127.0.0.1:9876/util/sendsms.do", paraMap);
+//						Thread.sleep(1);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}).start();
+//		});
 		
+		
+		okhttp.testUploadFile();
 		
 		System.out.println("========FIN==========");
 
@@ -184,8 +188,19 @@ public class OKHttpTest {
 				log.error(err.getMessage());
 			}
 		});
-		
 	}
 	
+	public void testUploadFile() throws IOException {
+		File file = new File("d:/222.png");
+		RequestBody requestBody = new MultipartBody.Builder()
+			    .setType(MultipartBody.FORM)
+			    .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file))
+			    .build();
+		
+		Request request = new Request.Builder().url("http://localhost:8780/pub/upfile.do").post(requestBody).build();
+		try (Response response = client.newCall(request).execute()) {
+			System.out.println(response.body().string());
+		}
+	}
 	
 }

@@ -1,12 +1,8 @@
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -17,57 +13,57 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CharMatcher;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.zxtech.bean.UpHardAnalysisVO;
-
-import db.RedisUtil;
 
 public class Test {
 	private static Logger log = LoggerFactory.getLogger(Test.class);
 	private static AtomicInteger serialNumber = new AtomicInteger(1002);
-	
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		String ss="ss";
-		char gg='7';
-		gg='6';
 		Test tt = new Test();
-		tt.tt190614();
+		genTableId();
+	}
+
+	public static void genTableId() {
+		IntStream.range(0, 200).forEach(i -> {
+			System.out.println(UUID.randomUUID().toString());
+		});
+
 	}
 
 	public String getSerialNumber(int len) {
 		int resInt = serialNumber.getAndAdd(1);
-		String res = ""+resInt;
-		
-		if(res.length()>=len) {
-			return res.substring(res.length()-len);
-			
-		}else {
-			int diff = len-res.length();
-			for(int i=0; i<diff; i++) {
-				res = "0"+res;
+		String res = "" + resInt;
+
+		if (res.length() >= len) {
+			return res.substring(res.length() - len);
+
+		} else {
+			int diff = len - res.length();
+			for (int i = 0; i < diff; i++) {
+				res = "0" + res;
 			}
 			return res;
 		}
 	}
-	
+
 	private void tt190614() {
-		int c=11;
-		int sd=11;
-		sd=12134;
+		int c = 11;
+		int sd = 11;
+		sd = 12134;
 		List<Integer> sortedList = new ArrayList<>();
 		sortedList.add(11000);
 		sortedList.add(9001);
