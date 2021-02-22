@@ -4,6 +4,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
@@ -36,6 +40,8 @@ import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.DocxRenderData;
 import com.deepoove.poi.xwpf.NiceXWPFDocument;
 
+import cn.hutool.core.util.RandomUtil;
+
 public class Test2011 {
 
 	public static void main(String[] args) throws Exception {
@@ -43,11 +49,94 @@ public class Test2011 {
 //		testPoi();
 //		copyAndChange();
 //		merge();
-		mergeToOne();
+//		mergeToOne();
 		
 		System.out.println(System.currentTimeMillis()-ss);
+		
+//		test1224();
+		
+		System.out.println(isStrongPasswd("1234567"));
+		System.out.println(isStrongPasswd("12345678"));
+		System.out.println(isStrongPasswd("asdfghjfghjk"));
+		System.out.println(isStrongPasswd("asd34567"));
+		System.out.println(isStrongPasswd("asSdf$d34567"));
+		
+		System.out.println(RandomUtil.randomString(8));
+		System.out.println(RandomUtil.randomString(8));
+		System.out.println(RandomUtil.randomString(8));
+		System.out.println(RandomUtil.randomStringUpper(8));
+		System.out.println(RandomUtil.randomStringUpper(8));
+		System.out.println(RandomUtil.randomStringUpper(8));
+		
+		BigDecimal total = new BigDecimal(12);
+		BigDecimal count = new BigDecimal(10);
+		System.out.println(total.compareTo(count));
+		System.out.println(total.subtract(count));
+		
+		System.out.println(get32BitMd5EncString("a123456!"));
+		
+		List<String> drugZeroList = new ArrayList<>();
+		drugZeroList.add("asd");
+		drugZeroList.add("yui");
+		System.out.println(String.join(",", drugZeroList));
+		
+		
+		BigDecimal aa = new BigDecimal(1.01);
+		System.out.println(aa.intValue());
 	}
 
+	public static String get32BitMd5EncString(String plainText) {
+		String result = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(plainText.getBytes());
+			byte b[] = md.digest();
+			int i;
+			StringBuffer buf = new StringBuffer("");
+			for (int offset = 0; offset < b.length; offset++) {
+				i = b[offset];
+				if (i < 0)
+					i += 256;
+				if (i < 16)
+					buf.append("0");
+				buf.append(Integer.toHexString(i));
+			}
+			result = buf.toString(); // md5 32bit
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	private static boolean isStrongPasswd(String password) {
+		if (StringUtils.isBlank(password) || password.length() < 8) {
+			return false;
+		}
+
+		int count = 0;
+		if (password.matches(".*[a-z]{1,}.*")) {
+			count++;
+		}
+		if (password.matches(".*[A-Z]{1,}.*")) {
+			count++;
+		}
+		if (password.matches(".*\\d{1,}.*")) {
+			count++;
+		}
+		if (password.matches(".*[~!@#$%^&*\\.?]{1,}.*")) {
+			count++;
+		}
+
+		return count > 1;
+	}
+	
+	public static void test1224() {
+		String commonContent = "<!doctype html><html lang=en><head><title>HTTP Status 404 – Not Found</title><style type=>body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 404 – Not Found</h1></body></html>";
+		commonContent = commonContent.replaceAll("<", "&lt;");
+		commonContent = commonContent.replaceAll(">", "&gt;");
+		System.out.println(commonContent);
+	}
+	
 	public static void testPoi() throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("docx_word1", new DocxRenderData(new File("D:\\doc_1.docx")));
