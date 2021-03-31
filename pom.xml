@@ -27,6 +27,14 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.1</version>
 		</dependency>
+
+		<!-- <scope>system</scope> <systemPath>D:/code/maven/repository/cn/com/metamedical/mm-tool/1.0.3/mm-tool-1.0.3.jar</systemPath> -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.65</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -277,7 +285,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.3.7</version>
+			<version>5.5.8</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.t-io/tio-core -->
@@ -314,41 +322,33 @@
 			<version>7.0.0.jre8</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/com.deepoove/poi-tl -->
-<dependency>
-    <groupId>com.deepoove</groupId>
-    <artifactId>poi-tl</artifactId>
-    <version>1.8.2</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/com.deepoove/poi-tl -->
+		<dependency>
+			<groupId>com.deepoove</groupId>
+			<artifactId>poi-tl</artifactId>
+			<version>1.8.2</version>
+		</dependency>
 
 
-<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-core -->
-<dependency>
-    <groupId>org.docx4j</groupId>
-    <artifactId>docx4j</artifactId>
-    <version>6.1.2</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-core -->
+		<dependency>
+			<groupId>org.docx4j</groupId>
+			<artifactId>docx4j</artifactId>
+			<version>6.1.2</version>
+		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-core 
-<dependency>
-    <groupId>org.docx4j</groupId>
-    <artifactId>docx4j-core</artifactId>
-    <version>8.2.4</version>
-</dependency>
--->
-<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-export-fo 
-<dependency>
-    <groupId>org.docx4j</groupId>
-    <artifactId>docx4j-export-fo</artifactId>
-    <version>8.2.4</version>
-</dependency>
--->
-<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-export-fo -->
-<dependency>
-    <groupId>org.docx4j</groupId>
-    <artifactId>docx4j-export-fo</artifactId>
-    <version>6.1.0</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-core <dependency> 
+			<groupId>org.docx4j</groupId> <artifactId>docx4j-core</artifactId> <version>8.2.4</version> 
+			</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-export-fo <dependency> 
+			<groupId>org.docx4j</groupId> <artifactId>docx4j-export-fo</artifactId> <version>8.2.4</version> 
+			</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-export-fo -->
+		<dependency>
+			<groupId>org.docx4j</groupId>
+			<artifactId>docx4j-export-fo</artifactId>
+			<version>6.1.0</version>
+		</dependency>
 
 
 
