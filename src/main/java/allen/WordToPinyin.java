@@ -147,11 +147,12 @@ public class WordToPinyin {
 		}
 	}
 	public static void main(String[] args) throws Exception{
-//		System.out.println(converterToSpell("欢迎来到最棒的Java中文社区"));
 		WordToPinyin test = new WordToPinyin();
-		List<Map<String, String>> rows = test.getRecordFromFile("/Users/allen/Desktop/Book1.csv");
-		test.writeToFile("/Users/allen/Desktop/result-gbk.csv", rows);
-		System.out.println(1);
+		System.out.println(test.converterToSpell("欢迎来到最棒的Java中文社区"));
+
+//		List<Map<String, String>> rows = test.getRecordFromFile("/Users/allen/Desktop/Book1.csv");
+//		test.writeToFile("/Users/allen/Desktop/result-gbk.csv", rows);
+//		System.out.println(1);
 	}
 
 }

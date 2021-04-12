@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.XmlUtil;
+import cn.hutool.crypto.SecureUtil;
 
 public class Test2021 {
 	
@@ -40,15 +41,23 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test0302();
+		test0410();
 	}
 	
+	public static void test0410() {
+		String content = "晒干或低温干燥。\u003c/p\u003e \\n\u003cp\u003e\u003cstrong\u003e【性状】\u003c/strong\u003e";
+		content = content.replace('\u003c', '<');
+		content = content.replace('\u003e', '>');
+		
+		System.out.println(content);
+	}
 	public static void test0302() {
 		double sum = 12.3456783;
 		BigDecimal tt = new BigDecimal(sum).setScale(2,RoundingMode.HALF_UP);
 		System.out.println(tt);
 		System.out.println(LocalDate.now().getMonthValue());
 		System.out.println(LocalDate.now().getYear());
+		System.out.println(SecureUtil.sha256("1"));
 	}
 
 	public static void test03() {

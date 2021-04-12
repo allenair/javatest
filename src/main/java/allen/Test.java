@@ -31,9 +31,9 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		Test t = new Test();
 		
-//		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
-//		script.put("aa", 1.22345678);
-//		System.out.println(script.eval("aa==1.22345678"));
+		ScriptEngine script = new ScriptEngineManager().getEngineByName("js");
+		script.put("aa", 1.22345678);
+		System.out.println(script.eval("Math.sqrt( aa *100 + 12);"));
 //		double aa = 1.12345678;
 //		BigDecimal bb = new BigDecimal("1.12345678");
 //		System.out.println(aa==1.22345678);
