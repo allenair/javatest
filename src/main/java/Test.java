@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+import org.docx4j.events.JobIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,18 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		Test tt = new Test();
 		genTableId();
+		
+		
+		BigDecimal reqTotal = new BigDecimal("1000.23");
+		BigDecimal newPrice = new BigDecimal("7");
+		BigDecimal oldPrice = new BigDecimal("8");
+		BigDecimal reqQty = new BigDecimal("100");
+		
+		reqTotal = reqTotal.add(newPrice.multiply(reqQty)).add(oldPrice.multiply(reqQty).negate());
+		System.out.println(reqTotal);
+		
+		BigDecimal aa = new BigDecimal("0.000000");
+		System.out.println(aa.compareTo(BigDecimal.ZERO)==0);
 	}
 
 	public static void genTableId() {
