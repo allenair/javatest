@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.AlgorithmParameters;
@@ -14,13 +15,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -32,10 +36,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.XmlUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.MD5;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 public class Test2021 {
 	
@@ -58,12 +70,96 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test0418();
+		test0425();
 	}
+	
+	public static void test0425() throws Exception {
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, String>>() {
+		}.getType();
+		
+		Class.forName("org.postgresql.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sitedb", "cnmedicinedb",
+				"cnMedicine@pg2020#!");
+		
+		try (PrintWriter fout = new PrintWriter("d:/out.txt", "utf-8")) {
+			ResultSet rst = conn.createStatement().executeQuery("select medicine_name, medicine_content from medicine_info;");
+			
+			while(rst.next()) {
+				String drugName = rst.getString("medicine_name").trim();
+				String content = rst.getString("medicine_content").trim();
+				String pinyin = converterToSpell(drugName);
+				
+				Map<String, String> infoMap = gson.fromJson(content, type);
+				String otherName = StringUtils.isNoneBlank(infoMap.get("别名")) ? infoMap.get("别名").trim() : "";
+				String latin = StringUtils.isNoneBlank(infoMap.get("拉丁名称")) ? infoMap.get("拉丁名称").trim() : "";
+				String yaoxing = StringUtils.isNoneBlank(infoMap.get("药性")) ? infoMap.get("药性").trim() : "";
+				boolean poisonFlag = yaoxing.indexOf("毒") > -1;
+				String usage = StringUtils.isNoneBlank(infoMap.get("用法用量"))
+						? infoMap.get("用法用量").replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("\n", " ")
+						: "";
+
+				System.out.println(drugName);
+				System.out.println(pinyin);
+				System.out.println(otherName);
+				System.out.println(latin);
+				System.out.println(yaoxing);
+				System.out.println(poisonFlag);
+				System.out.println(usage);
+				System.out.println("================================\n");
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("update cat_drug set spell_abbr='").append(pinyin).append("', name_alias='").append(otherName);
+				sql.append("', name_eng='").append(latin).append("', poisonous_flag='").append(poisonFlag?"1":"0");
+				sql.append("', doseage_desc='").append(usage).append("' where name_chn='").append(drugName).append("'; \n");
+				
+				fout.print(sql.toString());
+			}
+		}
+	}
+	
+	private  static String converterToSpell(String chines) {
+		String pinyinName = "";
+		char[] nameChar = chines.toCharArray();
+		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
+		defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
+		defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+		for (int i = 0; i < nameChar.length; i++) {
+			if (nameChar[i] > 128) {
+				try {
+					pinyinName += PinyinHelper.toHanyuPinyinStringArray(nameChar[i], defaultFormat)[0].substring(0, 1);
+				} catch (BadHanyuPinyinOutputFormatCombination e) {
+					e.printStackTrace();
+				}
+			} else {
+				pinyinName += nameChar[i];
+			}
+		}
+		return pinyinName;
+	}
+	
 	public static void test0418() throws Exception {
 		System.out.println(MD5.create().digestHex("1"));
 		System.out.println(MD5.create().digestHex("mz1234"));
 		System.out.println(String.format("%.2f", new BigDecimal("2300.0000")));
+		
+		List<String> idList = new ArrayList<>();
+		idList.add("2345-sdfgh-235");
+//		idList.add("rtyu-sdfgh-235");
+		
+		String ss = String.join(",",
+				idList.stream().map(id -> "'" + id + "'").collect(Collectors.toList()));
+		System.out.println(ss);
+		
+		
+		String[] userArr = {};
+		userArr = ss.split(",");
+		System.out.println(userArr.length);
+		
+//		if (smsInfo.get("allSalerUser") != null) {
+//			userArr = smsInfo.get("allSalerUser").split(",");
+//		}
+		
 	}
 	public static void test0414() throws Exception {
 		
