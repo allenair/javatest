@@ -15,16 +15,17 @@ public class MZDealData {
 	}
 	
 	private static void genNewProductSql() throws Exception  {
-		String productName = "橘核(小包装)";
-		String spec = "公斤";
-		BigDecimal price = new BigDecimal("64.00");
-		String salerName = "广东恒祥医药有限公司";
-		String manufactureName = "康美药业股份有限公司";
 		String buyerName = "梅州市中医院";
+		String productName = "黄连颗粒";
+		String spec = "600g";
+		String metricUnit = "袋";
+		String manufactureName = "广东一方制药有限公司";
+		String salerName = "广东一方制药有限公司";
+		BigDecimal price = new BigDecimal("426.0");
 		String plantArea = "无";
-		String metricUnit = "公斤";
 		
 		
+		//----------------------------------------------------------------------
 		String productId = UUID.randomUUID().toString();
 		String faceMapId = UUID.randomUUID().toString();
 		String conItemId = UUID.randomUUID().toString();
@@ -41,6 +42,7 @@ public class MZDealData {
 		String manufactureId = "";
 		String metricId = "";
 		
+		//----------------------------------------------------------------------
 		Connection conn = getConn();
 		ResultSet rst = conn.prepareStatement("select * from con_list cl where cl.status_flag='1';").executeQuery();
 		if(rst.next()) {
@@ -49,7 +51,7 @@ public class MZDealData {
 			beginDate = rst.getDate("begin_date").toString();
 			endDate = rst.getDate("end_date").toString();
 		}else {
-			System.out.println("==con_list empty--------------===");
+			System.out.println("=======con_list empty===============");
 			return;
 		}
 		
@@ -60,7 +62,7 @@ public class MZDealData {
 		if(rst.next()) {
 			metricId = rst.getString("id");
 		}else {
-			System.out.println("==metric empty--------------===");
+			System.out.println("=======metric empty==============");
 			return;
 		}
 		
@@ -72,7 +74,7 @@ public class MZDealData {
 		if(rst.next()) {
 			buyerId = rst.getString("id");
 		}else {
-			System.out.println("==buyer empty--------------===");
+			System.out.println("=======buyer empty=======");
 			return;
 		}
 		
@@ -81,7 +83,7 @@ public class MZDealData {
 		if(rst.next()) {
 			salerId = rst.getString("id");
 		}else {
-			System.out.println("==saler empty--------------===");
+			System.out.println("=======saler empty=======");
 			return;
 		}
 		
@@ -90,7 +92,7 @@ public class MZDealData {
 		if(rst.next()) {
 			manufactureId = rst.getString("id");
 		}else {
-			System.out.println("==manufacture empty--------------===");
+			System.out.println("=======manufacture empty=======");
 			return;
 		}
 		
