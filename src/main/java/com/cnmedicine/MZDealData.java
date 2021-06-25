@@ -16,12 +16,12 @@ public class MZDealData {
 	
 	private static void genNewProductSql() throws Exception  {
 		String buyerName = "梅州市中医院";
-		String productName = "黄连颗粒";
-		String spec = "600g";
-		String metricUnit = "袋";
-		String manufactureName = "广东一方制药有限公司";
-		String salerName = "广东一方制药有限公司";
-		BigDecimal price = new BigDecimal("426.0");
+		String productName = "岗梅";
+		String spec = "公斤";
+		String metricUnit = "公斤";
+		String manufactureName = "广东汇群中药饮片股份有限公司";
+		String salerName = "广东万丰药业有限公司";
+		BigDecimal price = new BigDecimal("21.83");
 		String plantArea = "无";
 		
 		

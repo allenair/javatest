@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,19 +37,24 @@ public class Test {
 	 */
 	public static void main(String[] args) throws Exception {
 		Test tt = new Test();
-		genTableId();
+//		genTableId();
 		
 		
-		BigDecimal reqTotal = new BigDecimal("1000.23");
-		BigDecimal newPrice = new BigDecimal("7");
-		BigDecimal oldPrice = new BigDecimal("8");
-		BigDecimal reqQty = new BigDecimal("100");
+//		BigDecimal reqTotal = new BigDecimal("1000.23");
+//		BigDecimal newPrice = new BigDecimal("7");
+//		BigDecimal oldPrice = new BigDecimal("8");
+//		BigDecimal reqQty = new BigDecimal("100");
+//		
+//		reqTotal = reqTotal.add(newPrice.multiply(reqQty)).add(oldPrice.multiply(reqQty).negate());
+//		System.out.println(reqTotal);
+//		
+		BigDecimal aa = new BigDecimal("5.700000");
+		System.out.println(aa.compareTo(BigDecimal.ZERO));
 		
-		reqTotal = reqTotal.add(newPrice.multiply(reqQty)).add(oldPrice.multiply(reqQty).negate());
-		System.out.println(reqTotal);
+		BigDecimal bb = aa.multiply(new BigDecimal(100)).divide(new BigDecimal(10000), 2, RoundingMode.HALF_UP);
+		System.out.println(bb);
 		
-		BigDecimal aa = new BigDecimal("0.000000");
-		System.out.println(aa.compareTo(BigDecimal.ZERO)==0);
+		System.out.println("2020-09".replaceAll("-", ""));
 	}
 
 	public static void genTableId() {
