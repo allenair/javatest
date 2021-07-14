@@ -70,7 +70,11 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test0425();
+		test0709();
+	}
+	public static void test0709() throws Exception {
+		LocalDate endDate = LocalDate.of(2021, 7, 1).plusMonths(1).minusDays(1);
+		System.out.println(endDate);
 	}
 	
 	public static void test0425() throws Exception {

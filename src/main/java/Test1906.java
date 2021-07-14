@@ -21,7 +21,8 @@ import com.google.gson.Gson;
 public class Test1906 {
 
 	public static void main(String[] args) {
-		new Test1906().test0617();
+//		new Test1906().test0617();
+		Test tt = new Test();
 	}
 
 	public void test0628() {
