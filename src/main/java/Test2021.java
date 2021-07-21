@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +9,9 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.security.AlgorithmParameters;
 import java.security.Security;
 import java.sql.Connection;
@@ -25,6 +29,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -70,8 +75,82 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test0709();
+		test0721();
 	}
+	
+	/**
+	 * logMap格式：
+	 * 
+	 * {
+	 * 	 "trade": [
+	 * 		{
+	 * 			"time": "2021-07-14 11:43:58,137",
+	 * 			"level": "INFO",
+	 * 			"content": "c.c.m.MmTradeApplicationTests - No active profile set, falling ba..."
+	 * 		},...
+	 * 	 ],
+	 * 	 "data": [
+	 *   ]
+	 *   "rbac": [
+	 *   ]
+	 * }
+	 * 
+	 * */
+	public static void test0721() throws Exception {
+		String path = "D:\\temp\\logs";
+
+		Map<String, List<Map<String, String>>> logMap = new HashMap<>();
+
+		Files.list(Paths.get(path)).filter(file -> Files.isRegularFile(file, LinkOption.NOFOLLOW_LINKS))
+				.forEach(file -> {
+					File f = file.toFile();
+					String fileFlag = "";
+					if (f.getName().indexOf("mm-data") >= 0) {
+						fileFlag = "data";
+					} else if (f.getName().indexOf("mm-rbac") >= 0) {
+						fileFlag = "rbac";
+					} else if (f.getName().indexOf("mm-trade") >= 0) {
+						fileFlag = "trade";
+					}
+
+					if (fileFlag.length() > 0) {
+						List<Map<String, String>> resList = new ArrayList<>();
+						try (BufferedReader sysin = new BufferedReader(new FileReader(f))) {
+							sysin.lines().filter(line -> StringUtils.isNotBlank(line)).forEach(line -> {
+								if (line.startsWith("20")) {
+									Map<String, String> row = new HashMap<>();
+									String[] lineArr = line.split(" ", 5);
+									row.put("time", lineArr[0] + " " + lineArr[1]);
+									row.put("level", lineArr[3]);
+									row.put("content", lineArr[4]);
+
+									resList.add(row);
+
+								} else {
+									if (resList.size() > 0) {
+										String content = resList.get(resList.size() - 1).get("content");
+										resList.get(resList.size() - 1).put("content", content + '\n' + line);
+									}
+								}
+
+							});
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+						if (logMap.get(fileFlag) != null) {
+							logMap.get(fileFlag).addAll(resList);
+						} else {
+							logMap.put(fileFlag, resList);
+						}
+					}
+
+				});
+
+		System.out.println(new Gson().toJson(logMap));
+
+	}
+	
 	public static void test0709() throws Exception {
 		LocalDate endDate = LocalDate.of(2021, 7, 1).plusMonths(1).minusDays(1);
 		System.out.println(endDate);
