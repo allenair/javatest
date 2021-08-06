@@ -37,7 +37,7 @@ public class Test {
 	 */
 	public static void main(String[] args) throws Exception {
 		Test tt = new Test();
-//		genTableId();
+		genTableId();
 		
 		
 //		BigDecimal reqTotal = new BigDecimal("1000.23");
@@ -48,17 +48,17 @@ public class Test {
 //		reqTotal = reqTotal.add(newPrice.multiply(reqQty)).add(oldPrice.multiply(reqQty).negate());
 //		System.out.println(reqTotal);
 //		
-		BigDecimal aa = new BigDecimal("5.700000");
-		System.out.println(aa.compareTo(BigDecimal.ZERO));
-		
-		BigDecimal bb = aa.multiply(new BigDecimal(100)).divide(new BigDecimal(10000), 2, RoundingMode.HALF_UP);
-		System.out.println(bb);
-		
-		System.out.println("2020-09".replaceAll("-", ""));
+//		BigDecimal aa = new BigDecimal("5.700000");
+//		System.out.println(aa.compareTo(BigDecimal.ZERO));
+//		
+//		BigDecimal bb = aa.multiply(new BigDecimal(100)).divide(new BigDecimal(10000), 2, RoundingMode.HALF_UP);
+//		System.out.println(bb);
+//		
+//		System.out.println("2020-09".replaceAll("-", ""));
 	}
 
 	public static void genTableId() {
-		IntStream.range(0, 200).forEach(i -> {
+		IntStream.range(0, 1000).forEach(i -> {
 			System.out.println(UUID.randomUUID().toString());
 		});
 

@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -16,20 +13,24 @@ import java.security.AlgorithmParameters;
 import java.security.Security;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Random;
+import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -37,12 +38,25 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.mchange.v2.sql.filter.SynchronizedFilterDataSource;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.exception.CosClientException;
+import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.model.COSObjectSummary;
+import com.qcloud.cos.model.ListObjectsRequest;
+import com.qcloud.cos.model.ObjectListing;
+import com.qcloud.cos.region.Region;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.XmlUtil;
@@ -55,6 +69,7 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 public class Test2021 {
+	private static Logger log = LoggerFactory.getLogger(Test2021.class);
 	
 	public static void main(String[] args) throws Exception  {
 //		String[] aa = "D:\\temp\\pic\\一口钟\\0648-一口钟-001.jpg".split("\\\\");
@@ -75,8 +90,233 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test0721();
+		test0806();
 	}
+	
+	public static void test0806() throws Exception {
+		int[] sTermInfo = { 0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693,
+				263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758 };
+
+		String[] solarTerm = { "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋",
+				"处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至" };
+
+		int y = 2021;
+		for (int t = 0; t < sTermInfo.length; t++) {
+			Date day = new Date(
+					Math.round(31556925974.7 * (y - 1900) + sTermInfo[t] * 60000) + Date.UTC(1900, 0, 6, 2, 5, 0));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			System.out.println(solarTerm[t] + " >>> " + sdf.format(day));
+		}
+		
+	}
+	
+	
+	
+	public static void test0802() throws Exception {
+		System.out.println("ZZ00000000001".substring(2));
+		System.out.println("SS"+(""+(100000000001L+Long.parseLong("ZZ00000000008".substring(2)))).substring(1));
+		
+		List<String> list = new ArrayList<>();
+		list.add("三期");
+		list.add("红花");
+		list.add("枸杞");
+		list.add("人参");
+		list.add("丹参");
+		
+		String name = list.stream().sorted().collect(Collectors.joining(","));
+		System.out.println(name);
+		
+	}
+	public static void test0801() throws Exception {
+		String DB_URL="jdbc:postgresql://localhost:5432/cids-db";
+		Class.forName("org.postgresql.Driver");
+		Connection conn = DriverManager.getConnection(DB_URL, "cnmedicinedb",
+				"cnMedicine@pg2020#!");
+		
+		ResultSet rst = conn.createStatement().executeQuery("select title, code from symptom");
+		
+		Map<String, String> map = new HashMap<>();
+		while(rst.next()) {
+			map.put(rst.getString("title"), rst.getString("code"));
+		}
+		
+		try (BufferedReader in = new BufferedReader(new FileReader("d:/tongyi.txt"));
+				PrintWriter fout = new PrintWriter("d:/out.txt", "utf-8")) {
+			
+			in.lines().filter(line->StringUtils.isNotBlank(line)).forEach(line->{
+				String[] arr = line.split("#");
+				if(arr.length>=2) {
+					String name = arr[0].trim();
+					String otherName = arr[1].trim();
+					String id = UUID.randomUUID().toString();
+					String code = map.get(name);
+					
+					if(StringUtils.isNotBlank(code)) {
+						String sql = String.format("INSERT INTO synonym_symptom (id, symptom_code, synonym) VALUES('%s', '%s', '%s');", id, code, otherName);
+						fout.println(sql);
+					}else {
+						System.out.println("===="+name+"===="+otherName);
+					}
+				}
+			});
+		}
+		
+		System.out.println("========Finished======");
+		
+	}
+	
+	public static void test0728() throws Exception {
+//		System.out.print("123456");
+//		Thread.sleep(1000);
+//		System.out.print("\033[K");
+		
+		new Thread(()->{
+			while(true) {
+				System.out.println("1234567");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
+		
+		Thread.sleep(5000);
+	}
+	
+	public static void test0727() throws Exception {
+		List<StateBean> stateBeanList = new ArrayList<>();
+		StateBean row = new StateBean();
+		row.setStateCode("aaa");
+		row.setWeight(4);
+		stateBeanList.add(row);
+		
+		row = new StateBean();
+		row.setStateCode("bbb");
+		row.setWeight(2);
+		stateBeanList.add(row);
+		
+		row = new StateBean();
+		row.setStateCode("ccc");
+		row.setWeight(1);
+		stateBeanList.add(row);
+		
+		row = new StateBean();
+		row.setStateCode("ddd");
+		row.setWeight(2);
+		stateBeanList.add(row);
+		
+		row = new StateBean();
+		row.setStateCode("eee");
+		row.setWeight(1);
+		stateBeanList.add(row);
+		
+		
+		stateBeanList.stream().sorted(Comparator.comparing(StateBean::getWeight).reversed())
+				.limit(4).forEach(bean->System.out.println(bean.getStateCode()+"   "+bean.getWeight()));
+		
+		IntStream.range(0, 5).forEach(System.out::println);
+		
+		System.out.println((int)Math.ceil(9.0/100));
+		
+		new Random().ints(0, 5).limit(20).forEach(index->{
+			System.out.println("===="+index);
+		});
+		
+		System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+		
+		List<String> list = new ArrayList<>();
+		list.add("b222");
+		list.add("a111");
+		list.add("d331");
+		list.add("c4411");
+		System.out.println(list.stream().sorted().collect(Collectors.joining(",")));
+	}
+	
+	public static void test0722() throws Exception {
+		// 测试使用腾讯云对象存储功能
+		COSCredentials cred = new BasicCOSCredentials("AKIDV4R0VtIxHQVSBn8FPRPp7KRTwtfEhD0j","tRmIveBUeclkU0IUTHkgSZUCrIZeH0dA");
+        // 设置bucket的区域, COS地域的简称请参照 https://www.qcloud.com/document/product/436/6224
+        ClientConfig clientConfig = new ClientConfig(new Region("ap-guangzhou"));
+        // 生成cos客户端
+		COSClient cosClient = new COSClient(cred, clientConfig);
+		String bucketName = "metatcm-1303241373";
+		
+		
+		// 1. list
+		ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
+		listObjectsRequest.setBucketName(bucketName);
+		
+		listObjectsRequest.setMaxKeys(1000);
+		ObjectListing objectListing = null;
+		do {
+			try {
+				objectListing = cosClient.listObjects(listObjectsRequest);
+			} catch (CosServiceException e) {
+				e.printStackTrace();
+				return;
+			} catch (CosClientException e) {
+				e.printStackTrace();
+				return;
+			}
+			// common prefix表示表示被delimiter截断的路径, 如delimter设置为/, common prefix则表示所有子目录的路径
+//			List<String> commonPrefixs = objectListing.getCommonPrefixes();
+			// object summary表示所有列出的object列表
+			List<COSObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();
+			for (COSObjectSummary cosObjectSummary : cosObjectSummaries) {
+				// 文件的路径key
+				String key = cosObjectSummary.getKey();
+				// 文件的etag
+				String etag = cosObjectSummary.getETag();
+				// 文件的长度
+				long fileSize = cosObjectSummary.getSize();
+				// 文件的存储类型
+				String storageClasses = cosObjectSummary.getStorageClass();
+				
+				System.out.println(String.format("key:{}, etag:{}, fileSize:{}, storageClasses:{}", key,etag,fileSize,storageClasses));
+			}
+			String nextMarker = objectListing.getNextMarker();
+			listObjectsRequest.setMarker(nextMarker);
+		} while (objectListing.isTruncated());
+		
+		
+		
+		
+		
+		
+		
+		
+		// 2. put
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+//        String key = "202107/ab1234567890.png";
+//
+//        String localPath = "d:/abc.png";
+//
+//        PutObjectResult putObjectResult = cosClient.putObject(bucketName, key, new File(localPath));
+//
+//        System.out.println(putObjectResult.getRequestId());
+//
+//        GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
+//        COSObject cosObject = cosClient.getObject(getObjectRequest);
+//        System.out.println(cosObject.getObjectMetadata().getRequestId());
+
+        cosClient.shutdown();
+	}
+	
+	
+	
 	
 	/**
 	 * logMap格式：
@@ -806,4 +1046,25 @@ public class Test2021 {
        
        return "";
 	}
+}
+class StateBean {
+	private String stateCode;
+	private int weight;
+
+	public String getStateCode() {
+		return stateCode;
+	}
+
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
 }
