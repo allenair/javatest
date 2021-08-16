@@ -90,7 +90,14 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test0806();
+		test08010();
+	}
+	
+	public static void test08010() throws Exception {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/M/d");
+		Date date = formatter.parse("2020/9/6");
+		
+		System.out.println(date);
 	}
 	
 	public static void test0806() throws Exception {
