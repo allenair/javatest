@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
-			<version>1.3.8</version>
+			<version>1.5.0</version>
 		</dependency>
 
 		<!-- <scope>system</scope> <systemPath>D:/code/maven/repository/cn/com/metamedical/mm-tool/1.0.3/mm-tool-1.0.3.jar</systemPath> -->
