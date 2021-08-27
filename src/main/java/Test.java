@@ -58,7 +58,7 @@ public class Test {
 	}
 
 	public static void genTableId() {
-		IntStream.range(0, 500).forEach(i -> {
+		IntStream.range(0, 800).forEach(i -> {
 			System.out.println(UUID.randomUUID().toString());
 		});
 
