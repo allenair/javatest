@@ -90,7 +90,30 @@ public class Test2021 {
 //		String iv = "r7BXXKkLb8qrSNn05n0qiA==";
 //		System.out.println(decodeWxMessage(sessionKey, encryptedData, iv));
 		
-		test08010();
+		System.out.println(getOrderCode());
+	}
+	
+	private static final AtomicInteger serialNumber = new AtomicInteger(1);
+
+	public static String getOrderCode() {
+		String dateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHH"));
+		return dateStr + getSerialNumber(10);
+	}
+	
+	public static String getSerialNumber(int len) {
+		int resInt = serialNumber.getAndAdd(1);
+		String res = "" + resInt;
+
+		if (res.length() >= len) {
+			return res.substring(res.length() - len);
+
+		} else {
+			int diff = len - res.length();
+			for (int i = 0; i < diff; i++) {
+				res = "0" + res;
+			}
+			return res;
+		}
 	}
 	
 	public static void test08010() throws Exception {
@@ -98,6 +121,30 @@ public class Test2021 {
 		Date date = formatter.parse("2020/9/6");
 		
 		System.out.println(date);
+		
+		BigDecimal aa = new BigDecimal("12.3");
+		String DB_URL="jdbc:postgresql://192.168.1.149:5432/biz-cids-ai-db";
+		Class.forName("org.postgresql.Driver");
+		Connection conn = DriverManager.getConnection(DB_URL, "cnmedicinedb",
+				"cnMedicine@pg2020#!");
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select prescription_code, drug_name, usage_amount, unit_name ");
+		sql.append("  from prescription_detail  ");
+		sql.append(" order by prescription_code ");
+		
+		String pCode, drugName, unitName;
+		BigDecimal amount;
+		ResultSet rst = conn.createStatement().executeQuery(sql.toString());
+		while (rst.next()) {
+			pCode = rst.getString("prescription_code");
+			drugName = rst.getString("drug_name");
+			unitName = rst.getString("unit_name");
+			amount = rst.getBigDecimal("usage_amount");
+//			amount = rst.getString("usage_amount");
+			
+			System.out.println(drugName+"#"+amount.toString()+"#"+unitName);
+		}
 	}
 	
 	public static void test0806() throws Exception {
